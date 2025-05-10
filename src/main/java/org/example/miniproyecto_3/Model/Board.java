@@ -3,35 +3,49 @@ package org.example.miniproyecto_3.Model;
 import java.util.ArrayList;
 
 public class Board {
-    private Cell[][] board;
-    private int width;
-    private int height;
-
-    public Board(int width, int height) {
-        this.width = width;
-        this.height = height;
-        board = new Cell[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                board[i][j] = new Cell();
-            }
-        }
+    public enum CellState {
+        EMPTY,
+        SHIP,
+        HIT,
+        MISS
     }
+    private final int SIZE = 10;
+    private ArrayList<ArrayList<CellState>>grid;
+    private ArrayList<Ship>ships;
 
-    public Cell getCell(int row, int col) {
-        return board[row][col];
-    }
+    public Board(){
+        grid = new  ArrayList<ArrayList<CellState>>(SIZE);
+        ships = new ArrayList<Ship>();
+        for(int i = 0; i < SIZE; i++){
+            //Agrega el arraylist de cellState
+            grid.add(new ArrayList <CellState>(SIZE));
 
-    public boolean isAlive(){
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if(board[i][j].getState()){
-                    return true;
-                }
-
+            for (int j = 0; j < SIZE; j++) {
+                grid.get(i).add(CellState.EMPTY);
             }
         }
 
-        return false;
     }
+
+    private boolean isValidCoordinate(Coordinate coord){
+        int row = coord.getRow();
+        int column = coord.getCol();
+
+        return row >= 0 && row <SIZE && column >=0 && column < SIZE;
+    }
+
+    public boolean shipsSunk(){
+        for(Ship ship : ships){
+            if(!ship.isSunk()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean canShot(){
+
+    }
+
+
 }
