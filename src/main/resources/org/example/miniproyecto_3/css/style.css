@@ -1,0 +1,54 @@
+/* Estilo general para fondo playero */
+.root {
+    -fx-background-color: linear-gradient(
+            from 0% 0% to 0% 100%,
+            #87CEFA 0%,     /* cielo */
+            #00BFFF 30%,    /* agua */
+            #FDE6A9 70%,    /* arena arriba */
+            #FFF5E1 100%    /* arena abajo */
+    );
+}
+
+/* Título del juego */
+#titleLabel {
+    -fx-font-family: "Bernard MT Condensed";
+    -fx-font-size: 42px;
+    -fx-text-fill: #0E3D59;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.5, 2, 2);
+}
+
+/* Botones */
+.button {
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 16px;
+    -fx-background-color: #FCD581;
+    -fx-border-color: #F5A623;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #0E3D59;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0.5, 1, 1);
+}
+
+.button:hover {
+    -fx-background-color: #FFE5B4;
+}
+
+/* Celdas del tablero */
+.cell {
+    -fx-background-color: #87CEFA;
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.cell:hover {
+    -fx-background-color: #B0E0E6;
+}
+
+
+#bottomPane {
+    /*-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #FFE7AD, #FFF5E1);*/
+    -fx-background-color: transparent;
+}
