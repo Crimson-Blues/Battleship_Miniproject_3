@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1100.0" style="-fx-background-image: url(&quot;C:\Users\rrive\OneDrive\Escritorio\POE+\Battleship_Miniproject_3\src\main\resources\org\example\miniproyecto_3\images&quot;);;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.HomeController">
+<AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.HomeController">
    <children>
       <ImageView fitHeight="700.0" fitWidth="1100.0" pickOnBounds="true">
          <image>
