@@ -5,50 +5,95 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class HomeController {
     @FXML
-    private Label startLabel;
+    private TextField nicknameField;
+    @FXML
+    private Button startButton;
+    @FXML
+    private Button continueButton;
+    @FXML
+    private Button exitButton;
 
     @FXML
     public void initialize() {
-        FadeTransition ft = new FadeTransition(Duration.seconds(1.2), startLabel);
+        continueButton.setDisable(!hasSavedGame());
+
+        applyFadeEffect(startButton);
+        applyFadeEffect(continueButton);
+        applyFadeEffect(exitButton);
+
+        startButton.setOnAction(evt -> handleStart());
+        continueButton.setOnAction(evt -> handleContinue());
+        exitButton.setOnAction(evt -> System.exit(0));
+
+        nicknameField.focusedProperty().addListener((obs, old, focused) -> {
+            if (focused) {
+                nicknameField.setStyle("-fx-background-color: #FFF8DC; -fx-border-color: #F5A623; -fx-border-width: 2;");
+            } else {
+                nicknameField.setStyle("");
+            }
+        });
+
+    }
+
+    private void applyFadeEffect(Button btn) {
+        FadeTransition ft = new FadeTransition(Duration.seconds(1.2), btn);
         ft.setFromValue(1.0);
-        ft.setToValue(0.3);
-        ft.setCycleCount(Animation.INDEFINITE);
+        ft.setToValue(0.5);
+        ft.setCycleCount(FadeTransition.INDEFINITE);
         ft.setAutoReverse(true);
         ft.play();
 
-        startLabel.setOnMouseEntered(event -> {
-            startLabel.setStyle("-fx-text-fill: #8A2BE2; " +
-                    "-fx-effect: dropshadow(gaussian, rgba(138,43,226,0.7), 8, 0.5, 0, 0);" +
-                    " -fx-font-weight: bold;"+
-                    "-fx-cursor: hand;");
-
-        });
-
-        startLabel.setOnMouseExited(event -> {
-            startLabel.setStyle("-fx-text-fill: black; " +
-                    "-fx-cursor: hand;");
-
-        });
-
-        startLabel.setOnMouseClicked(this::handleStartClick);
+        btn.addEventHandler(MouseEvent.MOUSE_ENTERED, e ->
+                btn.setStyle(btn.getStyle() + "-fx-scale-x: 1.05; -fx-scale-y: 1.05;")
+        );
+        btn.addEventHandler(MouseEvent.MOUSE_EXITED, e ->
+                btn.setStyle(btn.getStyle()+ "-fx-scale-x: 1.0; -fx-scale-y: 1.0;")
+        );
     }
 
-    private void handleStartClick(MouseEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
-            Scene sudokuScene = new Scene(loader.load());
+    private void handleStart() {
+        String nick = nicknameField.getText().trim();
+        if (nick.isEmpty()) {
+            nicknameField.setPromptText("¡Ingresa tu nickname!");
+            nicknameField.setStyle("-fx-font-family: 'Segoe UI';");
+            return;
+        }
+        // falta guardar nickname en archivo plano
+        loadGameView(false);
+    }
 
-            Stage stage = (Stage) startLabel.getScene().getWindow();
-            stage.setScene(sudokuScene);
+    private boolean hasSavedGame() {
+        // Falta la lógica para verificar si existe un .ser de partida guardada
+        // Por ejemplo, new File("savegame.ser").exists(). Esto para el boton continuar
+        return false;
+    }
+
+    private void handleContinue() {
+        // falta cargar estado de juego serializado
+        loadGameView(true);
+    }
+
+    private void loadGameView(boolean isContinue) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(
+                    getClass().getResource("/org/example/miniproyecto_3/GameView.fxml")
+            );
+            Scene scene = new Scene(fxmlLoader.load());
+            Stage stage = (Stage) startButton.getScene().getWindow();
+            stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
+

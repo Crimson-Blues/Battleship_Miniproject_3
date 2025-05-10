@@ -6,8 +6,16 @@ import javafx.stage.Stage;
 
 public class GameStage extends Stage {
     public GameStage() throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/HomeView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(
+                getClass().getResource("/org/example/miniproyecto_3/HomeView.fxml")
+        );
         Scene scene = new Scene(fxmlLoader.load());
+
+        scene.getStylesheets().add(
+                getClass().getResource("/org/example/miniproyecto_3/css/style.css")
+                        .toExternalForm()
+        );
+
         setTitle("Batalla Naval");
         setResizable(false);
         setScene(scene);

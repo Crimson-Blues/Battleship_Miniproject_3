@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -11,118 +13,148 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <AnchorPane prefHeight="71.0" prefWidth="814.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="441.0" layoutY="10.0" style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0.5, 2, 2);" styleClass="titleLabel" text="BATALLA NAVAL" textAlignment="CENTER" textFill="#0e3d59">
-               <font>
-                  <Font name="Bernard MT Condensed" size="42.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </top>
-   <right>
-      <AnchorPane prefHeight="460.0" prefWidth="502.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane fx:id="computerGridPane" layoutX="16.0" layoutY="63.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue; -fx-cursor: Hand;" styleClass="grid-cell">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="28.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <Label layoutX="195.0" layoutY="14.0" text="Computador">
-               <font>
-                  <Font name="Bernard MT Condensed" size="24.0" />
-               </font></Label>
-         </children>
-      </AnchorPane>
-   </right>
-   <center>
-      <AnchorPane prefHeight="393.0" prefWidth="360.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane fx:id="userGridPane" layoutX="15.0" layoutY="62.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue; -fx-cursor: Hand;" styleClass="grid-cell">
-              <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <Label layoutX="183.0" layoutY="14.0" text="Jugador">
-               <font>
-                  <Font name="Bernard MT Condensed" size="24.0" />
-               </font></Label>
-         </children>
-      </AnchorPane>
-   </center>
-   <left>
-      <VBox alignment="CENTER" prefHeight="493.0" prefWidth="158.0" style="-fx-spacing: 45;" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="playButton" mnemonicParsing="false" prefWidth="75.0" text="Iniciar" />
-            <Button fx:id="restartButton" mnemonicParsing="false" text="Reiniciar">
-               <font>
-                  <Font name="Bauhaus 93" size="36.0" />
-               </font></Button>
-            <Button fx:id="viewButton" mnemonicParsing="false" text="Visualizar" />
-            <Button fx:id="saveButton" layoutX="35.0" layoutY="170.0" mnemonicParsing="false" text="Guardar" />
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <padding>
-            <Insets left="15.0" right="10.0" />
-         </padding>
-      </VBox>
-   </left>
-   <bottom>
-      <AnchorPane fx:id="bottomPane" prefHeight="140.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label layoutX="512.0" text="Seleccionar Barcos">
-               <font>
-                  <Font name="Bernard MT Condensed" size="24.0" />
-               </font>
-            </Label>
-         </children>
-      </AnchorPane>
-   </bottom>
-</BorderPane>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.GameController">
+   <children>
+      <ImageView fitHeight="700.0" fitWidth="1100.0" pickOnBounds="true">
+         <image>
+            <Image url="@images/background4.png" />
+         </image>
+      </ImageView>
+      <BorderPane prefHeight="700.0" prefWidth="1100.0" stylesheets="@css/style.css">
+         <left>
+            <VBox alignment="CENTER" prefHeight="493.0" prefWidth="158.0" style="-fx-spacing: 45;" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="playButton" mnemonicParsing="false" text="Play" />
+                  <Button fx:id="restartButton" mnemonicParsing="false" text="Restart">
+                     <font>
+                        <Font name="Bauhaus 93" size="36.0" />
+                     </font>
+                  </Button>
+                  <ImageView fitHeight="75.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/battle.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="viewButton" mnemonicParsing="false" text="View Ships" />
+                  <Button fx:id="saveButton" layoutX="35.0" layoutY="170.0" mnemonicParsing="false" text="Save" />
+               </children>
+               <padding>
+                  <Insets left="15.0" right="10.0" />
+               </padding>
+            </VBox>
+         </left>
+         <bottom>
+            <AnchorPane fx:id="bottomPane" prefHeight="148.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="532.0" text="Select Ships">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="24.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="51.0" fitWidth="66.0" layoutX="469.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/ship.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </bottom>
+         <center>
+            <AnchorPane prefHeight="393.0" prefWidth="409.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane fx:id="userGridPane" layoutX="15.0" layoutY="48.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue; -fx-cursor: Hand;" styleClass="grid-cell">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <Label layoutX="186.0" layoutY="7.0" text="Player">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </center>
+         <right>
+            <AnchorPane prefHeight="460.0" prefWidth="502.0" BorderPane.alignment="CENTER">
+               <children>
+                  <GridPane fx:id="computerGridPane" layoutX="16.0" layoutY="48.0" prefHeight="400.0" prefWidth="400.0" style="-fx-border-color: blue; -fx-cursor: Hand;" styleClass="grid-cell">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="28.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+                  <Label layoutX="167.0" layoutY="5.0" text="Computer">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="27.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </right>
+         <top>
+            <AnchorPane prefHeight="71.0" prefWidth="814.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="455.0" layoutY="10.0" styleClass="title-label2" stylesheets="@css/style.css" text="BATTLESHIP" textAlignment="CENTER" textFill="#0e3d59">
+                     <font>
+                        <Font name="Bernard MT Condensed" size="42.0" />
+                     </font>
+                  </Label>
+                  <ImageView fitHeight="75.0" fitWidth="105.0" layoutX="359.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/battleship.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="75.0" fitWidth="105.0" layoutX="739.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@images/battleship.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+         </top>
+      </BorderPane>
+   </children>
+</AnchorPane>
