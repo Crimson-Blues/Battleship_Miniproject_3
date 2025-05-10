@@ -12,6 +12,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
+
 public class HomeController {
     @FXML
     private TextField nicknameField;
@@ -74,7 +76,9 @@ public class HomeController {
     private boolean hasSavedGame() {
         // Falta la lógica para verificar si existe un .ser de partida guardada
         // Por ejemplo, new File("savegame.ser").exists(). Esto para el boton continuar
-        return false;
+        File saved = new File("savegame.ser");
+        return saved.exists();
+        //return false;
     }
 
     private void handleContinue() {

@@ -93,3 +93,22 @@
     -fx-prompt-text-fill: #999999;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0.3, 1, 1);
 }
+
+.grid-pane {
+    -fx-background-color: transparent;
+}
+
+.grid-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.3); /* blanco semitransparente */
+    -fx-border-color: #ffffff99; /* borde blanco suave */
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.grid-cell:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-cursor: hand;
+}
+
