@@ -1,11 +1,405 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Arc?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Ellipse?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.shape.Rectangle?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <Label text="BATALLA NAVAL" BorderPane.alignment="CENTER" />
    </top>
+   <center>
+      <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane gridLinesVisible="true">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <GridPane gridLinesVisible="true">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane fx:id="smallShipPane" prefHeight="100.0" prefWidth="40.0">
+               <children>
+                  <Group layoutX="-19.0" layoutY="24.0" nodeOrientation="LEFT_TO_RIGHT" scaleX="0.3" scaleY="0.25" scaleZ="0.5">
+                     <children>
+                        <Rectangle arcHeight="80.0" arcWidth="100.0" fill="DODGERBLUE" height="46.0" layoutX="-4.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="83.0" />
+                        <Rectangle arcHeight="15.0" arcWidth="100.0" fill="DODGERBLUE" height="50.0" layoutX="10.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" width="69.0" />
+                        <Rectangle arcHeight="15.0" arcWidth="100.0" fill="DODGERBLUE" height="40.0" layoutX="13.0" layoutY="7.0" stroke="BLACK" strokeType="INSIDE" width="64.0" />
+                        <Polygon fill="#82dbff" layoutX="28.0" layoutY="24.0" points="23.999984741210938, 10.571441650390625, 19.857131958007812, 10.571441650390625, 23.999984741210938, 23.0, 5.000007629394531, 10.571441650390625, 5.000007629394531, -8.5714111328125, 25.50000762939453, -17.0, 19.857139587402344, -5.142852783203125, 23.99999237060547, -5.142852783203125, 32.142852783203125, -14.428558349609375, 32.142852783203125, 21.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Polygon fill="#072b66" layoutX="28.0" layoutY="24.0" points="24.999984741210938, 6.428558349609375, 16.28570556640625, 6.428558349609375, 17.999984741210938, 14.71429443359375, 9.285713195800781, 9.0, 9.285713195800781, -5.571441650390625, 17.99999237060547, -11.0, 16.28571319580078, -2.857147216796875, 24.99999237060547, -2.857147216796875, 28.857147216796875, -9.28570556640625, 28.857147216796875, 11.428558349609375" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="41.0" layoutY="26.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="30.0" layoutX="62.0" layoutY="12.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="30.0" layoutX="22.0" layoutY="11.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="10.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eee086" height="22.0" layoutX="58.0" layoutY="15.0" stroke="BLACK" strokeType="INSIDE" width="8.0" />
+                        <Ellipse fill="#e6ac0d" layoutX="57.0" layoutY="26.0" radiusX="6.0" radiusY="9.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Ellipse fill="WHITE" layoutX="57.0" layoutY="26.0" radiusX="4.0" radiusY="6.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="7.0" layoutX="3.0" layoutY="30.0" rotate="-8.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="13.0" layoutX="17.0" layoutY="26.0" rotate="-8.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="9.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="7.0" layoutX="3.0" layoutY="15.0" rotate="8.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="13.0" layoutX="17.0" layoutY="13.0" rotate="8.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="9.0" />
+                     </children>
+                  </Group>
+               </children>
+            </Pane>
+            <Pane fx:id="mediumShipPane" prefHeight="100.0" prefWidth="52.0">
+               <children>
+                  <Group layoutX="-47.0" layoutY="25.0" scaleX="0.3" scaleY="0.3">
+                     <children>
+                        <Polygon fill="DODGERBLUE" layoutX="41.0" layoutY="10.0" points="-10.142852783203125, 32.857147216796875, -10.142852783203125, -4.857147216796875, -50.28572082519531, 14.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Polygon fill="DODGERBLUE" layoutX="46.0" layoutY="10.0" points="-10.142852783203125, 35.428558349609375, -10.142852783203125, -6.428558349609375, -48.28570556640625, 14.142852783203125" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle arcHeight="80.0" arcWidth="100.0" fill="DODGERBLUE" height="50.0" layoutX="2.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="149.0" />
+                        <Rectangle arcHeight="80.0" arcWidth="100.0" fill="DODGERBLUE" height="50.0" layoutX="15.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="135.0" />
+                        <Rectangle arcHeight="10.0" arcWidth="100.0" fill="DODGERBLUE" height="50.0" layoutX="36.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" width="115.0" />
+                        <Rectangle arcHeight="10.0" arcWidth="100.0" fill="DODGERBLUE" height="42.0" layoutX="43.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="85.0" />
+                        <Circle layoutX="57.0" layoutY="25.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle layoutX="120.0" layoutY="25.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle fill="#331fff" height="20.0" layoutX="85.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="14.0" />
+                        <Polygon fill="#331fff" layoutX="116.0" layoutY="35.0" points="-18.28570556640625, 6.142852783203125, -18.28570556640625, -28.428558349609375, -2.4285888671875, -17.428558349609375, -2.4285888671875, -4.571441650390625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Arc fill="#331fff" layoutX="86.0" layoutY="24.0" length="180.0" radiusX="19.0" radiusY="17.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" type="ROUND" />
+                        <Arc fill="#331fff" layoutX="84.0" layoutY="24.0" length="180.0" radiusX="15.0" radiusY="14.0" startAngle="90.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Rectangle fill="#331fff" height="16.0" layoutX="83.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="17.0" />
+                        <Polygon fill="#331fff" layoutX="125.0" layoutY="45.0" points="-25.857147216796875, -8.571441650390625, -25.857147216796875, -33.71429443359375, -14.428558349609375, -25.857147216796875, -14.428558349609375, -16.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="DODGERBLUE" height="12.0" layoutX="73.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="18.0" />
+                        <Rectangle arcHeight="100.0" arcWidth="5.0" fill="DODGERBLUE" height="12.0" layoutX="79.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="18.0" />
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#90d2ff" height="10.0" layoutX="74.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="16.0" />
+                        <Rectangle arcHeight="100.0" arcWidth="5.0" fill="#90d2ff" height="10.0" layoutX="80.0" layoutY="19.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="16.0" />
+                        <Rectangle arcHeight="100.0" arcWidth="50.0" fill="#ecf7ff" height="8.0" layoutX="77.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="12.0" />
+                        <Rectangle arcHeight="100.0" arcWidth="5.0" fill="#ecf7ff" height="8.0" layoutX="82.0" layoutY="20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="12.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="40.0" layoutX="129.0" layoutY="4.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="17.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="9.0" layoutY="27.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="9.0" layoutY="17.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="10.0" fill="DODGERBLUE" height="19.0" layoutX="22.0" layoutY="15.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="13.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="7.0" layoutX="4.0" layoutY="21.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="26.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="135.0" layoutY="12.0" rotate="-10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="137.0" layoutY="8.0" rotate="-10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="14.0" />
+                        <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="16.0" layoutX="133.0" layoutY="6.0" rotate="-10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="10.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="136.0" layoutY="30.0" rotate="10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="20.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="2.0" fill="DODGERBLUE" height="5.0" layoutX="138.0" layoutY="34.0" rotate="10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="14.0" />
+                        <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="16.0" layoutX="133.0" layoutY="25.0" rotate="10.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="10.0" />
+                     </children>
+                  </Group>
+               </children>
+            </Pane>
+            <Pane fx:id="submarinePane" prefHeight="66.0" prefWidth="95.0">
+               <children>
+                  <Group layoutX="-86.0" layoutY="14.0" scaleX="0.3" scaleY="0.3">
+                     <children>
+                        <Rectangle height="70.0" layoutX="234.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="31.0" />
+                        <Polygon layoutX="221.0" layoutY="39.0" points="0.9999847412109375, 11.142852783203125, 12.999984741210938, 31.0, 12.999984741210938, 11.142852783203125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon layoutX="222.0" layoutY="-13.0" points="1.7142791748046875, 29.28570556640625, 12.999984741210938, 31.0, 11.999984741210938, 13.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="#114677" height="68.0" layoutX="235.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="29.0" />
+                        <Polygon fill="#114677" layoutX="222.0" layoutY="38.0" points="0.9999847412109375, 11.142852783203125, 12.999984741210938, 31.0, 12.999984741210938, 11.142852783203125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="#114677" layoutX="222.0" layoutY="-10.0" points="1.7142791748046875, 29.28570556640625, 12.999984741210938, 31.0, 12.999984741210938, 11.142852783203125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="DODGERBLUE" height="30.0" layoutX="10.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" width="19.0" />
+                        <Rectangle fill="DODGERBLUE" height="30.0" layoutX="9.0" layoutY="3.0" stroke="BLACK" strokeType="INSIDE" width="19.0" />
+                        <Rectangle arcHeight="80.0" arcWidth="100.0" fill="DODGERBLUE" height="50.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="249.0" />
+                        <Rectangle arcHeight="80.0" arcWidth="100.0" fill="DODGERBLUE" height="45.0" layoutX="52.0" layoutY="13.0" stroke="BLACK" strokeType="INSIDE" width="179.0" />
+                        <Rectangle arcHeight="50.0" arcWidth="30.0" fill="#90e7ff" height="29.0" layoutX="107.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="70.0" />
+                        <Rectangle arcHeight="200.0" arcWidth="600.0" fill="#90e7ff" height="29.0" layoutX="126.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="78.0" />
+                        <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#67b8ff" height="18.0" layoutX="205.0" layoutY="27.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="56.0" />
+                        <Rectangle height="18.0" layoutX="250.0" layoutY="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0" />
+                        <Rectangle fill="#102b54" height="16.0" layoutX="251.0" layoutY="6.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="14.0" />
+                        <Rectangle height="18.0" layoutX="250.0" layoutY="47.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="15.0" />
+                        <Rectangle fill="#102b54" height="16.0" layoutX="251.0" layoutY="48.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="14.0" />
+                        <Rectangle arcHeight="50.0" arcWidth="10.0" fill="#197086" height="10.0" layoutX="212.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="30.0" />
+                        <Rectangle arcHeight="40.0" arcWidth="500.0" fill="#197086" height="10.0" layoutX="217.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="41.0" />
+                        <Rectangle arcHeight="50.0" arcWidth="20.0" fill="#24b6db" height="20.0" layoutX="141.0" layoutY="25.0" stroke="BLACK" strokeType="INSIDE" width="42.0" />
+                        <Circle fill="WHITE" layoutX="153.0" layoutY="35.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+                        <Circle fill="WHITE" layoutX="164.0" layoutY="35.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" />
+                        <Rectangle arcHeight="2.0" arcWidth="5.0" fill="DODGERBLUE" height="8.0" layoutX="69.0" layoutY="31.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+                        <Rectangle arcHeight="10.0" arcWidth="5.0" fill="DODGERBLUE" height="18.0" layoutX="74.0" layoutY="26.0" stroke="BLACK" strokeType="INSIDE" width="22.0" />
+                        <Rectangle fill="#b1d9ff" height="17.0" layoutX="40.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                        <Rectangle fill="#b1d9ff" height="17.0" layoutX="40.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                        <Rectangle fill="#b1d9ff" height="15.0" layoutX="28.0" layoutY="18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                        <Rectangle fill="#b1d9ff" height="15.0" layoutX="28.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                        <Rectangle fill="#b1d9ff" height="12.0" layoutX="16.0" layoutY="21.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                        <Rectangle fill="#b1d9ff" height="12.0" layoutX="16.0" layoutY="37.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="9.0" />
+                     </children>
+                  </Group>
+               </children>
+            </Pane>
+            <Pane fx:id="carrierPane" prefHeight="83.0" prefWidth="120.0">
+               <children>
+                  <Group layoutX="-61.0" layoutY="44.0" scaleX="0.3" scaleY="0.3">
+                     <children>
+                        <Arc fill="#154a7b" layoutX="-36.0" layoutY="-6.0" length="180.0" radiusX="13.0" radiusY="13.0" startAngle="2.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Arc fill="#154a7b" layoutX="-25.0" layoutY="15.0" length="180.0" radiusX="13.0" radiusY="13.0" startAngle="184.0" stroke="BLACK" strokeType="INSIDE" type="ROUND" />
+                        <Polygon fill="#082038" layoutX="99.0" layoutY="6.0" points="-73.99999237060547, -15.857147216796875, -73.99999237060547, -26.0, -100.71428680419922, -13.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="#082038" layoutX="99.0" layoutY="42.0" points="-62.714317321777344, -8.0, -76.71428680419922, -8.0, -80.5714340209961, -39.857147216796875" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="#082038" layoutX="-48.0" points="-18.99999237060547, 19.857147216796875, 70.57141876220703, 13.142852783203125, 66.9999771118164, -9.857147216796875, -18.99999237060547, -6.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="#082038" height="54.0" layoutX="25.0" layoutY="-20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="55.0" />
+                        <Polygon fill="#082038" layoutX="152.0" layoutY="50.0" points="-72.99998474121094, -16.0, -72.99999237060547, -26.0, -29.999984741210938, -26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="#082038" height="45.0" layoutX="80.0" layoutY="-20.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="155.0" />
+                        <Polygon fill="#082038" layoutX="236.0" layoutY="-7.0" points="-3.0, 32.0, 70.71429443359375, 22.142852783203125, 65.28570556640625, -18.463531494140625, -3.0, -13.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="DODGERBLUE" layoutX="98.0" layoutY="8.0" points="-73.99999237060547, -15.857147216796875, -73.99999237060547, -26.0, -100.71428680419922, -13.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="DODGERBLUE" layoutX="98.0" layoutY="40.0" points="-67.42858123779297, -34.857147216796875, -73.71428680419922, -8.0, -76.7184066772461, -31.148345947265625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="DODGERBLUE" layoutX="-46.0" layoutY="1.0" points="-18.99999237060547, 17.28570556640625, 70.57141876220703, 10.0, 70.57141876220703, -9.5714111328125, -18.99999237060547, -5.857147216796875" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="DODGERBLUE" height="50.0" layoutX="24.0" layoutY="-18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="55.0" />
+                        <Polygon fill="DODGERBLUE" layoutX="150.0" layoutY="48.0" points="-72.99999237060547, -16.0, -72.99999237060547, -26.0, -29.999984741210938, -26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle fill="DODGERBLUE" height="41.0" layoutX="77.0" layoutY="-18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="155.0" />
+                        <Polygon fill="DODGERBLUE" layoutX="234.0" layoutY="-8.0" points="-3.0, 31.0, 70.0, 21.4285888671875, 65.71429443359375, -16.428558349609375, -3.0, -9.5714111328125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Group layoutX="145.0" layoutY="-55.0" rotate="83.0" scaleX="0.7" scaleY="2.4">
+                           <children>
+                              <Rectangle fill="#4d4c4c" height="117.0" layoutX="4.0" layoutY="0.142852783203125" stroke="BLACK" strokeType="INSIDE" width="26.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="65.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="74.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="83.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="92.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="100.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="109.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="118.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="127.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="136.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="145.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="154.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="163.0" startX="4.000007629394531" startY="-56.0" stroke="WHITE" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="13.0" layoutY="171.0" startX="4.000007629394531" startY="-56.0" stroke="#f5af00" strokeWidth="2.0" />
+                              <Rectangle fill="#ececec" height="117.0" layoutX="30.0" layoutY="0.142852783203125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="172.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="160.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="148.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="136.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="124.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="112.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="100.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="88.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="76.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="28.0" layoutY="64.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Rectangle fill="#ececec" height="117.0" layoutY="0.142852783203125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="4.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="172.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="160.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="148.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="136.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="124.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="112.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="100.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="88.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="76.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                              <Line endX="4.000007629394531" endY="-63.142852783203125" layoutX="-2.0" layoutY="64.0" startX="4.000007629394531" startY="-56.0" stroke="#3b3b3b" strokeWidth="2.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-63.0" layoutY="-3.0" rotate="-3.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-47.0" layoutY="-4.0" rotate="-3.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-56.0" layoutY="7.0" rotate="-3.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-38.0" layoutY="5.0" rotate="-4.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-30.0" layoutY="-5.0" rotate="-4.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-20.0" layoutY="3.0" rotate="-5.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="9.0" layoutY="-11.0" rotate="-90.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="11.0" layoutY="1.0" rotate="-90.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-9.0" layoutY="-5.0" rotate="-4.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="68.0" layoutY="10.0" rotate="-98.0" scaleX="1.3" scaleY="1.7">
+                           <children>
+                              <Polygon fill="#47a761" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#47a761" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#47a761" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="168.0" layoutY="-3.0" rotate="-96.0" scaleX="1.3" scaleY="2.0">
+                           <children>
+                              <Polygon fill="#47a761" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#47a761" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#47a761" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="38.0" layoutY="-16.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="27.0" layoutY="-9.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="49.0" layoutY="-8.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="62.0" layoutY="-15.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="78.0" layoutY="-15.0">
+                           <children>
+                              <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
+                              <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
+                           </children>
+                        </Group>
+                        <Circle fill="#bae9ff" layoutX="235.0" layoutY="14.0" radius="6.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Circle fill="#bae9ff" layoutX="249.0" layoutY="12.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" />
+                        <Group layoutX="-49.0" layoutY="-19.0" rotate="-125.0">
+                           <children>
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="2.0" layoutY="2.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="1.0" layoutY="4.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="9.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="5.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-33.0" layoutY="-19.0" rotate="-45.0">
+                           <children>
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="2.0" layoutY="2.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="1.0" layoutY="4.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="9.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="5.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-21.0" layoutY="18.0" rotate="36.0">
+                           <children>
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="2.0" layoutY="2.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="1.0" layoutY="4.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="9.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="5.0" />
+                           </children>
+                        </Group>
+                        <Group layoutX="-38.0" layoutY="19.0" rotate="135.0">
+                           <children>
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="2.0" layoutY="2.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="1.0" arcWidth="2.0" fill="DODGERBLUE" height="3.0" layoutX="1.0" layoutY="4.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" strokeWidth="0.5" width="8.0" />
+                              <Rectangle arcHeight="2.0" arcWidth="10.0" fill="DODGERBLUE" height="9.0" stroke="BLACK" strokeLineCap="ROUND" strokeType="INSIDE" width="5.0" />
+                           </children>
+                        </Group>
+                        <Polygon fill="#126424" layoutX="172.0" layoutY="7.0" points="-68.28575134277344, -11.142852783203125, -72.42857360839844, -21.428558349609375, 12.714248657226562, -21.428558349609375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fill="#126424" layoutX="244.0" layoutY="32.0" points="-19.71429443359375, -11.142852783203125, -100.99998474121094, -11.142852783203125, -19.71429443359375, -21.857147216796875" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffc4d9" height="13.0" layoutX="264.0" layoutY="2.0" rotate="-7.0" stroke="BLACK" strokeType="INSIDE" width="28.0" />
+                        <Line endX="3.42852783203125" endY="-64.4285888671875" layoutX="280.0" layoutY="70.0" rotate="-6.5" startX="3.42852783203125" startY="-59.0" stroke="#4b4b4b" strokeWidth="0.8" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#b0b0b0" height="3.0" layoutX="276.0" layoutY="7.0" rotate="-7.0" stroke="BLACK" strokeType="INSIDE" width="9.0" />
+                        <Rectangle arcHeight="6.0" arcWidth="5.0" fill="#b0b0b0" height="6.0" layoutX="271.0" layoutY="6.0" rotate="-7.0" stroke="BLACK" strokeType="INSIDE" width="9.0" />
+                        <Circle layoutX="276.0" layoutY="9.0" radius="1.5" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Line endX="-1.00006103515625" endY="-65.42855834960938" layoutX="271.0" layoutY="68.0" startX="10.5714111328125" startY="-52.28570556640625" stroke="#212121" strokeWidth="0.8" />
+                        <Line endX="-3.0" endY="-52.28570556640625" layoutX="273.0" layoutY="68.0" startX="8.28570556640625" startY="-65.85714721679688" stroke="#212121" strokeWidth="0.8" />
+                     </children>
+                  </Group>
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
