@@ -23,7 +23,7 @@
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane gridLinesVisible="true">
+            <GridPane fx:id="enemyGridPane" gridLinesVisible="true">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -49,7 +49,7 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <GridPane gridLinesVisible="true">
+            <GridPane fx:id="playerGridPane" gridLinesVisible="true">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -199,11 +199,11 @@
                         <Polygon fill="#082038" layoutX="236.0" layoutY="-7.0" points="-3.0, 32.0, 70.71429443359375, 22.142852783203125, 65.28570556640625, -18.463531494140625, -3.0, -13.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Polygon fill="DODGERBLUE" layoutX="98.0" layoutY="8.0" points="-73.99999237060547, -15.857147216796875, -73.99999237060547, -26.0, -100.71428680419922, -13.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Polygon fill="DODGERBLUE" layoutX="98.0" layoutY="40.0" points="-67.42858123779297, -34.857147216796875, -73.71428680419922, -8.0, -76.7184066772461, -31.148345947265625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
-                        <Polygon fill="DODGERBLUE" layoutX="-46.0" layoutY="1.0" points="-18.99999237060547, 17.28570556640625, 70.57141876220703, 10.0, 70.57141876220703, -9.5714111328125, -18.99999237060547, -5.857147216796875" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fx:id="frontBaseCarrier" fill="DODGERBLUE" layoutX="-46.0" layoutY="1.0" points="-18.99999237060547, 17.28570556640625, 70.57141876220703, 10.0, 70.57141876220703, -9.5714111328125, -18.99999237060547, -5.857147216796875" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Rectangle fill="DODGERBLUE" height="50.0" layoutX="24.0" layoutY="-18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="55.0" />
                         <Polygon fill="DODGERBLUE" layoutX="150.0" layoutY="48.0" points="-72.99999237060547, -16.0, -72.99999237060547, -26.0, -29.999984741210938, -26.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Rectangle fill="DODGERBLUE" height="41.0" layoutX="77.0" layoutY="-18.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="155.0" />
-                        <Polygon fill="DODGERBLUE" layoutX="234.0" layoutY="-8.0" points="-3.0, 31.0, 70.0, 21.4285888671875, 65.71429443359375, -16.428558349609375, -3.0, -9.5714111328125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+                        <Polygon fx:id="backBasePlateCarrier" fill="DODGERBLUE" layoutX="234.0" layoutY="-8.0" points="-3.0, 31.0, 70.0, 21.4285888671875, 65.71429443359375, -16.428558349609375, -3.0, -9.5714111328125" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
                         <Group layoutX="145.0" layoutY="-55.0" rotate="83.0" scaleX="0.7" scaleY="2.4">
                            <children>
                               <Rectangle fill="#4d4c4c" height="117.0" layoutX="4.0" layoutY="0.142852783203125" stroke="BLACK" strokeType="INSIDE" width="26.0" />
@@ -342,7 +342,7 @@
                               <Rectangle arcHeight="10.0" arcWidth="3.0" fill="#156e2d" height="9.0" layoutX="4.142875671386719" layoutY="0.28570556640625" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" width="4.0" />
                            </children>
                         </Group>
-                        <Group layoutX="62.0" layoutY="-15.0">
+                        <Group fx:id="miniPlane" layoutX="62.0" layoutY="-15.0">
                            <children>
                               <Polygon fill="#156e2d" layoutX="43.0" layoutY="-30.0" points="-43.14287567138672, 32.71429443359375, -36.99999237060547, 39.0, -30.57146453857422, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />
                               <Polygon fill="#156e2d" layoutX="45.0" layoutY="-33.0" points="-43.571434020996094, 32.71429443359375, -38.99999237060547, 37.5, -34.571434020996094, 32.71429443359375" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.8" />

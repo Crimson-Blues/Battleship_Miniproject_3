@@ -7,8 +7,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 public class HomeController {
     @FXML
@@ -47,6 +50,15 @@ public class HomeController {
 
             Stage stage = (Stage) startLabel.getScene().getWindow();
             stage.setScene(sudokuScene);
+
+            GridPane enemyGridPane =  (GridPane) sudokuScene.lookup("#playerGridPane");
+
+            ShipDrawer shipDrawer = new ShipDrawer();
+            Pane smallShip = shipDrawer.drawSmallShip();
+            Pane mediumShip = shipDrawer.drawMediumShip();
+            Pane submarine = shipDrawer.drawSubmarine();
+            Pane carrier = shipDrawer.drawCarrier();
+            enemyGridPane.getChildren().addAll(carrier);
         } catch (Exception e) {
             e.printStackTrace();
         }

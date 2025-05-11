@@ -9,7 +9,7 @@ public class GameStage extends Stage {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/HomeView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         setTitle("Batalla Naval");
-        setResizable(false);
+        setResizable(true);
         setScene(scene);
         show();
     }

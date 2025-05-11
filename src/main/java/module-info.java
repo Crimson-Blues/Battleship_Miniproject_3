@@ -2,6 +2,7 @@ module org.example.miniproyecto_3 {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires java.desktop;
 
 
     opens org.example.miniproyecto_3 to javafx.fxml;
