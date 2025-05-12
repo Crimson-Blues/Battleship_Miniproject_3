@@ -1,7 +1,15 @@
 package org.example.miniproyecto_3.View.Assets;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
@@ -11,14 +19,17 @@ public class ShipDrawer {
 
     }
     public Pane drawSmallShip(){
-        Pane smallShipPane = new Pane();
-        smallShipPane.setPrefSize(40.0, 100.0);
+        VBox smallShipPane = new VBox();
+        //smallShipPane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        smallShipPane.setAlignment(Pos.CENTER);
+        smallShipPane.setPadding(Insets.EMPTY);
+        smallShipPane.setSpacing(0);
 
         Group group = new Group();
         group.setLayoutX(-19.0);
         group.setLayoutY(24.0);
-        group.setScaleX(0.3);
-        group.setScaleY(0.25);
+        //group.setScaleX(0.3);
+        //group.setScaleY(0.25);
         group.setScaleZ(0.5);
 
         // Add shapes
@@ -130,19 +141,22 @@ public class ShipDrawer {
                 rect7, rect8, rect9, rect10
         );
 
-        smallShipPane.getChildren().add(group);
-        return smallShipPane;
+        return snapShot(group);
     }
 
     public Pane drawMediumShip(){
-        Pane pane = new Pane();
-        pane.setPrefSize(52.0, 100.0);
+        VBox pane = new VBox();
+        //smallShipPane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        pane.setAlignment(Pos.CENTER);
+        pane.setPadding(Insets.EMPTY);
+        pane.setSpacing(0);
+
 
         Group group = new Group();
         group.setLayoutX(-47.0);
         group.setLayoutY(25.0);
-        group.setScaleX(0.3);
-        group.setScaleY(0.3);
+        //group.setScaleX(0.3);
+        //group.setScaleY(0.3);
 
         // Helper method to simplify stroke settings
         StrokeType strokeType = StrokeType.INSIDE;
@@ -275,19 +289,23 @@ public class ShipDrawer {
                 new Rectangle(10.0, 16.0) {{ setFill(Color.DODGERBLUE); setLayoutX(133.0); setLayoutY(25.0); setRotate(10.0); setArcHeight(2.0); setArcWidth(10.0); setStroke(Color.BLACK); setStrokeLineCap(StrokeLineCap.ROUND); setStrokeType(strokeType); }}
         );
 
-        pane.getChildren().add(group);
-        return pane;
+
+        return snapShot(group);
     }
 
     public Pane drawSubmarine(){
-        Pane submarinePane = new Pane();
-        submarinePane.setPrefSize(95, 66);
+        VBox submarinePane = new VBox();
+        submarinePane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        submarinePane.setAlignment(Pos.CENTER);
+        submarinePane.setPadding(Insets.EMPTY);
+        submarinePane.setSpacing(0);
+
 
         Group submarineGroup = new Group();
         submarineGroup.setLayoutX(-86);
         submarineGroup.setLayoutY(14);
-        submarineGroup.setScaleX(0.3);
-        submarineGroup.setScaleY(0.3);
+        //submarineGroup.setScaleX(0.3);
+        //submarineGroup.setScaleY(0.3);
 
 // Tail rectangles and fins
         Rectangle tail1 = new Rectangle(234, 0, 31, 70);
@@ -474,22 +492,25 @@ public class ShipDrawer {
                 port1, port2, port3, port4, port5, port6
         );
 
-        submarinePane.getChildren().add(submarineGroup);
 
-        return submarinePane;
+        return snapShot(submarineGroup);
     }
 
     public Pane drawCarrier() {
         // Main container
-        Pane carrierPane = new Pane();
-        carrierPane.setPrefSize(120, 83);
+        VBox carrierPane = new VBox();
+        carrierPane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+        carrierPane.setAlignment(Pos.CENTER);
+        carrierPane.setPadding(Insets.EMPTY);
+        carrierPane.setSpacing(0);
+
 
         // Main group that contains all shapes
         Group mainGroup = new Group();
         mainGroup.setLayoutX(-61);
         mainGroup.setLayoutY(44);
-        mainGroup.setScaleX(1);
-        mainGroup.setScaleY(1);
+        //mainGroup.setScaleX(0.3);
+        //mainGroup.setScaleY(0.3);
 
         // Create all the shapes from the FXML
 
@@ -825,9 +846,8 @@ public class ShipDrawer {
         for (Group group : lifeboatGroups) {
             mainGroup.getChildren().add(group);
         }
-       
-        carrierPane.getChildren().add(mainGroup);
-        return carrierPane;
+
+        return snapShot(mainGroup);
     }
 
     private Group createMiniPlane(double layoutX, double layoutY, double rotate, String color,
@@ -912,6 +932,29 @@ public class ShipDrawer {
         boatPart3.setStrokeLineCap(StrokeLineCap.ROUND);
 
         group.getChildren().addAll(boatPart1, boatPart2, boatPart3);
+
         return group;
+    }
+
+    private VBox snapShot(Group group) {
+        Pane wrapper = new Pane(group);
+        wrapper.setScaleX(0.35);
+        wrapper.setScaleY(0.35);
+
+        // Snapshot to turn it into an image
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        WritableImage snapshot = wrapper.snapshot(params, null);
+        ImageView view = new ImageView(snapshot);
+
+        VBox vbox = new VBox();
+        // Now this ImageView has the correct visual *and* layout size
+        vbox.getChildren().add(view);
+        vbox.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        vbox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+
+        vbox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+
+        return vbox;
     }
 }
