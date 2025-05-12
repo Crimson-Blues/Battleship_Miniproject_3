@@ -1,10 +1,11 @@
 package org.example.miniproyecto_3.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ship extends ShipAdapter {
+public class Ship implements Serializable {
     private final int length;
     private ArrayList<Coordinate>positions;
     private Set<Coordinate> hits;
