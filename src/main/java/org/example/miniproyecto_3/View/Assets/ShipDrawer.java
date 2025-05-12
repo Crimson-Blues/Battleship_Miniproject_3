@@ -3,10 +3,16 @@ package org.example.miniproyecto_3.View.Assets;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.SnapshotParameters;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.*;
 
-import java.awt.*;
 
 public class ShipDrawer {
     public ShipDrawer() {
@@ -751,7 +757,7 @@ public class ShipDrawer {
                 createTurret(-21, 18, 36),
                 createTurret(-38, 19, 135)
         };
-
+        
         // Additional details
         Polygon detail1 = new Polygon(
                 -68.28575134277344, -11.142852783203125,
@@ -836,7 +842,7 @@ public class ShipDrawer {
             mainGroup.getChildren().add(group);
         }
 
-
+     
         for (Group group : lifeboatGroups) {
             mainGroup.getChildren().add(group);
         }
@@ -952,4 +958,3 @@ public class ShipDrawer {
         return vbox;
     }
 }
-

@@ -17,7 +17,7 @@ public class GameStage extends Stage {
         );
 
         setTitle("Batalla Naval");
-        setResizable(false);
+        setResizable(true);
         setScene(scene);
         show();
     }

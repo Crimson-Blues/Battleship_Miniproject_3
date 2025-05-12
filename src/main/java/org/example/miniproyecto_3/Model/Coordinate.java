@@ -28,4 +28,5 @@ public class Coordinate implements Serializable {
         // 31 is just a commonly used prime multiplier
         return 31 * row + col;
     }
+
 }

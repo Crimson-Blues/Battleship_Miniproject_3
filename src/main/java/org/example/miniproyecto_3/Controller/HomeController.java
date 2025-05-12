@@ -69,8 +69,9 @@ public class HomeController {
             nicknameField.setStyle("-fx-font-family: 'Segoe UI';");
             return;
         }
+        System.out.println("Abre juego");
         // falta guardar nickname en archivo plano
-        loadGameView(false);
+        loadGameView();
     }
 
     private boolean hasSavedGame() {
@@ -83,10 +84,10 @@ public class HomeController {
 
     private void handleContinue() {
         // falta cargar estado de juego serializado
-        loadGameView(true);
+        loadGameView();
     }
 
-    private void loadGameView(boolean isContinue) {
+    private void loadGameView() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(
                     getClass().getResource("/org/example/miniproyecto_3/GameView.fxml")
@@ -100,4 +101,3 @@ public class HomeController {
     }
 
 }
-

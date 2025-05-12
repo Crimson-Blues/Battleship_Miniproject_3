@@ -8,13 +8,13 @@ import java.util.Set;
 public class Ship implements Serializable {
     private final int length;
     private ArrayList<Coordinate>positions;
-    private Set<Coordinate> hits;
+    private Set<Coordinate>hits;
 
     public Ship(int length){
         if(length<= 0)
             throw new IllegalArgumentException("Error! La longitud del barco tiene que ser positiva");
         this.length = length;
-        this.hits = new HashSet<Coordinate>();
+        this.hits = new HashSet <Coordinate>();
     }
 
     public int getLength(){

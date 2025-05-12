@@ -2,10 +2,7 @@ package org.example.miniproyecto_3.Controller;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 public class GameController {
@@ -28,7 +25,7 @@ public class GameController {
 
     @FXML
     public void initialize(){
-        drawShips();
+       drawShips();
     }
 
     //Draws the ships and places them in the stackPanes

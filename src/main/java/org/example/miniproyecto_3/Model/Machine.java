@@ -1,11 +1,13 @@
 package org.example.miniproyecto_3.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
 public class Machine implements Serializable {
+
     private final Random random = new Random();
     private final Set<Coordinate> usedShots = new HashSet<>();
 
