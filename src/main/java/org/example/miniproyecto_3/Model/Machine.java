@@ -17,7 +17,7 @@ public class Machine implements Serializable {
                 int col = random.nextInt(10);
                 boolean horizontal = random.nextBoolean();
 
-                Ship ship = new Ship(size);
+                Ship ship = new Ship(size, null);
                 List<Coordinate> coords = new ArrayList<Coordinate>();
                 board.placeShip(ship, coords);
             }

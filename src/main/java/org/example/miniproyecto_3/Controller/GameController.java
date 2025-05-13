@@ -2,8 +2,16 @@ package org.example.miniproyecto_3.Controller;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.scene.control.Button;
 import javafx.scene.layout.*;
+import org.example.miniproyecto_3.Model.Board;
+import org.example.miniproyecto_3.Model.Coordinate;
+import org.example.miniproyecto_3.Model.Game;
+import org.example.miniproyecto_3.Model.Ship;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameController {
     @FXML
@@ -19,15 +27,47 @@ public class GameController {
     @FXML
     GridPane userGridPane;
     @FXML
-    GridPane computerGridPane;
+    GridPane machineGridPane;
+    @FXML
+    Button playButton;
     private double dragDeltax,dragDeltay;
+    private Game game;
+    private Board playerBoard;
+    private Board machineBoard;
 
 
     @FXML
     public void initialize(){
-       drawShips();
+        game = new Game();
+        playerBoard = game.getPlayerBoard();
+        machineBoard = game.getMachineBoard();
+        drawShips();
+        handleButtons();
     }
 
+    public void handleButtons(){
+        handlePlayButton();
+    }
+
+    public void handlePlayButton(){
+        playButton.setOnAction(e -> {
+            System.out.println("Play button pressed");
+
+            for(int i = 0; i < machineBoard.getSize(); i++){
+                for(int j = 0; j < machineBoard.getSize(); j++){
+                    StackPane stackPane = new StackPane();
+                    machineGridPane.add(stackPane, i, j);
+                    machineBoard.getCell(i, j).setClickChecker(stackPane);
+                }
+            }
+
+            for(Ship ship : playerBoard.getShips()){
+                ship.getPane().setOnMousePressed(null);
+                ship.getPane().setOnMouseDragged(null);
+                ship.getPane().setOnMouseReleased(null);
+            }
+        });
+    }
     //Draws the ships and places them in the stackPanes
     public void drawShips(){
         ShipDrawer shipDrawer = new ShipDrawer();
@@ -35,6 +75,7 @@ public class GameController {
         //Draws the small ships
         for(int i = 0; i < 4; i++){
             Pane smallShipPane = shipDrawer.drawSmallShip();
+            Ship smallShip = new Ship(1, smallShipPane);
             smallShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             smallShipPane.setOnMousePressed(e -> {
 
@@ -45,6 +86,7 @@ public class GameController {
                 // Remove from StackPane
                 Pane parent = (Pane) smallShipPane.getParent();
                 parent.getChildren().remove(smallShipPane);
+                playerBoard.removeShip(smallShip);
 
                 // Add to game board or placement layer
                 baseAnchorPane.getChildren().add(smallShipPane);
@@ -83,17 +125,11 @@ public class GameController {
                     int cellY = (int) ((centerY - gridY) / cellSize);
                     userGridPane.add(smallShipPane, cellX, cellY);
 
+                    List<Coordinate> coords = new ArrayList<Coordinate>();
+                    coords.add(new Coordinate(cellX, cellY));
+                    playerBoard.placeShip(smallShip, coords);
+
                     System.out.println("X: " + userGridPane.getColumnIndex(smallShipPane) + " Y: " + userGridPane.getRowIndex(smallShipPane));
-
-                    /*
-                    int cellSize = 40; // adjust based on your GridPane cell size
-                    double snappedX = Math.round(centerX / cellSize) * cellSize;
-                    double snappedY = Math.round(centerY / cellSize) * cellSize;
-
-                    smallShipStack.setLayoutX(snappedX);
-                    smallShipPane.setLayoutY(snappedY);
-
-                     */
                 }
                 else{
                     smallShipStack.getChildren().add(smallShipPane);
@@ -105,6 +141,8 @@ public class GameController {
 
         for(int i = 0; i < 3; i++){
             Pane mediumShipPane = shipDrawer.drawMediumShip();
+            Ship mediumShip = new Ship(2, mediumShipPane);
+
             mediumShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             mediumShipPane.setOnMousePressed(e -> {
 
@@ -115,6 +153,7 @@ public class GameController {
                 // Remove from StackPane
                 Pane parent = (Pane) mediumShipPane.getParent();
                 parent.getChildren().remove(mediumShipPane);
+                playerBoard.removeShip(mediumShip);
 
                 // Add to game board or placement layer
                 baseAnchorPane.getChildren().add(mediumShipPane);
@@ -155,6 +194,12 @@ public class GameController {
                     GridPane.setRowSpan(mediumShipPane, 1);
                     userGridPane.add(mediumShipPane, cellX, cellY);
 
+                    List<Coordinate> coords = new ArrayList<Coordinate>();
+                    for(int j = 0; j < mediumShip.getLength(); j++){
+                        coords.add(new Coordinate(cellX + j, cellY));
+                    }
+                    playerBoard.placeShip(mediumShip, coords);
+
                     System.out.println("X: " + userGridPane.getColumnIndex(mediumShipPane) + " Y: " + userGridPane.getRowIndex(mediumShipPane));
 
                 }
@@ -167,6 +212,7 @@ public class GameController {
         }
         for(int i = 0; i < 2; i++){
             Pane submarinePane = shipDrawer.drawSubmarine();
+            Ship submarine = new Ship(3, submarinePane);
             submarinePane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
             submarinePane.setOnMousePressed(e -> {
 
@@ -177,6 +223,7 @@ public class GameController {
                 // Remove from StackPane
                 Pane parent = (Pane) submarinePane.getParent();
                 parent.getChildren().remove(submarinePane);
+                playerBoard.removeShip(submarine);
 
                 // Add to game board or placement layer
                 baseAnchorPane.getChildren().add(submarinePane);
@@ -217,17 +264,14 @@ public class GameController {
                     GridPane.setRowSpan(submarinePane, 1);
                     userGridPane.add(submarinePane, cellX, cellY);
 
+                    List<Coordinate> coords = new ArrayList<Coordinate>();
+                    for(int j = 0; j < submarine.getLength(); j++){
+                        coords.add(new Coordinate(cellX + j, cellY));
+                    }
+                    playerBoard.placeShip(submarine, coords);
+
                     System.out.println("X: " + userGridPane.getColumnIndex(submarinePane) + " Y: " + userGridPane.getRowIndex(submarinePane));
 
-                    /*
-                    int cellSize = 40; // adjust based on your GridPane cell size
-                    double snappedX = Math.round(centerX / cellSize) * cellSize;
-                    double snappedY = Math.round(centerY / cellSize) * cellSize;
-
-                    smallShipStack.setLayoutX(snappedX);
-                    smallShipPane.setLayoutY(snappedY);
-
-                     */
                 }
                 else{
                     submarineStack.getChildren().add(submarinePane);
@@ -238,6 +282,7 @@ public class GameController {
         }
 
         Pane carrierPane = shipDrawer.drawCarrier();
+        Ship carrier =  new Ship(4, carrierPane);
         carrierPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
         carrierPane.setOnMousePressed(e -> {
 
@@ -248,6 +293,7 @@ public class GameController {
             // Remove from StackPane
             Pane parent = (Pane) carrierPane.getParent();
             parent.getChildren().remove(carrierPane);
+            playerBoard.removeShip(carrier);
 
             // Add to game board or placement layer
             baseAnchorPane.getChildren().add(carrierPane);
@@ -288,17 +334,14 @@ public class GameController {
                 GridPane.setRowSpan(carrierPane, 1);
                 userGridPane.add(carrierPane, cellX, cellY);
 
+                List<Coordinate> coords = new ArrayList<Coordinate>();
+                for(int j = 0; j < carrier.getLength(); j++){
+                    coords.add(new Coordinate(cellX + j, cellY));
+                }
+                playerBoard.placeShip(carrier, coords);
+
                 System.out.println("X: " + userGridPane.getColumnIndex(carrierPane) + " Y: " + userGridPane.getRowIndex(carrierPane));
 
-                    /*
-                    int cellSize = 40; // adjust based on your GridPane cell size
-                    double snappedX = Math.round(centerX / cellSize) * cellSize;
-                    double snappedY = Math.round(centerY / cellSize) * cellSize;
-
-                    smallShipStack.setLayoutX(snappedX);
-                    smallShipPane.setLayoutY(snappedY);
-
-                     */
             }
             else{
                 submarineStack.getChildren().add(carrierPane);

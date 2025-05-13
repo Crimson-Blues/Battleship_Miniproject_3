@@ -26,6 +26,17 @@ public class Board implements Serializable {
         }
 
     }
+    public int getSize() {
+        return SIZE;
+    }
+
+    public Cell getCell(int row, int col) {
+        return grid.get(row).get(col);
+    }
+
+    public List<Ship> getShips() {
+        return ships;
+    }
 
     private boolean isValidCoordinate(Coordinate coord) {
         int row = coord.getRow();
@@ -68,10 +79,25 @@ public class Board implements Serializable {
                 }
                 cell.setShip(ship);
                 cell.setState(Cell.CellState.SHIP);
+                System.out.println("Barco posicionado en" + cell.getCoordinate().getRow() + ", " + cell.getCoordinate().getCol());
+                ships.add(ship);
             } catch (OverlappingShip e){
                 System.out.println(e.getMessage());
             }
 
+
+        }
+    }
+
+    public void removeShip(Ship ship) {
+        for(int i = 0; i < SIZE; i++){
+            for(int j = 0; j < SIZE; j++){
+                Cell cell = grid.get(i).get(j);
+                if(cell.getShip() == ship){
+                    cell.setShip(null);
+                    cell.setState(Cell.CellState.EMPTY);
+                }
+            }
         }
     }
 

@@ -15,7 +15,7 @@ public class Game implements Serializable {
             this.playerBoard = new Board();
             this.machineBoard = new Board();
             this.machine = new Machine();
-            this.machine.placeShips(machineBoard);
+            //this.machine.placeShips(machineBoard);
             this.turn = Turn.PLAYER;
         }
 

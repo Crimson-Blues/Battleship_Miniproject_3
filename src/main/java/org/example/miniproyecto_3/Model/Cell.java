@@ -19,9 +19,6 @@ public class Cell {
         this.state = CellState.EMPTY;
         this.ship = null;
         this.coordinate = cord;
-        this.clickChecker =  clickChecker;
-
-        this.clickChecker.setOnMouseClicked(event -> handleClick());
     }
 
     public CellState getState() {
@@ -49,6 +46,7 @@ public class Cell {
 
     public void setClickChecker(StackPane clickChecker) {
         this.clickChecker = clickChecker;
+        clickChecker.setOnMouseClicked(e -> handleClick());
     }
     public void  handleClick(){
         System.out.println("Clicked on: " + coordinate.getRow() + ", " + coordinate.getCol());
@@ -58,7 +56,7 @@ public class Cell {
     public void hit(){
         if (this.state == Cell.CellState.SHIP) {
             setState(Cell.CellState.HIT);
-            System.out.println("Le diste a  la nave en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
+            System.out.println("Le diste a la nave en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
         } else if (this.state == Cell.CellState.EMPTY) {
             setState(Cell.CellState.SHIP);
         }
