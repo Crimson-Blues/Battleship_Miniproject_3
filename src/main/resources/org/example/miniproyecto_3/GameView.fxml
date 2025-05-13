@@ -73,25 +73,41 @@
                            <children>
                               <VBox alignment="TOP_CENTER">
                                  <children>
-                                    <StackPane fx:id="smallShipStack" alignment="TOP_CENTER" />
+                                    <VBox prefHeight="105.0" prefWidth="107.0">
+                                       <children>
+                                          <StackPane fx:id="smallShipStack" alignment="TOP_CENTER" />
+                                       </children>
+                                    </VBox>
                                     <Label alignment="CENTER" prefHeight="17.0" prefWidth="107.0" styleClass="general_label" text="Frágata" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER">
                                  <children>
-                                    <StackPane fx:id="mediumShipStack" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <StackPane fx:id="mediumShipStack" />
+                                       </children>
+                                    </VBox>
                                     <Label alignment="CENTER" prefHeight="34.0" prefWidth="135.0" styleClass="general_label" text="Destructor" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER">
                                  <children>
-                                    <StackPane fx:id="submarineStack" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <StackPane fx:id="submarineStack" />
+                                       </children>
+                                    </VBox>
                                     <Label alignment="CENTER" styleClass="general_label" text="Submarino" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER">
                                  <children>
-                                    <StackPane fx:id="carrierStack" />
+                                    <VBox prefHeight="200.0" prefWidth="100.0">
+                                       <children>
+                                          <StackPane fx:id="carrierStack" />
+                                       </children>
+                                    </VBox>
                                     <Label alignment="CENTER" styleClass="general_label" text="Portaavión" />
                                  </children>
                               </VBox>

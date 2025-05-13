@@ -1,10 +1,7 @@
 package org.example.miniproyecto_3.Model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class Machine implements Serializable {
 
@@ -21,7 +18,8 @@ public class Machine implements Serializable {
                 boolean horizontal = random.nextBoolean();
 
                 Ship ship = new Ship(size);
-                placed = board.placeShip(ship, new Coordinate(row, col), horizontal);
+                List<Coordinate> coords = new ArrayList<Coordinate>();
+                board.placeShip(ship, coords);
             }
         }
     }
@@ -32,7 +30,7 @@ public class Machine implements Serializable {
             int row = random.nextInt(10);
             int col = random.nextInt(10);
             target = new Coordinate(row, col);
-        } while (usedShots.contains(target) || !playerBoard.canShot(target));
+        } while (usedShots.contains(target) || !playerBoard.canShoot(target));
 
         usedShots.add(target);
         return target;

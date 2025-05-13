@@ -3,18 +3,20 @@ package org.example.miniproyecto_3.Model;
 import java.io.Serializable;
 
 public class Game implements Serializable {
-
+    public enum Turn{
+        PLAYER, MACHINE
+    }
         private final Board playerBoard;
         private final Board machineBoard;
         private final Machine machine;
-        private boolean playerTurn;
+        private Turn turn;
 
         public Game() {
             this.playerBoard = new Board();
             this.machineBoard = new Board();
             this.machine = new Machine();
             this.machine.placeShips(machineBoard);
-            this.playerTurn = true; // El jugador humano empieza
+            this.turn = Turn.PLAYER;
         }
 
         public Board getPlayerBoard() {
@@ -26,45 +28,27 @@ public class Game implements Serializable {
         }
 
         public boolean isPlayerTurn() {
-            return playerTurn;
+            return(turn == Turn.PLAYER);
         }
 
         private void toggleTurn() {
-            playerTurn = !playerTurn;
+            if (turn == Turn.PLAYER) {
+                turn = Turn.MACHINE;
+            } else if (turn == Turn.MACHINE) {
+                turn = Turn.PLAYER;
+            }
         }
 
-        /**
-         * Disparo del jugador humano al tablero de la máquina.
-         * @param coor coordenada objetivo
-         * @return true si fue tocado, false si fue agua
-         */
-        public boolean fireAtMachine(Coordinate coor) {
-            if (!playerTurn || !machineBoard.canShot(coor)) return false;
+        public void fire(Coordinate coord, Board board) {
+            Cell.CellState hit = board.fireAt(coord);
 
-            boolean hit = machineBoard.fireAt(coor);
-
-            if (!hit) {
-                toggleTurn(); // pasa turno si fue agua
+            if(hit == Cell.CellState.MISS){
+                toggleTurn();
             }
-
-            return hit;
         }
 
-        /**
-         * Disparo de la máquina al tablero del jugador.
-         * return true si fue tocado, false si fue agua
-         */
-        public boolean fireAtPlayer() {
-            if (playerTurn) return false; // No debe disparar si no es su turno
-
-            Coordinate target = machine.selectTarget(playerBoard);
-            boolean hit = playerBoard.fireAt(target);
-
-            if (!hit) {
-                toggleTurn(); // pasa turno si fue agua
-            }
-
-            return hit;
+        public Turn getTurn() {
+            return turn;
         }
 
         public boolean isGameOver() {
