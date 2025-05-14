@@ -69,24 +69,25 @@ public class Board implements Serializable {
     }
 
     public void placeShip(Ship ship, List<Coordinate> coords) {
-        for(Coordinate cord : coords) {
+        // Primero, se verifica que todas las celdas estén disponibles
+        for (Coordinate cord : coords) {
             int row = cord.getRow();
             int column = cord.getCol();
             Cell cell = grid.get(row).get(column);
-            try{
-                if(cell.getState() == Cell.CellState.SHIP){
-                    throw new OverlappingShip("Barco posicionado sobre otro");
-                }
-                cell.setShip(ship);
-                cell.setState(Cell.CellState.SHIP);
-                System.out.println("Barco posicionado en" + cell.getCoordinate().getRow() + ", " + cell.getCoordinate().getCol());
-                ships.add(ship);
-            } catch (OverlappingShip e){
-                System.out.println(e.getMessage());
-            }
-
-
+            if (cell.getState() == Cell.CellState.SHIP)
+                throw new OverlappingShip("Barco posicionado sobre otro");
         }
+        // Si todas las celdas están libres, se asigna el barco a cada celda
+        for (Coordinate cord : coords) {
+            int row = cord.getRow();
+            int column = cord.getCol();
+            Cell cell = grid.get(row).get(column);
+            cell.setShip(ship);
+            cell.setState(Cell.CellState.SHIP);
+            System.out.println("Barco posicionado en " + row + ", " + column);
+        }
+        // Se agrega el barco solo una vez a la lista
+        ships.add(ship);
     }
 
     public void removeShip(Ship ship) {
@@ -101,21 +102,15 @@ public class Board implements Serializable {
         }
     }
 
-    public Cell.CellState fireAt(Coordinate coor) {
-        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
-        try{
-            if (!isValidCoordinate(coor)) {
-                throw new IllegalArgumentException("La coordenada no puede salirse del tablero");
-            }
-            if (!canShoot(coor)) {
-                throw new NonShootableCell("Celda (" + coor.getRow() + ", " + coor.getCol() + ") ya fue golpeada");
-            }
-            cell.hit();
-
-        } catch (IllegalArgumentException |NonShootableCell e) {
-            System.out.println(e.getMessage());
+    public Cell.CellState fireAt(Coordinate coor) throws NonShootableCell {
+        if (!isValidCoordinate(coor)) {
+            throw new IllegalArgumentException("La coordenada no puede salirse del tablero");
         }
-
+        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
+        if (!canShoot(coor)) {
+            throw new NonShootableCell("Celda (" + coor.getRow() + ", " + coor.getCol() + ") ya fue golpeada");
+        }
+        cell.hit();
         return cell.getState();
     }
 }
