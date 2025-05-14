@@ -10,19 +10,14 @@ import java.util.Set;
 public class Ship extends ShipAdapter implements Serializable {
     private int length;
     private Set<Coordinate> hits;
-    private Pane view;
+    private transient Pane view;
 
-    public Ship(int length, Pane view){
-        try{
-            if(length<= 0)
-                throw new IllegalArgumentException("La longitud del barco tiene que ser positiva");
-            this.length = length;
-            this.hits = new HashSet <Coordinate>();
-            this.view = view;
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-        }
-
+    public Ship(int length, Pane view) {
+        if (length <= 0)
+            throw new IllegalArgumentException("La longitud del barco tiene que ser positiva");
+        this.length = length;
+        this.hits = new HashSet<>();
+        this.view = view;
     }
 
     public Pane getPane() {
@@ -37,6 +32,7 @@ public class Ship extends ShipAdapter implements Serializable {
         return hits;
     }
 
+    @Override
     public boolean isSunk(){
         return hits.size() == length;
     }

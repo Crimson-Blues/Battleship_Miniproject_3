@@ -5,7 +5,9 @@ public abstract class ShipAdapter implements IShip {
     private Orientation orientation;
 
     public ShipAdapter(){
+
         this.state = State.NOT_SUNK;
+        this.orientation = Orientation.HORIZONTAL;
     }
 
     @Override

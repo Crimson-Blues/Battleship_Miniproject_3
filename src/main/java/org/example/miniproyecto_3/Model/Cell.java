@@ -13,7 +13,8 @@ public class Cell {
     private CellState state;
     private Ship ship;
     private Coordinate coordinate;
-    private StackPane clickChecker;
+    private transient StackPane clickChecker;
+
 
     public Cell(Coordinate cord){
         this.state = CellState.EMPTY;
@@ -46,11 +47,12 @@ public class Cell {
 
     public void setClickChecker(StackPane clickChecker) {
         this.clickChecker = clickChecker;
-        clickChecker.setOnMouseClicked(e -> handleClick());
+        // No asignamos ningún manejador aquí; lo hará el GameController.
     }
+
     public void  handleClick(){
         System.out.println("Clicked on: " + coordinate.getRow() + ", " + coordinate.getCol());
-        clickChecker.setStyle("-fx-background-color: red");
+        /*clickChecker.setStyle("-fx-background-color: red");*/
 
     }
     public void hit(){
@@ -58,7 +60,8 @@ public class Cell {
             setState(Cell.CellState.HIT);
             System.out.println("Le diste a la nave en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
         } else if (this.state == Cell.CellState.EMPTY) {
-            setState(Cell.CellState.SHIP);
+            setState(Cell.CellState.MISS);
+            System.out.println("Disparo en el agua en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
         }
     }
 }
