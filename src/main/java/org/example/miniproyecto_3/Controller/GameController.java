@@ -1,13 +1,13 @@
 package org.example.miniproyecto_3.Controller;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
+import javafx.geometry.*;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import org.example.miniproyecto_3.Model.Board;
-import org.example.miniproyecto_3.Model.Coordinate;
-import org.example.miniproyecto_3.Model.Game;
-import org.example.miniproyecto_3.Model.Ship;
+import org.example.miniproyecto_3.Model.*;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.util.ArrayList;
@@ -43,6 +43,7 @@ public class GameController {
         machineBoard = game.getMachineBoard();
         drawShips();
         handleButtons();
+
     }
 
     public void handleButtons(){
@@ -76,279 +77,163 @@ public class GameController {
         for(int i = 0; i < 4; i++){
             Pane smallShipPane = shipDrawer.drawSmallShip();
             Ship smallShip = new Ship(1, smallShipPane);
-            smallShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            smallShipPane.setOnMousePressed(e -> {
-
-                //Calculate the position deltas
-                dragDeltax = e.getSceneX() - smallShipPane.localToScene(0, 0).getX();
-                dragDeltay = e.getSceneY() - smallShipPane.localToScene(0, 0).getY();
-
-                // Remove from StackPane
-                Pane parent = (Pane) smallShipPane.getParent();
-                parent.getChildren().remove(smallShipPane);
-                playerBoard.removeShip(smallShip);
-
-                // Add to game board or placement layer
-                baseAnchorPane.getChildren().add(smallShipPane);
-
-                smallShipPane.setLayoutX(e.getSceneX() - dragDeltax);
-                smallShipPane.setLayoutY(e.getSceneY() - dragDeltay);
-
-                // Bring it to front
-                smallShipPane.toFront();
-
-            });
-
-            smallShipPane.setOnMouseDragged(e -> {
-                smallShipPane.setLayoutX(e.getSceneX() - dragDeltax);
-                smallShipPane.setLayoutY(e.getSceneY() - dragDeltay);
-            });
-
-            smallShipPane.setOnMouseReleased(e -> {
-                int cellSize = 40;
-                double width = smallShipPane.getWidth();
-                double height = smallShipPane.getHeight();
-
-                double centerX = smallShipPane.localToScene(0,0).getX() + width/2;
-                double centerY = smallShipPane.localToScene(0,0).getY() + height/2;
-
-                double gridX = userGridPane.localToScene(0,0).getX();
-                double gridY = userGridPane.localToScene(0,0).getY();
-
-                Bounds boundsInScene = userGridPane.localToScene(userGridPane.getBoundsInLocal());
-
-                Pane parent = (Pane) smallShipPane.getParent();
-                parent.getChildren().remove(smallShipPane);
-
-                if(boundsInScene.contains(centerX, centerY)){
-                    int cellX = (int) ((centerX - gridX) / cellSize);
-                    int cellY = (int) ((centerY - gridY) / cellSize);
-                    userGridPane.add(smallShipPane, cellX, cellY);
-
-                    List<Coordinate> coords = new ArrayList<Coordinate>();
-                    coords.add(new Coordinate(cellX, cellY));
-                    playerBoard.placeShip(smallShip, coords);
-
-                    System.out.println("X: " + userGridPane.getColumnIndex(smallShipPane) + " Y: " + userGridPane.getRowIndex(smallShipPane));
-                }
-                else{
-                    smallShipStack.getChildren().add(smallShipPane);
-                }
-
-            });
             smallShipStack.getChildren().add(smallShipPane);
+
+            shipMouseMovement(smallShip, smallShipStack);
         }
 
         for(int i = 0; i < 3; i++){
             Pane mediumShipPane = shipDrawer.drawMediumShip();
             Ship mediumShip = new Ship(2, mediumShipPane);
-
-            mediumShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            mediumShipPane.setOnMousePressed(e -> {
-
-                //Calculate the position deltas
-                dragDeltax = e.getSceneX() - mediumShipPane.localToScene(0, 0).getX();
-                dragDeltay = e.getSceneY() - mediumShipPane.localToScene(0, 0).getY();
-
-                // Remove from StackPane
-                Pane parent = (Pane) mediumShipPane.getParent();
-                parent.getChildren().remove(mediumShipPane);
-                playerBoard.removeShip(mediumShip);
-
-                // Add to game board or placement layer
-                baseAnchorPane.getChildren().add(mediumShipPane);
-
-                mediumShipPane.setLayoutX(e.getSceneX() - dragDeltax);
-                mediumShipPane.setLayoutY(e.getSceneY() - dragDeltay);
-
-                // Bring it to front
-                mediumShipPane.toFront();
-
-            });
-
-            mediumShipPane.setOnMouseDragged(e -> {
-                mediumShipPane.setLayoutX(e.getSceneX() - dragDeltax);
-                mediumShipPane.setLayoutY(e.getSceneY() - dragDeltay);
-            });
-
-            mediumShipPane.setOnMouseReleased(e -> {
-                int cellSize = 40;
-                double width = mediumShipPane.getWidth();
-                double height = mediumShipPane.getHeight();
-
-                double centerX = mediumShipPane.localToScene(0,0).getX();
-                double centerY = mediumShipPane.localToScene(0,0).getY() + height/2;
-
-                double gridX = userGridPane.localToScene(0,0).getX();
-                double gridY = userGridPane.localToScene(0,0).getY();
-
-                Bounds boundsInScene = userGridPane.localToScene(userGridPane.getBoundsInLocal());
-
-                Pane parent = (Pane) mediumShipPane.getParent();
-                parent.getChildren().remove(mediumShipPane);
-
-                if(boundsInScene.contains(centerX, centerY)){
-                    int cellX = (int) ((centerX - gridX) / cellSize);
-                    int cellY = (int) ((centerY - gridY) / cellSize);
-                    GridPane.setColumnSpan(mediumShipPane, 2);
-                    GridPane.setRowSpan(mediumShipPane, 1);
-                    userGridPane.add(mediumShipPane, cellX, cellY);
-
-                    List<Coordinate> coords = new ArrayList<Coordinate>();
-                    for(int j = 0; j < mediumShip.getLength(); j++){
-                        coords.add(new Coordinate(cellX + j, cellY));
-                    }
-                    playerBoard.placeShip(mediumShip, coords);
-
-                    System.out.println("X: " + userGridPane.getColumnIndex(mediumShipPane) + " Y: " + userGridPane.getRowIndex(mediumShipPane));
-
-                }
-                else{
-                    mediumShipStack.getChildren().add(mediumShipPane);
-                }
-
-            });
             mediumShipStack.getChildren().add(mediumShipPane);
+
+            shipMouseMovement(mediumShip, mediumShipStack);
+
+
         }
         for(int i = 0; i < 2; i++){
             Pane submarinePane = shipDrawer.drawSubmarine();
             Ship submarine = new Ship(3, submarinePane);
-            submarinePane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-            submarinePane.setOnMousePressed(e -> {
-
-                //Calculate the position deltas
-                dragDeltax = e.getSceneX() - submarinePane.localToScene(0, 0).getX();
-                dragDeltay = e.getSceneY() - submarinePane.localToScene(0, 0).getY();
-
-                // Remove from StackPane
-                Pane parent = (Pane) submarinePane.getParent();
-                parent.getChildren().remove(submarinePane);
-                playerBoard.removeShip(submarine);
-
-                // Add to game board or placement layer
-                baseAnchorPane.getChildren().add(submarinePane);
-
-                submarinePane.setLayoutX(e.getSceneX() - dragDeltax);
-                submarinePane.setLayoutY(e.getSceneY() - dragDeltay);
-
-                // Bring it to front
-                submarinePane.toFront();
-
-            });
-
-            submarinePane.setOnMouseDragged(e -> {
-                submarinePane.setLayoutX(e.getSceneX() - dragDeltax);
-                submarinePane.setLayoutY(e.getSceneY() - dragDeltay);
-            });
-
-            submarinePane.setOnMouseReleased(e -> {
-                int cellSize = 40;
-                double width = submarinePane.getWidth();
-                double height = submarinePane.getHeight();
-
-                double centerX = submarinePane.localToScene(0,0).getX();
-                double centerY = submarinePane.localToScene(0,0).getY() + height/2;
-
-                double gridX = userGridPane.localToScene(0,0).getX();
-                double gridY = userGridPane.localToScene(0,0).getY();
-
-                Bounds boundsInScene = userGridPane.localToScene(userGridPane.getBoundsInLocal());
-
-                Pane parent = (Pane) submarinePane.getParent();
-                parent.getChildren().remove(submarinePane);
-
-                if(boundsInScene.contains(centerX, centerY)){
-                    int cellX = (int) ((centerX - gridX) / cellSize);
-                    int cellY = (int) ((centerY - gridY) / cellSize);
-                    GridPane.setColumnSpan(submarinePane, 3);
-                    GridPane.setRowSpan(submarinePane, 1);
-                    userGridPane.add(submarinePane, cellX, cellY);
-
-                    List<Coordinate> coords = new ArrayList<Coordinate>();
-                    for(int j = 0; j < submarine.getLength(); j++){
-                        coords.add(new Coordinate(cellX + j, cellY));
-                    }
-                    playerBoard.placeShip(submarine, coords);
-
-                    System.out.println("X: " + userGridPane.getColumnIndex(submarinePane) + " Y: " + userGridPane.getRowIndex(submarinePane));
-
-                }
-                else{
-                    submarineStack.getChildren().add(submarinePane);
-                }
-
-            });
             submarineStack.getChildren().add(submarinePane);
+
+            shipMouseMovement(submarine, submarineStack);
         }
 
         Pane carrierPane = shipDrawer.drawCarrier();
         Ship carrier =  new Ship(4, carrierPane);
-        carrierPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
-        carrierPane.setOnMousePressed(e -> {
+        carrierStack.getChildren().add(carrierPane);
 
-            //Calculate the position deltas
-            dragDeltax = e.getSceneX() - carrierPane.localToScene(0, 0).getX();
-            dragDeltay = e.getSceneY() - carrierPane.localToScene(0, 0).getY();
+        shipMouseMovement(carrier, carrierStack);
+
+    }
+
+    public void shipMouseMovement(Ship ship, StackPane stack){
+        Pane pane = ship.getPane();
+        ImageView shipImageView = (ImageView) pane.getChildren().get(0);
+
+        userGridPane.setHalignment(pane, HPos.CENTER);
+        userGridPane.setValignment(pane, VPos.CENTER);
+
+        double width = shipImageView.getImage().getWidth();
+        double height = shipImageView.getImage().getHeight();
+
+        double xDisplace = (height + width)/2;
+        double yDisplace = (width - height)/2;
+
+        System.out.println("Width: " + width + " Height: " + height);
+
+        //mediumShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+        pane.setOnMousePressed(e -> {
+
+
+            if(e.getButton() == MouseButton.SECONDARY){
+                ship.flip();
+            }
+
+            // Convert the mouse click to the local coordinate space of the shipPane
+            Point2D clickPoint = new Point2D(e.getSceneX(), e.getSceneY());
+            Point2D localPoint = pane.localToScene(0,0);
+
+            // Calculate the deltas
+            dragDeltax = clickPoint.subtract(localPoint).getX();
+            dragDeltay = clickPoint.subtract(localPoint).getY();
 
             // Remove from StackPane
-            Pane parent = (Pane) carrierPane.getParent();
-            parent.getChildren().remove(carrierPane);
-            playerBoard.removeShip(carrier);
+            Pane parent = (Pane) pane.getParent();
+            parent.getChildren().remove(pane);
+            playerBoard.removeShip(ship);
 
             // Add to game board or placement layer
-            baseAnchorPane.getChildren().add(carrierPane);
+            baseAnchorPane.getChildren().add(pane);
 
-            carrierPane.setLayoutX(e.getSceneX() - dragDeltax);
-            carrierPane.setLayoutY(e.getSceneY() - dragDeltay);
+            double desiredSceneX = e.getSceneX() - dragDeltax;
+            double desiredSceneY = e.getSceneY() - dragDeltay;
+
+
+            if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                pane.setLayoutX(desiredSceneX);
+                pane.setLayoutY(desiredSceneY);
+
+            } else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
+                System.out.println(xDisplace + " " + yDisplace);
+                pane.setLayoutX(desiredSceneX - xDisplace);
+                pane.setLayoutY(desiredSceneY + yDisplace);
+            }
 
             // Bring it to front
-            carrierPane.toFront();
+            pane.toFront();
 
         });
 
-        carrierPane.setOnMouseDragged(e -> {
-            carrierPane.setLayoutX(e.getSceneX() - dragDeltax);
-            carrierPane.setLayoutY(e.getSceneY() - dragDeltay);
+        pane.setOnMouseDragged(e -> {
+            double desiredX = 0;
+            double desiredY = 0;
+            if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                desiredX = e.getSceneX() - dragDeltax;
+                desiredY = e.getSceneY() - dragDeltay;
+            } else if(ship.getOrientation() == IShip.Orientation.VERTICAL){
+                desiredX = e.getSceneX() - dragDeltax - xDisplace;
+                desiredY = e.getSceneY() - dragDeltay + yDisplace;
+            }
+
+            pane.setLayoutX(desiredX);
+            pane.setLayoutY(desiredY);
+
         });
 
-        carrierPane.setOnMouseReleased(e -> {
+        pane.setOnMouseReleased(e -> {
             int cellSize = 40;
-            double width = carrierPane.getWidth();
-            double height = carrierPane.getHeight();
-
-            double centerX = carrierPane.localToScene(0,0).getX();
-            double centerY = carrierPane.localToScene(0,0).getY() + height/2;
 
             double gridX = userGridPane.localToScene(0,0).getX();
             double gridY = userGridPane.localToScene(0,0).getY();
 
+            double centerX = pane.localToScene(0,0).getX() + width/2;
+            double centerY = pane.localToScene(0,0).getY() + height/2;
+
             Bounds boundsInScene = userGridPane.localToScene(userGridPane.getBoundsInLocal());
 
-            Pane parent = (Pane) carrierPane.getParent();
-            parent.getChildren().remove(carrierPane);
+            Pane parent = (Pane) pane.getParent();
+            parent.getChildren().remove(pane);
 
             if(boundsInScene.contains(centerX, centerY)){
+
+                if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                    centerX = pane.localToScene(0,0).getX();
+                    centerY = pane.localToScene(0,0).getY() + height/2;
+                    GridPane.setColumnSpan(pane, ship.getLength());
+                    GridPane.setRowSpan(pane, 1);
+
+                } else if (ship.getOrientation() == IShip.Orientation.VERTICAL) {
+                    centerX = pane.localToScene(0,0).getX() - height/2;
+                    centerY = pane.localToScene(0,0).getY();
+                    GridPane.setColumnSpan(pane, 1);
+                    GridPane.setRowSpan(pane, ship.getLength());
+                }
+
                 int cellX = (int) ((centerX - gridX) / cellSize);
                 int cellY = (int) ((centerY - gridY) / cellSize);
-                GridPane.setColumnSpan(carrierPane, 4);
-                GridPane.setRowSpan(carrierPane, 1);
-                userGridPane.add(carrierPane, cellX, cellY);
 
+                userGridPane.add(pane, cellX, cellY);
                 List<Coordinate> coords = new ArrayList<Coordinate>();
-                for(int j = 0; j < carrier.getLength(); j++){
-                    coords.add(new Coordinate(cellX + j, cellY));
+                if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                    for(int k = 0; k < ship.getLength(); k++){
+                        coords.add(new Coordinate(cellX + k, cellY));
+                    }
+                } else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
+                    for(int k = 0; k < ship.getLength(); k++){
+                        coords.add(new Coordinate(cellX, cellY + k));
+                    }
+
                 }
-                playerBoard.placeShip(carrier, coords);
 
-                System.out.println("X: " + userGridPane.getColumnIndex(carrierPane) + " Y: " + userGridPane.getRowIndex(carrierPane));
+                playerBoard.placeShip(ship, coords);
 
+                System.out.println("X: " + userGridPane.getColumnIndex(pane) + " Y: " + userGridPane.getRowIndex(pane));
             }
             else{
-                submarineStack.getChildren().add(carrierPane);
+                stack.getChildren().add(pane);
             }
 
         });
-        carrierStack.getChildren().add(carrierPane);
-
     }
 }
