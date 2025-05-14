@@ -141,7 +141,7 @@
                         <Font name="Bernard MT Condensed" size="27.0" />
                      </font>
                   </Label>
-                  <GridPane fx:id="userGridPane" alignment="CENTER" gridLinesVisible="true" layoutX="15.0" layoutY="64.0" prefHeight="397.0" prefWidth="400.0" style="-fx-cursor: Hand;" styleClass="grid-cell" stylesheets="@css/style.css">
+                  <GridPane fx:id="userGridPane" alignment="CENTER" gridLinesVisible="true" layoutX="15.0" layoutY="64.0" prefHeight="400.0" prefWidth="400.0" style="-fx-cursor: Hand;" styleClass="grid-cell" stylesheets="@css/style.css">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -178,7 +178,7 @@
                         <Font name="Bernard MT Condensed" size="27.0" />
                      </font>
                   </Label>
-                  <GridPane fx:id="machineGridPane" gridLinesVisible="true" hgap="1.0" layoutX="14.0" layoutY="64.0" prefHeight="400.0" prefWidth="400.0" style="-fx-cursor: Hand;" styleClass="grid-cell" stylesheets="@css/style.css" vgap="1.0">
+                  <GridPane fx:id="machineGridPane" alignment="CENTER" gridLinesVisible="true" layoutX="14.0" layoutY="64.0" prefHeight="400.0" prefWidth="400.0" style="-fx-cursor: Hand;" styleClass="grid-cell" stylesheets="@css/style.css">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

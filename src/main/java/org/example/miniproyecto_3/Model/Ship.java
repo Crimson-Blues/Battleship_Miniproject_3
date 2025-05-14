@@ -13,6 +13,7 @@ public class Ship extends ShipAdapter implements Serializable {
     private Set<Coordinate> hits;
     private Pane view;
     private Rotate rotation;
+    private Coordinate headCoord;
 
     public Ship(int length, Pane view){
         try{
@@ -48,6 +49,14 @@ public class Ship extends ShipAdapter implements Serializable {
         hits.add(h);
     }
 
+    public void setHeadCoord(Coordinate h){
+        headCoord = h;
+    }
+
+    public Coordinate getHeadCoord(){
+        return headCoord;
+    }
+
     @Override
     public void flip(){
         System.out.println("Rotando barco");
@@ -65,5 +74,14 @@ public class Ship extends ShipAdapter implements Serializable {
         view.applyCss();
         view.layout();
 
+    }
+
+    public void setOrientation(Orientation o){
+        orientation = o;
+        if(orientation == Orientation.HORIZONTAL){
+            view.setRotate(0);
+        } else if(orientation == Orientation.VERTICAL){
+            view.setRotate(90);
+        }
     }
 }

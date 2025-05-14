@@ -44,6 +44,7 @@ public class GameController {
     private Game game;
     private Board playerBoard;
     private Board machineBoard;
+    private Boolean machineShipsVisible;
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -65,11 +66,13 @@ public class GameController {
         playerBoard = game.getPlayerBoard();
         machineBoard = game.getMachineBoard();
         drawShips();
+        placeMachineShips();
         handleButtons();
     }
 
     public void handleButtons(){
         handlePlayButton();
+        handleViewButton();
     }
 
     public void handlePlayButton() {
@@ -113,11 +116,12 @@ public class GameController {
             }
         });
     }
+
     //Draws the ships and places them in the stackPanes
     public void drawShips(){
         ShipDrawer shipDrawer = new ShipDrawer();
 
-        //----Small ships size 1-------
+        //----Small ships (size 1)-------
         for (int i = 0; i < 4; i++){
             Pane smallShipPane = shipDrawer.drawSmallShip();
             Ship smallShip = new Ship(1, smallShipPane);
@@ -126,7 +130,7 @@ public class GameController {
             shipMouseMovement(smallShip, smallShipStack);
         }
 
-        // ---------- Medianos (tamaño 2) ----------
+        // ---------- Medium ships (size 2) ----------
         for (int i = 0; i < 3; i++){
             Pane mediumShipPane = shipDrawer.drawMediumShip();
             Ship mediumShip = new Ship(2, mediumShipPane);
@@ -137,7 +141,7 @@ public class GameController {
 
         }
 
-        // ---------- Submarinos (tamaño 3) ----------
+        // ---------- Submarines (size 3) ----------
         for (int i = 0; i < 2; i++){
             Pane submarinePane = shipDrawer.drawSubmarine();
             Ship submarine = new Ship(3, submarinePane);
@@ -146,7 +150,7 @@ public class GameController {
             shipMouseMovement(submarine, submarineStack);
         }
 
-        // ---------- Portaaviones (carrier, tamaño 4) ----------
+        // ---------- Carriers (size 4) ----------
         Pane carrierPane = shipDrawer.drawCarrier();
         Ship carrier =  new Ship(4, carrierPane);
         carrierStack.getChildren().add(carrierPane);
@@ -168,7 +172,7 @@ public class GameController {
         double xDisplace = (height + width)/2;
         double yDisplace = (width - height)/2;
 
-        System.out.println("Width: " + width + " Height: " + height);
+        //System.out.println("Width: " + width + " Height: " + height);
 
         //mediumShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
         pane.setOnMousePressed(e -> {
@@ -262,14 +266,15 @@ public class GameController {
                 int cellY = (int) ((centerY - gridY) / cellSize);
 
                 userGridPane.add(pane, cellX, cellY);
+
                 List<Coordinate> coords = new ArrayList<Coordinate>();
                 if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
                     for(int k = 0; k < ship.getLength(); k++){
-                        coords.add(new Coordinate(cellX + k, cellY));
+                        coords.add(new Coordinate(cellY, cellX + k));
                     }
                 } else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
                     for(int k = 0; k < ship.getLength(); k++){
-                        coords.add(new Coordinate(cellX, cellY + k));
+                        coords.add(new Coordinate(cellY + k, cellX));
                     }
 
                 }
@@ -343,7 +348,8 @@ public class GameController {
         }
     }
 
-    // Métodos muy básicos para actualizar las vistas (puedes expandirlos según tus necesidades)
+
+    //UpdateMachineBoard view onto MachineGridPane
     private void updateMachineBoardView() {
         // Reinicia la vista del tablero de la máquina
         machineGridPane.getChildren().clear();
@@ -374,26 +380,61 @@ public class GameController {
         }
     }
 
-    private void updatePlayerBoardView() {
-        // Dependiendo de tu implementación, podrías actualizar la vista del tablero del jugador aquí.
-        // Por ejemplo, repoblar el GridPane con los barcos ya posicionados.
-        // Esto es opcional si la vista del jugador no se vuelve a cargar.
+    //Sets machine ships panes onto machineGridPane
+    private void placeMachineShips(){
+        for(Ship ship : machineBoard.getShips()){
+
+            int cellX = ship.getHeadCoord().getCol();
+            int cellY = ship.getHeadCoord().getRow();
+            Pane pane = ship.getPane();
+
+            machineGridPane.setHalignment(pane, HPos.CENTER);
+            machineGridPane.setValignment(pane, VPos.CENTER);
+
+            if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                machineGridPane.setColumnSpan(pane, ship.getLength());
+                machineGridPane.setRowSpan(pane, 1);
+
+            }else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
+                machineGridPane.setColumnSpan(pane, 1);
+                machineGridPane.setRowSpan(pane, ship.getLength());
+            }
+
+            machineGridPane.add(pane, cellX, cellY);
+            System.out.println("Boat at: (" + cellX + ", " + cellY + ")");
+
+            hideEnemyShips();
+            machineShipsVisible = false;
+
+        }
     }
 
-    // Metodo para visualizar el tablero de posición del oponente (mostrar la flota de la máquina)
-    private void viewEnemyShips() {
-        for (int i = 0; i < machineBoard.getSize(); i++){
-            for (int j = 0; j < machineBoard.getSize(); j++){
-                Cell cell = machineBoard.getCell(i, j);
-                if (cell.getShip() != null) {
-                    StackPane sp = cell.getClickChecker();
-                    if (sp != null) {
-                        // Agrega un estilo que muestre la posición del barco (por ejemplo, fondo verde semitransparente)
-                        sp.setStyle(sp.getStyle() + "-fx-background-color: rgba(0,255,0,0.5);");
-                    }
-                }
+    private void updatePlayerBoardView() {
+
+    }
+
+    private void handleViewButton(){
+        viewButton.setOnAction(e ->{
+            if(machineShipsVisible){
+                hideEnemyShips();
+                machineShipsVisible = false;
+            } else {
+                viewEnemyShips();
+                machineShipsVisible = true;
             }
+        });
+    }
+    //Makes enemy ships visible
+    private void viewEnemyShips() {
+        for(Ship ship: machineBoard.getShips()){
+            ship.getPane().setVisible(true);
         }
-        System.out.println("Enemy ships are now visible.");
+    }
+
+    //Makes enemy ships visible
+    private void hideEnemyShips() {
+        for(Ship ship: machineBoard.getShips()){
+            ship.getPane().setVisible(false);
+        }
     }
 }

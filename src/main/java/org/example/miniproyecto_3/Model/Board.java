@@ -59,10 +59,6 @@ public class Board implements Serializable {
             return false;
         }
         Cell cell = grid.get(coor.getRow()).get(coor.getCol());
-        // if(cell == CellState.MISS || cell == CellState.HIT){
-        //   return false;
-        // }
-        // return true;
 
         return (cell.getState() == Cell.CellState.EMPTY || cell.getState() == Cell.CellState.SHIP);
 
@@ -73,18 +69,23 @@ public class Board implements Serializable {
         for (Coordinate cord : coords) {
             int row = cord.getRow();
             int column = cord.getCol();
-            Cell cell = grid.get(row).get(column);
-            if (cell.getState() == Cell.CellState.SHIP)
-                throw new OverlappingShip("Barco posicionado sobre otro");
+            try{
+                Cell cell = grid.get(row).get(column);
+                if (cell.getState() == Cell.CellState.SHIP)
+                    throw new OverlappingShip("Barco posicionado sobre otro");
+            }catch(OverlappingShip e){
+                System.out.println(e.getMessage());
+            }
+
         }
         // Si todas las celdas están libres, se asigna el barco a cada celda
         for (Coordinate cord : coords) {
             int row = cord.getRow();
             int column = cord.getCol();
-            Cell cell = grid.get(row).get(column);
+            Cell cell = grid.get(column).get(row);
             cell.setShip(ship);
             cell.setState(Cell.CellState.SHIP);
-            System.out.println("Barco posicionado en " + row + ", " + column);
+            System.out.println("Barco posicionado en " + column + ", " + row);
         }
         // Se agrega el barco solo una vez a la lista
         ships.add(ship);
@@ -112,5 +113,30 @@ public class Board implements Serializable {
         }
         cell.hit();
         return cell.getState();
+    }
+
+    public boolean canPlaceShip(int size, Coordinate headCoord, IShip.Orientation orientation) {
+        int initialX = headCoord.getCol();
+        int initialY = headCoord.getRow();
+
+        if(orientation == IShip.Orientation.HORIZONTAL){
+            for(int i = 0; i < size; i++){
+                if(grid.get(initialX + i).get(initialY).getState() == Cell.CellState.SHIP){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        if(orientation == IShip.Orientation.VERTICAL){
+            for(int i = 0; i < size; i++){
+                if(grid.get(initialX).get(initialY + i).getState() == Cell.CellState.SHIP){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 }

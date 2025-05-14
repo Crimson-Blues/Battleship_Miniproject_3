@@ -1,6 +1,7 @@
 package org.example.miniproyecto_3.Model;
 
 import javafx.scene.layout.Pane;
+import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.Serializable;
@@ -17,6 +18,9 @@ public class Machine implements Serializable {
         int boardSize = board.getSize();
 
         for (int size : sizes) {
+            Pane pane = drawMachineShips(size);
+            Ship ship = new Ship(size, pane); //Unplaced ship
+
             boolean placed = false;
             while (!placed) {
                 int row = random.nextInt(boardSize);
@@ -25,6 +29,7 @@ public class Machine implements Serializable {
 
                 List<Coordinate> coords = new ArrayList<>();
                 if (horizontal) {
+                    ship.setOrientation(Ship.Orientation.HORIZONTAL);
                     // Verificar que el barco quepa horizontalmente
                     if (col + size <= boardSize) {
                         for (int i = 0; i < size; i++) {
@@ -32,6 +37,7 @@ public class Machine implements Serializable {
                         }
                     }
                 } else {
+                    ship.setOrientation(Ship.Orientation.VERTICAL);
                     // Verificar que el barco quepa verticalmente
                     if (row + size <= boardSize) {
                         for (int i = 0; i < size; i++) {
@@ -41,11 +47,14 @@ public class Machine implements Serializable {
                 }
 
                 int prevShipCount = board.getShips().size();
-                Pane pane = drawMachineShips(size);
-                Ship ship = new Ship(size, pane); // Se puede asignar representación gráfica si se tiene
                 try {
+                    if(!board.canPlaceShip(size, coords.get(0), ship.getOrientation())){
+                        throw new OverlappingShip("Se intentó colocar una nave sobre otra");
+                    }
                     board.placeShip(ship, coords);
+
                     // Si el barco se colocó correctamente (sin solapamientos), se incrementa la cantidad
+                    ship.setHeadCoord(new Coordinate(row, col));
                     placed = board.getShips().size() > prevShipCount;
                 } catch (Exception e) {
                     // En caso de solapamiento u otro error, se reintenta
@@ -74,7 +83,6 @@ public class Machine implements Serializable {
 
         }
     }
-
 
 
     public Coordinate selectTarget(Board playerBoard) {
