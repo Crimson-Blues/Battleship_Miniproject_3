@@ -1,16 +1,20 @@
 package org.example.miniproyecto_3.Controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.*;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import org.example.miniproyecto_3.Model.*;
+import org.example.miniproyecto_3.Model.Exceptions.IncompleteBoard;
+import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
+import org.example.miniproyecto_3.Model.Exceptions.ShipOutOfBounds;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
@@ -34,11 +38,14 @@ public class GameController {
     private GridPane machineGridPane;
     @FXML
     private Button playButton;
-    // Botones para guardar y visualizar la flota del oponente
     @FXML
     private Button saveButton;
     @FXML
     private Button viewButton;
+    @FXML
+    private Label turnLabel;
+    @FXML
+    private Label errorLabel;
 
     private double dragDeltax, dragDeltay;
     private Game game;
@@ -68,6 +75,8 @@ public class GameController {
         drawShips();
         placeMachineShips();
         handleButtons();
+        turnLabel.setVisible(false);
+        errorLabel.setVisible(false);
     }
 
     public void handleButtons(){
@@ -77,43 +86,49 @@ public class GameController {
 
     public void handlePlayButton() {
         playButton.setOnAction(e -> {
-            System.out.println("Play button pressed");
-            // Configurar el tablero de la máquina (10x10)
-            for (int i = 0; i < machineBoard.getSize(); i++){
-                for (int j = 0; j < machineBoard.getSize(); j++){
-                    final int row = i;
-                    final int col = j;
-                    StackPane cellPane = new StackPane();
-                    // Asignar evento de click: al disparar se procesa el tiro del jugador
-                    cellPane.setOnMouseClicked(ev -> {
-                        try {
-                            // Intenta disparar en la celda
-                            Cell.CellState result = game.fire(new Coordinate(row, col), machineBoard);
-                            if (result == Cell.CellState.HIT) {
-                                cellPane.setStyle("-fx-background-color: orange;");
-                            } else if (result == Cell.CellState.MISS) {
-                                cellPane.setStyle("-fx-background-color: lightblue;");
-                            }
-                            // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
-                            if (result == Cell.CellState.MISS) {
-                                machineTurn();
-                            }
-                            // Autosave: Guardar automáticamente el estado del juego tras cada jugada
-                            saveGame();
-                        } catch (Exception ex) {
-                            System.out.println(ex.getMessage());
-                        }
-                    });
-                    machineGridPane.add(cellPane, i, j);
-                    machineBoard.getCell(i, j).setClickChecker(cellPane);
+            try{
+                if(playerBoard.getShips().size() < 10){
+                    throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
                 }
+                for (int i = 0; i < machineBoard.getSize(); i++){
+                    for (int j = 0; j < machineBoard.getSize(); j++){
+                        final int row = i;
+                        final int col = j;
+                        StackPane cellPane = new StackPane();
+                        // Asignar evento de click: al disparar se procesa el tiro del jugador
+                        cellPane.setOnMouseClicked(ev -> {
+                            try {
+                                // Intenta disparar en la celda
+                                Cell.CellState result = game.fire(new Coordinate(row, col), machineBoard);
+                                if (result == Cell.CellState.HIT) {
+                                    cellPane.setStyle("-fx-background-color: orange;");
+                                } else if (result == Cell.CellState.MISS) {
+                                    cellPane.setStyle("-fx-background-color: lightblue;");
+                                }
+                                // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
+                                if (result == Cell.CellState.MISS) {
+                                    machineTurn();
+                                }
+                                // Autosave: Guardar automáticamente el estado del juego tras cada jugada
+                                saveGame();
+                            } catch (Exception ex) {
+                                System.out.println(ex.getMessage());
+                            }
+                        });
+                        machineGridPane.add(cellPane, i, j);
+                        machineBoard.getCell(i, j).setClickChecker(cellPane);
+                    }
+                }
+                // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
+                for (Ship ship : playerBoard.getShips()){
+                    ship.getPane().setOnMousePressed(null);
+                    ship.getPane().setOnMouseDragged(null);
+                    ship.getPane().setOnMouseReleased(null);
+                }
+            } catch (Exception ex) {
+                showError(errorLabel, ex.getMessage());
             }
-            // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
-            for (Ship ship : playerBoard.getShips()){
-                ship.getPane().setOnMousePressed(null);
-                ship.getPane().setOnMouseDragged(null);
-                ship.getPane().setOnMouseReleased(null);
-            }
+
         });
     }
 
@@ -127,7 +142,7 @@ public class GameController {
             Ship smallShip = new Ship(1, smallShipPane);
             smallShipStack.getChildren().add(smallShipPane);
 
-            shipMouseMovement(smallShip, smallShipStack);
+            handleShipMovement(smallShip, smallShipStack);
         }
 
         // ---------- Medium ships (size 2) ----------
@@ -136,7 +151,7 @@ public class GameController {
             Ship mediumShip = new Ship(2, mediumShipPane);
             mediumShipStack.getChildren().add(mediumShipPane);
 
-            shipMouseMovement(mediumShip, mediumShipStack);
+            handleShipMovement(mediumShip, mediumShipStack);
 
 
         }
@@ -147,7 +162,7 @@ public class GameController {
             Ship submarine = new Ship(3, submarinePane);
             submarineStack.getChildren().add(submarinePane);
 
-            shipMouseMovement(submarine, submarineStack);
+            handleShipMovement(submarine, submarineStack);
         }
 
         // ---------- Carriers (size 4) ----------
@@ -155,11 +170,11 @@ public class GameController {
         Ship carrier =  new Ship(4, carrierPane);
         carrierStack.getChildren().add(carrierPane);
 
-        shipMouseMovement(carrier, carrierStack);
+        handleShipMovement(carrier, carrierStack);
 
     }
 
-    public void shipMouseMovement(Ship ship, StackPane stack){
+    public void handleShipMovement(Ship ship, StackPane stack){
         Pane pane = ship.getPane();
         ImageView shipImageView = (ImageView) pane.getChildren().get(0);
 
@@ -176,7 +191,6 @@ public class GameController {
 
         //mediumShipPane.setStyle("-fx-border-color: red; -fx-border-width: 2;");
         pane.setOnMousePressed(e -> {
-
 
             if(e.getButton() == MouseButton.SECONDARY){
                 ship.flip();
@@ -247,7 +261,10 @@ public class GameController {
             Pane parent = (Pane) pane.getParent();
             parent.getChildren().remove(pane);
 
-            if(boundsInScene.contains(centerX, centerY)){
+            try{
+                if(!boundsInScene.contains(centerX, centerY)) {
+                    throw new ShipOutOfBounds("Barco por fuera del tablero de juego");
+                }
 
                 if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
                     centerX = pane.localToScene(0,0).getX();
@@ -279,12 +296,19 @@ public class GameController {
 
                 }
 
-                playerBoard.placeShip(ship, coords);
+                if(!playerBoard.canPlaceShip(ship.getLength(),coords.get(0), ship.getOrientation())){
+                    throw new OverlappingShip("No se puede poner un barco sobre otro");
+                }
 
+                playerBoard.placeShip(ship, coords);
                 System.out.println("X: " + userGridPane.getColumnIndex(pane) + " Y: " + userGridPane.getRowIndex(pane));
-            }
-            else{
+
+            } catch(ShipOutOfBounds|OverlappingShip i) {
+
+                System.out.println(i.getMessage());
                 stack.getChildren().add(pane);
+                playerBoard.removeShip(ship);
+                showError(errorLabel, i.getMessage());
             }
 
         });
@@ -436,5 +460,25 @@ public class GameController {
         for(Ship ship: machineBoard.getShips()){
             ship.getPane().setVisible(false);
         }
+    }
+
+    public void showError(Label label, String message) {
+        label.setText(message);
+        label.setOpacity(0);
+        label.setVisible(true);
+
+        FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.5), label);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1)); //Label stays visible for a second
+
+        FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.5), label);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+        fadeOut.setOnFinished(e -> label.setVisible(false)); //Leave label hidden after fade out
+
+        SequentialTransition sequence = new SequentialTransition(fadeIn, pause, fadeOut);
+        sequence.play();
     }
 }
