@@ -15,6 +15,7 @@ import org.example.miniproyecto_3.Model.*;
 import org.example.miniproyecto_3.Model.Exceptions.IncompleteBoard;
 import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
 import org.example.miniproyecto_3.Model.Exceptions.ShipOutOfBounds;
+import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
@@ -52,6 +53,7 @@ public class GameController {
     private Board playerBoard;
     private Board machineBoard;
     private Boolean machineShipsVisible;
+    private PlainTextFileHandler plainTextFileHandler;
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -72,10 +74,21 @@ public class GameController {
 
         playerBoard = game.getPlayerBoard();
         machineBoard = game.getMachineBoard();
+        plainTextFileHandler = new PlainTextFileHandler();
         drawShips();
         placeMachineShips();
         handleButtons();
-        turnLabel.setVisible(false);
+        handleLabels();
+
+    }
+
+    public void handleLabels(){
+        String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
+        game.setNick(nick);
+
+        turnLabel.setText("Posiciona tus barcos " + nick);
+        turnLabel.setVisible(true);
+
         errorLabel.setVisible(false);
     }
 

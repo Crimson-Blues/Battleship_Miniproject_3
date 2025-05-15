@@ -8,11 +8,11 @@ public class Game implements Serializable {
     public enum Turn {
         PLAYER, MACHINE
     }
-
     private final Board playerBoard;
     private final Board machineBoard;
     private final Machine machine;
     private Turn turn;
+    private String nick;
 
     public Game() {
         this.playerBoard = new Board();
@@ -74,5 +74,13 @@ public class Game implements Serializable {
     // La máquina gana si se han hundido todos los barcos del jugador
     public boolean machineWon() {
         return playerBoard.shipsSunk();
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public String getNick() {
+        return nick;
     }
 }
