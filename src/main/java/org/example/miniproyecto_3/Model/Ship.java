@@ -1,41 +1,44 @@
 package org.example.miniproyecto_3.Model;
 
+import javafx.scene.layout.Pane;
+import javafx.scene.transform.Rotate;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Ship implements Serializable {
-    private final int length;
-    private ArrayList<Coordinate>positions;
-    private Set<Coordinate>hits;
+public class Ship extends ShipAdapter implements Serializable {
+    private int length;
+    private Set<Coordinate> hits;
+    private Pane view;
+    private Rotate rotation;
+    private Coordinate headCoord;
 
-    public Ship(int length){
-        if(length<= 0)
-            throw new IllegalArgumentException("Error! La longitud del barco tiene que ser positiva");
-        this.length = length;
-        this.hits = new HashSet <Coordinate>();
+    public Ship(int length, Pane view){
+        try{
+            if(length<= 0)
+                throw new IllegalArgumentException("La longitud del barco tiene que ser positiva");
+            this.length = length;
+            this.hits = new HashSet <Coordinate>();
+            this.view = view;
+            rotation = new Rotate(90, view.getWidth() / 2, view.getHeight() / 2);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    public Pane getPane() {
+        return view;
     }
 
     public int getLength(){
         return length;
     }
 
-    public void setCoodinate(ArrayList<Coordinate> pos){
-        if (pos == null || pos.size() != length)
-            throw new IllegalArgumentException("Error! Ingrese una lista de coordenadas correcta");
-        positions = pos;
-    }
-
-    public ArrayList<Coordinate>getPositions(){
-        return positions;
-    }
-    public Set<Coordinate>getHits(){
+    public Set<Coordinate> getHits(){
         return hits;
-    }
-
-    public boolean contains(Coordinate coor){
-        return positions.contains(coor);
     }
 
     public boolean isSunk(){
@@ -43,9 +46,42 @@ public class Ship implements Serializable {
     }
 
     public void hit(Coordinate h){
-        if(!contains(h)){
-            throw new IllegalArgumentException("Error! No puedes hundir una posicion que no le pertenece al barco");
-        }
         hits.add(h);
+    }
+
+    public void setHeadCoord(Coordinate h){
+        headCoord = h;
+    }
+
+    public Coordinate getHeadCoord(){
+        return headCoord;
+    }
+
+    @Override
+    public void flip(){
+        System.out.println("Rotando barco");
+
+        if(orientation == Orientation.HORIZONTAL){
+            //view.getTransforms().add(rotation);
+            view.setRotate(90);
+            orientation = Orientation.VERTICAL;
+        }
+        else if (orientation == Orientation.VERTICAL){
+            //view.getTransforms().remove(rotation);
+            view.setRotate(0);
+            orientation = Orientation.HORIZONTAL;}
+
+        view.applyCss();
+        view.layout();
+
+    }
+
+    public void setOrientation(Orientation o){
+        orientation = o;
+        if(orientation == Orientation.HORIZONTAL){
+            view.setRotate(0);
+        } else if(orientation == Orientation.VERTICAL){
+            view.setRotate(90);
+        }
     }
 }

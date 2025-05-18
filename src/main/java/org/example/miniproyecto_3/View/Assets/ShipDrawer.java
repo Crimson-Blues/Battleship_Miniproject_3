@@ -26,12 +26,6 @@ public class ShipDrawer {
         smallShipPane.setSpacing(0);
 
         Group group = new Group();
-        group.setLayoutX(-19.0);
-        group.setLayoutY(24.0);
-        //group.setScaleX(0.3);
-        //group.setScaleY(0.25);
-        group.setScaleZ(0.5);
-
         // Add shapes
         Rectangle rect1 = new Rectangle(-4.0, 3.0, 83.0, 46.0);
         rect1.setArcWidth(100.0);
@@ -145,18 +139,10 @@ public class ShipDrawer {
     }
 
     public Pane drawMediumShip(){
-        VBox pane = new VBox();
-        //smallShipPane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        pane.setAlignment(Pos.CENTER);
-        pane.setPadding(Insets.EMPTY);
-        pane.setSpacing(0);
-
 
         Group group = new Group();
-        group.setLayoutX(-47.0);
-        group.setLayoutY(25.0);
-        //group.setScaleX(0.3);
-        //group.setScaleY(0.3);
+        group.setLayoutX(0.0);
+        group.setLayoutY(0.0);
 
         // Helper method to simplify stroke settings
         StrokeType strokeType = StrokeType.INSIDE;
@@ -294,18 +280,7 @@ public class ShipDrawer {
     }
 
     public Pane drawSubmarine(){
-        VBox submarinePane = new VBox();
-        submarinePane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
-        submarinePane.setAlignment(Pos.CENTER);
-        submarinePane.setPadding(Insets.EMPTY);
-        submarinePane.setSpacing(0);
-
-
         Group submarineGroup = new Group();
-        submarineGroup.setLayoutX(-86);
-        submarineGroup.setLayoutY(14);
-        //submarineGroup.setScaleX(0.3);
-        //submarineGroup.setScaleY(0.3);
 
 // Tail rectangles and fins
         Rectangle tail1 = new Rectangle(234, 0, 31, 70);
@@ -507,10 +482,6 @@ public class ShipDrawer {
 
         // Main group that contains all shapes
         Group mainGroup = new Group();
-        mainGroup.setLayoutX(-61);
-        mainGroup.setLayoutY(44);
-        //mainGroup.setScaleX(0.3);
-        //mainGroup.setScaleY(0.3);
 
         // Create all the shapes from the FXML
 
@@ -938,8 +909,8 @@ public class ShipDrawer {
 
     private VBox snapShot(Group group) {
         Pane wrapper = new Pane(group);
-        wrapper.setScaleX(0.35);
-        wrapper.setScaleY(0.35);
+        wrapper.setScaleX(0.4);
+        wrapper.setScaleY(0.4);
 
         // Snapshot to turn it into an image
         SnapshotParameters params = new SnapshotParameters();
@@ -952,6 +923,8 @@ public class ShipDrawer {
         vbox.getChildren().add(view);
         vbox.setPrefWidth(Region.USE_COMPUTED_SIZE);
         vbox.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
         vbox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
 

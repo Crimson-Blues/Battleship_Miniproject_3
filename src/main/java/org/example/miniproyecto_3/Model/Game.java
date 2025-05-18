@@ -1,82 +1,86 @@
 package org.example.miniproyecto_3.Model;
 
+import org.example.miniproyecto_3.Model.Exceptions.NonShootableCell;
+
 import java.io.Serializable;
 
 public class Game implements Serializable {
+    public enum Turn {
+        PLAYER, MACHINE
+    }
+    private final Board playerBoard;
+    private final Board machineBoard;
+    private final Machine machine;
+    private Turn turn;
+    private String nick;
 
-        private final Board playerBoard;
-        private final Board machineBoard;
-        private final Machine machine;
-        private boolean playerTurn;
+    public Game() {
+        this.playerBoard = new Board();
+        this.machineBoard = new Board();
+        this.machine = new Machine();
+        // La máquina coloca sus barcos en su tablero
+        this.machine.placeShips(machineBoard);
+        this.turn = Turn.PLAYER;
+    }
 
-        public Game() {
-            this.playerBoard = new Board();
-            this.machineBoard = new Board();
-            this.machine = new Machine();
-            this.machine.placeShips(machineBoard);
-            this.playerTurn = true; // El jugador humano empieza
-        }
+    public Board getPlayerBoard() {
+        return playerBoard;
+    }
 
-        public Board getPlayerBoard() {
-            return playerBoard;
-        }
+    public Board getMachineBoard() {
+        return machineBoard;
+    }
 
-        public Board getMachineBoard() {
-            return machineBoard;
-        }
+    // Nuevo getter para la máquina, esencial para la jugabilidad desde el controlador
+    public Machine getMachine() {
+        return machine;
+    }
 
-        public boolean isPlayerTurn() {
-            return playerTurn;
-        }
+    public boolean isPlayerTurn() {
+        return (turn == Turn.PLAYER);
+    }
 
-        private void toggleTurn() {
-            playerTurn = !playerTurn;
-        }
-
-        /**
-         * Disparo del jugador humano al tablero de la máquina.
-         * @param coor coordenada objetivo
-         * @return true si fue tocado, false si fue agua
-         */
-        public boolean fireAtMachine(Coordinate coor) {
-            if (!playerTurn || !machineBoard.canShot(coor)) return false;
-
-            boolean hit = machineBoard.fireAt(coor);
-
-            if (!hit) {
-                toggleTurn(); // pasa turno si fue agua
-            }
-
-            return hit;
-        }
-
-        /**
-         * Disparo de la máquina al tablero del jugador.
-         * return true si fue tocado, false si fue agua
-         */
-        public boolean fireAtPlayer() {
-            if (playerTurn) return false; // No debe disparar si no es su turno
-
-            Coordinate target = machine.selectTarget(playerBoard);
-            boolean hit = playerBoard.fireAt(target);
-
-            if (!hit) {
-                toggleTurn(); // pasa turno si fue agua
-            }
-
-            return hit;
-        }
-
-        public boolean isGameOver() {
-            return playerBoard.shipsSunk() || machineBoard.shipsSunk();
-        }
-
-        public boolean playerWon() {
-            return machineBoard.shipsSunk();
-        }
-
-        public boolean machineWon() {
-            return playerBoard.shipsSunk();
+    private void toggleTurn() {
+        if (turn == Turn.PLAYER) {
+            turn = Turn.MACHINE;
+        } else if (turn == Turn.MACHINE) {
+            turn = Turn.PLAYER;
         }
     }
 
+    // Se dispara sobre el tablero indicado y se cambia de turno si el disparo resulta en MISS
+    public Cell.CellState fire(Coordinate coord, Board board) throws NonShootableCell {
+        Cell.CellState hit = board.fireAt(coord);
+        if (hit == Cell.CellState.MISS) {
+            toggleTurn();
+        }
+        return hit;
+    }
+
+    public Turn getTurn() {
+        return turn;
+    }
+
+    // El juego se da por terminado si se han hundido todos los barcos de uno de los bandos
+    public boolean isGameOver() {
+        return playerBoard.shipsSunk() || machineBoard.shipsSunk();
+    }
+
+    // El jugador gana si se han hundido todos los barcos de la máquina
+    public boolean playerWon() {
+        return machineBoard.shipsSunk();
+    }
+
+    // La máquina gana si se han hundido todos los barcos del jugador
+    public boolean machineWon() {
+        return playerBoard.shipsSunk();
+    }
+
+    public void setNick(String nick) {
+        this.nick = nick;
+    }
+
+    public String getNick() {
+        return nick;
+    }
+}
