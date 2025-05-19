@@ -40,7 +40,7 @@ public class Game implements Serializable {
         return (turn == Turn.PLAYER);
     }
 
-    private void toggleTurn() {
+    public void toggleTurn() {
         if (turn == Turn.PLAYER) {
             turn = Turn.MACHINE;
         } else if (turn == Turn.MACHINE) {

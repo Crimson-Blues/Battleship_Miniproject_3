@@ -80,7 +80,23 @@ public class GameController {
         handleButtons();
         handleLabels();
 
+        // ---- Inicialización del tablero de usuario en userGridPane ----
+        for (int i = 0; i < playerBoard.getSize(); i++) {
+            for (int j = 0; j < playerBoard.getSize(); j++) {
+                StackPane cellPane = new StackPane();
+                cellPane.setStyle("-fx-border-color: black; -fx-border-width: 1;"); // Opcional: Borde para visualizar mejor
+
+                // Guarda esta celda dentro del tablero
+                playerBoard.getCell(i, j).setClickChecker(cellPane);
+
+                // Agregar cada celda al userGridPane
+                userGridPane.add(cellPane, j, i);
+            }
+        }
+
+        System.out.println("Número de elementos en userGridPane después de inicializar: " + userGridPane.getChildren().size());
     }
+
 
     public void handleLabels(){
         String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
@@ -333,18 +349,56 @@ public class GameController {
             System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
             return;
         }
-        PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Simulación de tiempo de respuesta
         pause.setOnFinished(e -> {
             try {
-                // La máquina selecciona un objetivo en el tablero del jugador
                 Coordinate target = game.getMachine().selectTarget(playerBoard);
-                Cell.CellState result = playerBoard.fireAt(target);
-                System.out.println("Machine fired at: (" + target.getRow() + ", " + target.getCol() + ") Result: " + result);
-                // Si el disparo impacta (HIT), permite seguir disparando
-                if (result != Cell.CellState.MISS && !game.isGameOver()) {
-                    machineTurn();
+                playerBoard.fireAt(target); // Aquí no retorno el estado, porque lo obtendré directamente de la celda
+
+                // Obtener la celda afectada
+                Cell cell = playerBoard.getCell(target.getRow(), target.getCol());
+                Cell.CellState currentState = cell.getState();
+
+                // Buscar el StackPane correspondiente en userGridPane
+                StackPane targetPane = null;
+                for (javafx.scene.Node node : userGridPane.getChildren()) {
+                    if (GridPane.getRowIndex(node) != null && GridPane.getColumnIndex(node) != null) {
+                        if (GridPane.getRowIndex(node) == target.getRow() && GridPane.getColumnIndex(node) == target.getCol()) {
+                            targetPane = (StackPane) node;
+                            break;
+                        }
+                    }
                 }
-                // Autosave tras la jugada de la máquina
+
+                // Si no se encuentra la celda, mostrar mensaje de error y salir
+                if (targetPane == null) {
+                    System.out.println("Error: No se encontró la celda en userGridPane en (" + target.getRow() + ", " + target.getCol() + ")");
+                    return;
+                }
+
+                // **Nueva solución**: Asegurar que el color se aplica correctamente según el estado
+                switch (currentState) {
+                    case HIT:
+                        targetPane.setStyle("-fx-background-color: red;"); // HIT en rojo
+                        break;
+                    case MISS:
+                        targetPane.setStyle("-fx-background-color: gray;"); // MISS en gris
+                        break;
+                    default:
+                        System.out.println("Advertencia: Estado inesperado en celda " + target.getRow() + ", " + target.getCol());
+                        break;
+                }
+
+                System.out.println("Machine fired at: (" + target.getRow() + ", " + target.getCol() + ") Result: " + currentState);
+
+                // Si el disparo es HIT, la máquina sigue disparando
+                if (currentState == Cell.CellState.HIT && !game.isGameOver()) {
+                    machineTurn();
+                } else {
+                    game.toggleTurn(); // Cambiar el turno al jugador si la máquina falla
+                }
+
                 saveGame();
             } catch (Exception ex) {
                 System.out.println("Error in machine turn: " + ex.getMessage());
@@ -352,6 +406,11 @@ public class GameController {
         });
         pause.play();
     }
+
+
+
+
+
 
     // Metodo para guardar el estado del juego en un archivo serializable
     private void saveGame() {

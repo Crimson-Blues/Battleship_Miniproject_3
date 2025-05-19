@@ -82,7 +82,7 @@ public class Board implements Serializable {
         for (Coordinate cord : coords) {
             int row = cord.getRow();
             int column = cord.getCol();
-            Cell cell = grid.get(column).get(row);
+            Cell cell = grid.get(row).get(column);
             cell.setShip(ship);
             cell.setState(Cell.CellState.SHIP);
             System.out.println("Barco posicionado en " + column + ", " + row);
@@ -111,7 +111,9 @@ public class Board implements Serializable {
         if (!canShoot(coor)) {
             throw new NonShootableCell("Celda (" + coor.getRow() + ", " + coor.getCol() + ") ya fue golpeada");
         }
+        System.out.println("Estado ANTES del disparo en (" + coor.getRow() + ", " + coor.getCol() + "): " + cell.getState());
         cell.hit();
+        System.out.println("Estado actualizado de celda (" + coor.getRow() + ", " + coor.getCol() + "): " + cell.getState());
         return cell.getState();
     }
 
