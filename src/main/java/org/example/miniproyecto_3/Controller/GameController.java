@@ -269,16 +269,26 @@ public class GameController {
             double gridX = userGridPane.localToScene(0,0).getX();
             double gridY = userGridPane.localToScene(0,0).getY();
 
-            double centerX = pane.localToScene(0,0).getX() + width/2;
-            double centerY = pane.localToScene(0,0).getY() + height/2;
+            double centerX = pane.localToScene(0,0).getX();
+            double centerY = pane.localToScene(0,0).getY();
 
-            Bounds boundsInScene = userGridPane.localToScene(userGridPane.getBoundsInLocal());
+            if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                centerX = pane.localToScene(0,0).getX() + width/2;
+                centerY = pane.localToScene(0,0).getY() + height/2;
+            }else if(ship.getOrientation() == IShip.Orientation.VERTICAL){
+                centerX = pane.localToScene(0,0).getX() - width/2;
+                centerY = pane.localToScene(0,0).getY() + height/2;
+            }
+
+            Bounds gridPaneBounds = userGridPane.localToScene(userGridPane.getBoundsInLocal());
+            Bounds shipPaneBounds = pane.localToScene(pane.getBoundsInLocal());
 
             Pane parent = (Pane) pane.getParent();
             parent.getChildren().remove(pane);
 
             try{
-                if(!boundsInScene.contains(centerX, centerY)) {
+                if(!(gridPaneBounds.contains(shipPaneBounds.getMinX(), shipPaneBounds.getMinY()) &&
+                        gridPaneBounds.contains(shipPaneBounds.getMaxX(), shipPaneBounds.getMaxY()))) {
                     throw new ShipOutOfBounds("Barco por fuera del tablero de juego");
                 }
 
