@@ -79,15 +79,18 @@ public class GameController {
         placeMachineShips();
         handleButtons();
         handleLabels();
-
     }
 
     public void handleLabels(){
-        String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
-        game.setNick(nick);
+        try{
+            String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
+            game.setNick(nick);
 
-        turnLabel.setText("Posiciona tus barcos " + nick);
-        turnLabel.setVisible(true);
+            turnLabel.setText("Posiciona tus barcos " + nick);
+            turnLabel.setVisible(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         errorLabel.setVisible(false);
     }
