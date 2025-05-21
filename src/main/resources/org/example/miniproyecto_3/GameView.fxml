@@ -120,7 +120,7 @@
                                              </padding></StackPane>
                                        </children>
                                     </VBox>
-                                    <Label alignment="CENTER" prefWidth="135.0" styleClass="general_label" text="Portaavión" />
+                                    <Label alignment="CENTER" prefWidth="135.0" styleClass="general_label" text="Portaaviones" />
                                  </children>
                               </VBox>
                            </children>

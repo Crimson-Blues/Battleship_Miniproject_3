@@ -11,8 +11,8 @@ import java.util.Set;
 public class Ship extends ShipAdapter implements Serializable {
     private int length;
     private Set<Coordinate> hits;
-
     private Coordinate headCoord;
+    private String kind;
 
     public Ship(int length){
         try{
@@ -20,6 +20,12 @@ public class Ship extends ShipAdapter implements Serializable {
                 throw new IllegalArgumentException("La longitud del barco tiene que ser positiva");
             this.length = length;
             this.hits = new HashSet <Coordinate>();
+            switch (length){
+                case 1: kind = "Frágata"; break;
+                case 2: kind = "Destructor" ; break;
+                case 3: kind = "Submarino"; break;
+                case 4: kind = "Portaaviones"; break;
+            }
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
@@ -68,5 +74,9 @@ public class Ship extends ShipAdapter implements Serializable {
         if(orientation == Orientation.HORIZONTAL){
         } else if(orientation == Orientation.VERTICAL){
         }
+    }
+
+    public String getKind(){
+        return kind;
     }
 }

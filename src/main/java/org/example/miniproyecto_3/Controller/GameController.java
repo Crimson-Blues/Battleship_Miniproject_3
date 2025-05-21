@@ -369,10 +369,7 @@ public class GameController {
 
     // Metodo para ejecutar el turno de la máquina
     private void machineTurn() {
-        if (game.isGameOver()) {
-            System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
-            return;
-        }
+
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
         pause.setOnFinished(e -> {
             // La máquina selecciona un objetivo en el tablero del jugador
@@ -398,14 +395,22 @@ public class GameController {
             int x = target.getCol();
             int y = target.getRow();
             String turnMessage = (game.getTurn() == Game.Turn.PLAYER) ? "Turno: " + game.getPlayer().getNickname() : "Turno: Máquina";
+
             if(result == Cell.CellState.MISS){
                 stackPanes.get(x).get(y).setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
                 showTempMessage(turnLabel, "Tiro al agua en: (" + target.getCol() + ", " + target.getRow() + ")",turnMessage, 1);
+
             } else if (result == Cell.CellState.HIT){
                 stackPanes.get(x).get(y).setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
-                showTempMessage(turnLabel, "Barco golpeado en: (" + target.getCol() + ", " + target.getRow() + ")", turnMessage ,1);
+                if (game.isGameOver()) {
+                    System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
+                }
+                if(board.getCell(x, y).getShip().isSunk()){
+                    showTempMessage(turnLabel, board.getCell(x, y).getShip().getKind()+ " hundido!",  turnMessage, 1);
+                } else{
+                    showTempMessage(turnLabel, "Barco golpeado en: (" + target.getCol() + ", " + target.getRow() + ")", turnMessage ,1);
+                }
             }
-
 
         }catch(NonShootableCell ex) {
             showError(errorLabel, ex.getMessage());
