@@ -17,6 +17,7 @@ import org.example.miniproyecto_3.Model.Exceptions.NonShootableCell;
 import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
 import org.example.miniproyecto_3.Model.Exceptions.ShipOutOfBounds;
 import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
+import org.example.miniproyecto_3.Model.FileHandlers.SerializableFileHandler;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
@@ -56,6 +57,7 @@ public class GameController {
     private Board machineBoard;
     private Boolean machineShipsVisible;
     private PlainTextFileHandler plainTextFileHandler;
+    private SerializableFileHandler serializableFileHandler;
     private ArrayList<ArrayList<StackPane>> playerStackPanes;
     private ArrayList<ArrayList<StackPane>> machineStackPanes;
     private ArrayList<Pane>  playerShipPanes;
@@ -146,7 +148,6 @@ public class GameController {
 
                                 }
                                 // Autosave: Guardar automáticamente el estado del juego tras cada jugada
-                                //saveGame();
                             } catch (Exception ex) {
                                 showError(errorLabel, ex.getMessage());
                             }
@@ -383,7 +384,6 @@ public class GameController {
                 smallPause.play();
             }
             // Autosave tras la jugada de la máquina
-            //saveGame();
         });
         pause.play();
 
@@ -416,24 +416,20 @@ public class GameController {
             showError(errorLabel, ex.getMessage());
         }
 
+        saveGame();
     }
 
     // Metodo para guardar el estado del juego en un archivo serializable
     private void saveGame() {
-        try (FileOutputStream fos = new FileOutputStream(SAVE_FILE);
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(game);
-            System.out.println("Game saved successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        serializableFileHandler = new SerializableFileHandler();
+        serializableFileHandler.serialize(SAVE_FILE, game);
     }
 
     // Metodo para cargar el estado guardado del juego
     private void loadGameState() {
-        try (FileInputStream fis = new FileInputStream(SAVE_FILE);
-             ObjectInputStream ois = new ObjectInputStream(fis)) {
-            Game loadedGame = (Game) ois.readObject();
+        serializableFileHandler = new SerializableFileHandler();
+        try{
+            Game loadedGame = (Game) serializableFileHandler.deserialize(SAVE_FILE);
             if (loadedGame != null) {
                 game = loadedGame;
                 playerBoard = game.getPlayerBoard();
@@ -442,7 +438,7 @@ public class GameController {
                 updateMachineBoardView();
                 updatePlayerBoardView();
             }
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             // Si ocurre un error en la carga, asignamos un juego nuevo
             game = new Game();
