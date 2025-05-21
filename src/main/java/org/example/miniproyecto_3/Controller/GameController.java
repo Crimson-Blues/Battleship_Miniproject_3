@@ -58,6 +58,8 @@ public class GameController {
     private PlainTextFileHandler plainTextFileHandler;
     private ArrayList<ArrayList<StackPane>> playerStackPanes;
     private ArrayList<ArrayList<StackPane>> machineStackPanes;
+    private ArrayList<Pane>  playerShipPanes;
+    private ArrayList<Pane> machineShipPanes;
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -157,10 +159,10 @@ public class GameController {
                     }
                 }
                 // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
-                for (Ship ship : playerBoard.getShips()){
-                    ship.getPane().setOnMousePressed(null);
-                    ship.getPane().setOnMouseDragged(null);
-                    ship.getPane().setOnMouseReleased(null);
+                for (Pane pane : playerShipPanes){
+                    pane.setOnMousePressed(null);
+                    pane.setOnMouseDragged(null);
+                    pane.setOnMouseReleased(null);
                 }
             } catch (Exception ex) {
                 showError(errorLabel, ex.getMessage());
@@ -171,48 +173,52 @@ public class GameController {
 
     //Draws the ships and places them in the stackPanes
     public void drawShips(){
+        playerShipPanes = new ArrayList<>();
         ShipDrawer shipDrawer = new ShipDrawer();
 
         //----Small ships (size 1)-------
         for (int i = 0; i < 4; i++){
             Pane smallShipPane = shipDrawer.drawSmallShip();
-            Ship smallShip = new Ship(1, smallShipPane);
+            Ship smallShip = new Ship(1);
             smallShipStack.getChildren().add(smallShipPane);
 
-            handleShipMovement(smallShip, smallShipStack);
+            handleShipMovement(smallShip, smallShipStack, smallShipPane);
+            playerShipPanes.add(smallShipPane);
+
         }
 
         // ---------- Medium ships (size 2) ----------
         for (int i = 0; i < 3; i++){
             Pane mediumShipPane = shipDrawer.drawMediumShip();
-            Ship mediumShip = new Ship(2, mediumShipPane);
+            Ship mediumShip = new Ship(2);
             mediumShipStack.getChildren().add(mediumShipPane);
 
-            handleShipMovement(mediumShip, mediumShipStack);
-
+            handleShipMovement(mediumShip, mediumShipStack, mediumShipPane);
+            playerShipPanes.add(mediumShipPane);
 
         }
 
         // ---------- Submarines (size 3) ----------
         for (int i = 0; i < 2; i++){
             Pane submarinePane = shipDrawer.drawSubmarine();
-            Ship submarine = new Ship(3, submarinePane);
+            Ship submarine = new Ship(3);
             submarineStack.getChildren().add(submarinePane);
 
-            handleShipMovement(submarine, submarineStack);
+            handleShipMovement(submarine, submarineStack,submarinePane);
+            playerShipPanes.add(submarinePane);
         }
 
         // ---------- Carriers (size 4) ----------
         Pane carrierPane = shipDrawer.drawCarrier();
-        Ship carrier =  new Ship(4, carrierPane);
+        Ship carrier =  new Ship(4);
         carrierStack.getChildren().add(carrierPane);
 
-        handleShipMovement(carrier, carrierStack);
+        handleShipMovement(carrier, carrierStack, carrierPane);
+        playerShipPanes.add(carrierPane);
 
     }
 
-    public void handleShipMovement(Ship ship, StackPane stack){
-        Pane pane = ship.getPane();
+    public void handleShipMovement(Ship ship, StackPane stack, Pane pane){
         ImageView shipImageView = (ImageView) pane.getChildren().get(0);
 
         playerGridPane.setHalignment(pane, HPos.CENTER);
@@ -230,7 +236,7 @@ public class GameController {
         pane.setOnMousePressed(e -> {
 
             if(e.getButton() == MouseButton.SECONDARY){
-                ship.flip();
+                flipShip(ship, pane);
             }
 
             // Convert the mouse click to the local coordinate space of the shipPane
@@ -472,20 +478,24 @@ public class GameController {
 
     //Sets machine ships panes onto machineGridPane
     private void placeMachineShips(){
+        machineShipPanes = new ArrayList<Pane>();
         for(Ship ship : machineBoard.getShips()){
 
             int cellX = ship.getHeadCoord().getCol();
             int cellY = ship.getHeadCoord().getRow();
-            Pane pane = ship.getPane();
+            Pane pane = drawMachineShips(ship.getLength());
+            machineShipPanes.add(pane);
 
             machineGridPane.setHalignment(pane, HPos.CENTER);
             machineGridPane.setValignment(pane, VPos.CENTER);
 
             if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
+                pane.setRotate(0);
                 machineGridPane.setColumnSpan(pane, ship.getLength());
                 machineGridPane.setRowSpan(pane, 1);
 
             }else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
+                pane.setRotate(90);
                 machineGridPane.setColumnSpan(pane, 1);
                 machineGridPane.setRowSpan(pane, ship.getLength());
             }
@@ -516,15 +526,15 @@ public class GameController {
     }
     //Makes enemy ships visible
     private void viewEnemyShips() {
-        for(Ship ship: machineBoard.getShips()){
-            ship.getPane().setVisible(true);
+        for(Pane pane: machineShipPanes){
+            pane.setVisible(true);
         }
     }
 
     //Makes enemy ships visible
     private void hideEnemyShips() {
-        for(Ship ship: machineBoard.getShips()){
-            ship.getPane().setVisible(false);
+        for(Pane pane: machineShipPanes){
+            pane.setVisible(false);
         }
     }
 
@@ -553,5 +563,40 @@ public class GameController {
         PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
         pause.setOnFinished(e -> label.setText(defaultMessage));
         pause.play();
+    }
+
+    public Pane drawMachineShips(int length){
+        ShipDrawer drawer = new ShipDrawer();
+        switch(length){
+            case 1:
+                return drawer.drawSmallShip();
+
+            case 2:
+                return drawer.drawMediumShip();
+
+            case 3:
+                return drawer.drawSubmarine();
+
+            case 4:
+                return drawer.drawCarrier();
+
+            default:
+                return new Pane();
+
+        }
+    }
+
+    public void flipShip(Ship ship, Pane pane){
+        ship.flip();
+
+        if(ship.getOrientation() == Ship.Orientation.HORIZONTAL){
+            pane.setRotate(0);
+        } else if (ship.getOrientation() == Ship.Orientation.VERTICAL){
+            pane.setRotate(90);
+        }
+
+        pane.applyCss();
+        pane.layout();
+
     }
 }

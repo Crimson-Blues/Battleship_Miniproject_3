@@ -44,6 +44,7 @@ public class Cell implements Serializable {
 
 
     public void hit(){
+
         if (this.state == Cell.CellState.SHIP) {
             setState(Cell.CellState.HIT);
             System.out.println("Le diste a la nave en (" + this.coordinate.getCol() + ", " + this.coordinate.getRow() + ")");

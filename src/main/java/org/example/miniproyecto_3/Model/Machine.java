@@ -17,8 +17,7 @@ public class Machine implements Serializable {
         int boardSize = board.getSize();
 
         for (int size : sizes) {
-            Pane pane = drawMachineShips(size);
-            Ship ship = new Ship(size, pane); //Unplaced ship
+            Ship ship = new Ship(size); //Unplaced ship
 
             boolean placed = false;
             while (!placed) {
@@ -62,26 +61,7 @@ public class Machine implements Serializable {
         }
     }
 
-    public Pane drawMachineShips(int length){
-        ShipDrawer drawer = new ShipDrawer();
-        switch(length){
-            case 1:
-                return drawer.drawSmallShip();
 
-            case 2:
-                return drawer.drawMediumShip();
-
-            case 3:
-                return drawer.drawSubmarine();
-
-            case 4:
-                return drawer.drawCarrier();
-
-            default:
-                return new Pane();
-
-        }
-    }
 
 
     public Coordinate selectTarget(Board playerBoard) {

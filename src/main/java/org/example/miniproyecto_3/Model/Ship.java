@@ -11,26 +11,19 @@ import java.util.Set;
 public class Ship extends ShipAdapter implements Serializable {
     private int length;
     private Set<Coordinate> hits;
-    private Pane view;
-    private Rotate rotation;
+
     private Coordinate headCoord;
 
-    public Ship(int length, Pane view){
+    public Ship(int length){
         try{
             if(length<= 0)
                 throw new IllegalArgumentException("La longitud del barco tiene que ser positiva");
             this.length = length;
             this.hits = new HashSet <Coordinate>();
-            this.view = view;
-            rotation = new Rotate(90, view.getWidth() / 2, view.getHeight() / 2);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         }
 
-    }
-
-    public Pane getPane() {
-        return view;
     }
 
     public int getLength(){
@@ -62,26 +55,18 @@ public class Ship extends ShipAdapter implements Serializable {
         System.out.println("Rotando barco");
 
         if(orientation == Orientation.HORIZONTAL){
-            //view.getTransforms().add(rotation);
-            view.setRotate(90);
             orientation = Orientation.VERTICAL;
         }
         else if (orientation == Orientation.VERTICAL){
-            //view.getTransforms().remove(rotation);
-            view.setRotate(0);
             orientation = Orientation.HORIZONTAL;}
 
-        view.applyCss();
-        view.layout();
 
     }
 
     public void setOrientation(Orientation o){
         orientation = o;
         if(orientation == Orientation.HORIZONTAL){
-            view.setRotate(0);
         } else if(orientation == Orientation.VERTICAL){
-            view.setRotate(90);
         }
     }
 }
