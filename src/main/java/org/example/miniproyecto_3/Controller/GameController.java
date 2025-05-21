@@ -111,7 +111,7 @@ public class GameController {
         playButton.setOnAction(e -> {
             try{
                 if(playerBoard.getShips().size() < 10){
-                    throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+                    //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
                 }
 
                 turnLabel.setText("Turno: " + game.getPlayer().getNickname());
@@ -138,8 +138,10 @@ public class GameController {
 
                                 // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
                                 if (game.getTurn() == Game.Turn.MACHINE) {
-                                    turnLabel.setText("Fallaste!");
-                                    machineTurn();
+                                    PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                                    pause.setOnFinished(event ->{machineTurn();});
+                                    pause.play();
+
                                 }
                                 // Autosave: Guardar automáticamente el estado del juego tras cada jugada
                                 //saveGame();
@@ -365,7 +367,6 @@ public class GameController {
             System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
             return;
         }
-        turnLabel.setText("Turno: Máquina");
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
         pause.setOnFinished(e -> {
             // La máquina selecciona un objetivo en el tablero del jugador
@@ -374,10 +375,9 @@ public class GameController {
             System.out.println("Machine fired at: (" + target.getCol() + ", " + target.getRow() + ")");
             // Si el disparo impacta (HIT), permite seguir disparando
             if (game.getTurn() == Game.Turn.MACHINE) {
-                machineTurn();
-            }
-            if(game.getTurn() == Game.Turn.PLAYER) {
-                turnLabel.setText("Turno: " + game.getPlayer().getNickname());
+                PauseTransition smallPause = new PauseTransition(Duration.seconds(1));
+                smallPause.setOnFinished(event ->{machineTurn();});
+                smallPause.play();
             }
             // Autosave tras la jugada de la máquina
             //saveGame();
@@ -391,11 +391,15 @@ public class GameController {
             Cell.CellState result = game.fire(target, board);
             int x = target.getCol();
             int y = target.getRow();
+            String turnMessage = (game.getTurn() == Game.Turn.PLAYER) ? "Turno: " + game.getPlayer().getNickname() : "Turno: Máquina";
             if(result == Cell.CellState.MISS){
                 stackPanes.get(x).get(y).setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
+                showTempMessage(turnLabel, "Tiro al agua en: (" + target.getCol() + ", " + target.getRow() + ")",turnMessage, 1);
             } else if (result == Cell.CellState.HIT){
                 stackPanes.get(x).get(y).setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
+                showTempMessage(turnLabel, "Barco golpeado en: (" + target.getCol() + ", " + target.getRow() + ")", turnMessage ,1);
             }
+
 
         }catch(NonShootableCell ex) {
             showError(errorLabel, ex.getMessage());
@@ -542,5 +546,12 @@ public class GameController {
 
         SequentialTransition sequence = new SequentialTransition(fadeIn, pause, fadeOut);
         sequence.play();
+    }
+
+    public void showTempMessage(Label label, String tempMessage, String defaultMessage, double seconds) {
+        label.setText(tempMessage);
+        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
+        pause.setOnFinished(e -> label.setText(defaultMessage));
+        pause.play();
     }
 }
