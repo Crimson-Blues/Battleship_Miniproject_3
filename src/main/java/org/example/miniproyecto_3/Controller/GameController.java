@@ -13,12 +13,14 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.example.miniproyecto_3.Model.*;
 import org.example.miniproyecto_3.Model.Exceptions.IncompleteBoard;
+import org.example.miniproyecto_3.Model.Exceptions.NonShootableCell;
 import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
 import org.example.miniproyecto_3.Model.Exceptions.ShipOutOfBounds;
 import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class GameController {
     @FXML
     private StackPane carrierStack;
     @FXML
-    private GridPane userGridPane;
+    private GridPane playerGridPane;
     @FXML
     private GridPane machineGridPane;
     @FXML
@@ -54,6 +56,8 @@ public class GameController {
     private Board machineBoard;
     private Boolean machineShipsVisible;
     private PlainTextFileHandler plainTextFileHandler;
+    private ArrayList<ArrayList<StackPane>> playerStackPanes;
+    private ArrayList<ArrayList<StackPane>> machineStackPanes;
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -63,6 +67,7 @@ public class GameController {
     @FXML
     public void initialize() {
         // Si existe un archivo guardado, se carga la partida
+        /*
         if (new File(SAVE_FILE).exists()){
             loadGameState();
             if (game == null) {
@@ -71,6 +76,8 @@ public class GameController {
         } else {
             game = new Game();
         }
+        */
+        game = new Game();
 
         playerBoard = game.getPlayerBoard();
         machineBoard = game.getMachineBoard();
@@ -84,7 +91,7 @@ public class GameController {
     public void handleLabels(){
         try{
             String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
-            game.setNick(nick);
+            game.getPlayer().setNickname(nick);
 
             turnLabel.setText("Posiciona tus barcos " + nick);
             turnLabel.setVisible(true);
@@ -106,33 +113,45 @@ public class GameController {
                 if(playerBoard.getShips().size() < 10){
                     throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
                 }
+
+                turnLabel.setText("Turno: " + game.getPlayer().getNickname());
+
+                playerStackPanes = new ArrayList<>();
+                machineStackPanes = new ArrayList<>();
+
                 for (int i = 0; i < machineBoard.getSize(); i++){
+                    playerStackPanes.add(new ArrayList<StackPane>());
+                    machineStackPanes.add(new ArrayList<StackPane>());
+
                     for (int j = 0; j < machineBoard.getSize(); j++){
-                        final int row = i;
-                        final int col = j;
-                        StackPane cellPane = new StackPane();
+                        final int col = i;
+                        final int row = j;
+
+                        StackPane machineCellPane = new StackPane();
+                        StackPane playerCellPane = new StackPane();
+
                         // Asignar evento de click: al disparar se procesa el tiro del jugador
-                        cellPane.setOnMouseClicked(ev -> {
+                        machineCellPane.setOnMouseClicked(ev -> {
                             try {
                                 // Intenta disparar en la celda
-                                Cell.CellState result = game.fire(new Coordinate(row, col), machineBoard);
-                                if (result == Cell.CellState.HIT) {
-                                    cellPane.setStyle("-fx-background-color: orange;");
-                                } else if (result == Cell.CellState.MISS) {
-                                    cellPane.setStyle("-fx-background-color: lightblue;");
-                                }
+                                shootCell(new Coordinate(row, col), machineBoard, machineStackPanes);
+
                                 // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
-                                if (result == Cell.CellState.MISS) {
+                                if (game.getTurn() == Game.Turn.MACHINE) {
+                                    turnLabel.setText("Fallaste!");
                                     machineTurn();
                                 }
                                 // Autosave: Guardar automáticamente el estado del juego tras cada jugada
-                                saveGame();
+                                //saveGame();
                             } catch (Exception ex) {
-                                System.out.println(ex.getMessage());
+                                showError(errorLabel, ex.getMessage());
                             }
                         });
-                        machineGridPane.add(cellPane, i, j);
-                        machineBoard.getCell(i, j).setClickChecker(cellPane);
+                        machineGridPane.add(machineCellPane, i, j);
+                        machineStackPanes.get(i).add(machineCellPane);
+
+                        playerGridPane.add(playerCellPane, i, j);
+                        playerStackPanes.get(i).add(playerCellPane);
                     }
                 }
                 // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
@@ -194,8 +213,8 @@ public class GameController {
         Pane pane = ship.getPane();
         ImageView shipImageView = (ImageView) pane.getChildren().get(0);
 
-        userGridPane.setHalignment(pane, HPos.CENTER);
-        userGridPane.setValignment(pane, VPos.CENTER);
+        playerGridPane.setHalignment(pane, HPos.CENTER);
+        playerGridPane.setValignment(pane, VPos.CENTER);
 
         double width = shipImageView.getImage().getWidth();
         double height = shipImageView.getImage().getHeight();
@@ -266,8 +285,8 @@ public class GameController {
         pane.setOnMouseReleased(e -> {
             int cellSize = 40;
 
-            double gridX = userGridPane.localToScene(0,0).getX();
-            double gridY = userGridPane.localToScene(0,0).getY();
+            double gridX = playerGridPane.localToScene(0,0).getX();
+            double gridY = playerGridPane.localToScene(0,0).getY();
 
             double centerX = pane.localToScene(0,0).getX();
             double centerY = pane.localToScene(0,0).getY();
@@ -280,7 +299,7 @@ public class GameController {
                 centerY = pane.localToScene(0,0).getY() + height/2;
             }
 
-            Bounds gridPaneBounds = userGridPane.localToScene(userGridPane.getBoundsInLocal());
+            Bounds gridPaneBounds = playerGridPane.localToScene(playerGridPane.getBoundsInLocal());
             Bounds shipPaneBounds = pane.localToScene(pane.getBoundsInLocal());
 
             Pane parent = (Pane) pane.getParent();
@@ -308,7 +327,7 @@ public class GameController {
                 int cellX = (int) ((centerX - gridX) / cellSize);
                 int cellY = (int) ((centerY - gridY) / cellSize);
 
-                userGridPane.add(pane, cellX, cellY);
+                playerGridPane.add(pane, cellX, cellY);
 
                 List<Coordinate> coords = new ArrayList<Coordinate>();
                 if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
@@ -327,7 +346,7 @@ public class GameController {
                 }
 
                 playerBoard.placeShip(ship, coords);
-                System.out.println("X: " + userGridPane.getColumnIndex(pane) + " Y: " + userGridPane.getRowIndex(pane));
+                System.out.println("X: " + playerGridPane.getColumnIndex(pane) + " Y: " + playerGridPane.getRowIndex(pane));
 
             } catch(ShipOutOfBounds|OverlappingShip i) {
 
@@ -346,24 +365,42 @@ public class GameController {
             System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
             return;
         }
+        turnLabel.setText("Turno: Máquina");
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
         pause.setOnFinished(e -> {
-            try {
-                // La máquina selecciona un objetivo en el tablero del jugador
-                Coordinate target = game.getMachine().selectTarget(playerBoard);
-                Cell.CellState result = playerBoard.fireAt(target);
-                System.out.println("Machine fired at: (" + target.getRow() + ", " + target.getCol() + ") Result: " + result);
-                // Si el disparo impacta (HIT), permite seguir disparando
-                if (result != Cell.CellState.MISS && !game.isGameOver()) {
-                    machineTurn();
-                }
-                // Autosave tras la jugada de la máquina
-                saveGame();
-            } catch (Exception ex) {
-                System.out.println("Error in machine turn: " + ex.getMessage());
+            // La máquina selecciona un objetivo en el tablero del jugador
+            Coordinate target = game.getMachine().selectTarget(playerBoard);
+            shootCell(target, playerBoard, playerStackPanes);
+            System.out.println("Machine fired at: (" + target.getCol() + ", " + target.getRow() + ")");
+            // Si el disparo impacta (HIT), permite seguir disparando
+            if (game.getTurn() == Game.Turn.MACHINE) {
+                machineTurn();
             }
+            if(game.getTurn() == Game.Turn.PLAYER) {
+                turnLabel.setText("Turno: " + game.getPlayer().getNickname());
+            }
+            // Autosave tras la jugada de la máquina
+            //saveGame();
         });
         pause.play();
+
+    }
+
+    private void shootCell(Coordinate target, Board board, ArrayList<ArrayList<StackPane>> stackPanes) {
+        try{
+            Cell.CellState result = game.fire(target, board);
+            int x = target.getCol();
+            int y = target.getRow();
+            if(result == Cell.CellState.MISS){
+                stackPanes.get(x).get(y).setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
+            } else if (result == Cell.CellState.HIT){
+                stackPanes.get(x).get(y).setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
+            }
+
+        }catch(NonShootableCell ex) {
+            showError(errorLabel, ex.getMessage());
+        }
+
     }
 
     // Metodo para guardar el estado del juego en un archivo serializable
@@ -425,7 +462,6 @@ public class GameController {
                     }
                 });
                 machineGridPane.add(cellPane, i, j);
-                machineBoard.getCell(i, j).setClickChecker(cellPane);
             }
         }
     }

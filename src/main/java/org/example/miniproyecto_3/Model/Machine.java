@@ -9,7 +9,6 @@ import java.util.*;
 
 public class Machine implements Serializable {
     private final Random random = new Random();
-    private final Set<Coordinate> usedShots = new HashSet<>();
 
     // Métodos públicos ya existentes: placeShips y selectTarget.
 
@@ -92,8 +91,7 @@ public class Machine implements Serializable {
             int row = random.nextInt(boardSize);
             int col = random.nextInt(boardSize);
             target = new Coordinate(row, col);
-        } while (usedShots.contains(target) || !playerBoard.canShoot(target));
-        usedShots.add(target);
+        } while (!playerBoard.canShoot(target));
         return target;
     }
 }

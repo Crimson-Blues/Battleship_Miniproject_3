@@ -2,7 +2,9 @@ package org.example.miniproyecto_3.Model;
 
 import javafx.scene.layout.StackPane;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     public enum CellState {
         EMPTY,
         SHIP,
@@ -13,7 +15,6 @@ public class Cell {
     private CellState state;
     private Ship ship;
     private Coordinate coordinate;
-    private transient StackPane clickChecker;
 
 
     public Cell(Coordinate cord){
@@ -41,27 +42,14 @@ public class Cell {
         return coordinate;
     }
 
-    public StackPane getClickChecker() {
-        return clickChecker;
-    }
 
-    public void setClickChecker(StackPane clickChecker) {
-        this.clickChecker = clickChecker;
-        // No asignamos ningún manejador aquí; lo hará el GameController.
-    }
-
-    public void  handleClick(){
-        System.out.println("Clicked on: " + coordinate.getRow() + ", " + coordinate.getCol());
-        /*clickChecker.setStyle("-fx-background-color: red");*/
-
-    }
     public void hit(){
         if (this.state == Cell.CellState.SHIP) {
             setState(Cell.CellState.HIT);
-            System.out.println("Le diste a la nave en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
+            System.out.println("Le diste a la nave en (" + this.coordinate.getCol() + ", " + this.coordinate.getRow() + ")");
         } else if (this.state == Cell.CellState.EMPTY) {
             setState(Cell.CellState.MISS);
-            System.out.println("Disparo en el agua en (" + this.coordinate.getRow() + ", " + this.coordinate.getCol() + ")");
+            System.out.println("Disparo en el agua en (" + this.coordinate.getCol() + ", " + this.coordinate.getRow() + ")");
         }
     }
 }

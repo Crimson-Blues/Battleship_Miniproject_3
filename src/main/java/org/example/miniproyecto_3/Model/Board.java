@@ -19,9 +19,8 @@ public class Board implements Serializable {
         for (int i = 0; i < SIZE; i++) {
             //Agrega el arraylist de cellState
             grid.add(new ArrayList<Cell>(SIZE));
-
             for (int j = 0; j < SIZE; j++) {
-                grid.get(i).add(new Cell(new Coordinate(i, j)));
+                grid.get(i).add(new Cell(new Coordinate(j, i)));
             }
         }
 
@@ -58,7 +57,7 @@ public class Board implements Serializable {
         if (!isValidCoordinate(coor)) {
             return false;
         }
-        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
+        Cell cell = grid.get(coor.getCol()).get(coor.getRow());
 
         return (cell.getState() == Cell.CellState.EMPTY || cell.getState() == Cell.CellState.SHIP);
 
@@ -70,7 +69,7 @@ public class Board implements Serializable {
             int row = cord.getRow();
             int column = cord.getCol();
             try{
-                Cell cell = grid.get(row).get(column);
+                Cell cell = grid.get(column).get(row);
                 if (cell.getState() == Cell.CellState.SHIP)
                     throw new OverlappingShip("Barco posicionado sobre otro");
             }catch(OverlappingShip e){
@@ -92,6 +91,7 @@ public class Board implements Serializable {
     }
 
     public void removeShip(Ship ship) {
+        ships.remove(ship);
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
                 Cell cell = grid.get(i).get(j);
@@ -107,9 +107,9 @@ public class Board implements Serializable {
         if (!isValidCoordinate(coor)) {
             throw new IllegalArgumentException("La coordenada no puede salirse del tablero");
         }
-        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
+        Cell cell = grid.get(coor.getCol()).get(coor.getRow());
         if (!canShoot(coor)) {
-            throw new NonShootableCell("Celda (" + coor.getRow() + ", " + coor.getCol() + ") ya fue golpeada");
+            throw new NonShootableCell("Celda (" + coor.getCol() + ", " + coor.getRow() + ") ya fue golpeada");
         }
         cell.hit();
         return cell.getState();
