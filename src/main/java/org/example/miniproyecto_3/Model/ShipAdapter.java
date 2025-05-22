@@ -4,6 +4,7 @@ public abstract class ShipAdapter implements IShip {
     protected State state;
     protected Orientation orientation;
 
+
     public ShipAdapter(){
 
         this.state = State.NOT_SUNK;
@@ -33,5 +34,6 @@ public abstract class ShipAdapter implements IShip {
     public void setSunk(State state) {
         this.state = state;
     }
+
 }
 

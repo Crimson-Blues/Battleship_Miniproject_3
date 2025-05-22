@@ -16,14 +16,14 @@ public class SerializableFileHandler implements ISerializableFileHandler {
     }
 
     @Override
-    public Object deserialize(String fileName) {
+    public Object deserialize(String fileName) throws IOException {
         try (FileInputStream fis = new FileInputStream(fileName)) {
             ObjectInputStream in = new ObjectInputStream(fis);
 
             return (Object) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
+            throw new IOException();
         }
     }
 }

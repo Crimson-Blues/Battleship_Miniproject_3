@@ -12,7 +12,7 @@ public class Game implements Serializable {
     private final Board machineBoard;
     private final Machine machine;
     private Turn turn;
-    private String nick;
+    private final Player player;
 
     public Game() {
         this.playerBoard = new Board();
@@ -21,6 +21,7 @@ public class Game implements Serializable {
         // La máquina coloca sus barcos en su tablero
         this.machine.placeShips(machineBoard);
         this.turn = Turn.PLAYER;
+        this.player = new Player();
     }
 
     public Board getPlayerBoard() {
@@ -50,11 +51,14 @@ public class Game implements Serializable {
 
     // Se dispara sobre el tablero indicado y se cambia de turno si el disparo resulta en MISS
     public Cell.CellState fire(Coordinate coord, Board board) throws NonShootableCell {
+
         Cell.CellState hit = board.fireAt(coord);
         if (hit == Cell.CellState.MISS) {
             toggleTurn();
         }
+
         return hit;
+
     }
 
     public Turn getTurn() {
@@ -76,11 +80,7 @@ public class Game implements Serializable {
         return playerBoard.shipsSunk();
     }
 
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-    public String getNick() {
-        return nick;
+    public Player getPlayer(){
+        return player;
     }
 }
