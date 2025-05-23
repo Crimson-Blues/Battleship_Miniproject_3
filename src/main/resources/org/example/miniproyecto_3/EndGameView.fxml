@@ -13,7 +13,7 @@
          <Image url="@images/background1.png" />
       </image>
    </ImageView>
-   <HBox alignment="CENTER" layoutX="337.0" layoutY="429.0" prefHeight="109.0" prefWidth="427.0" spacing="60.0">
+   <HBox alignment="CENTER" layoutX="337.0" layoutY="504.0" prefHeight="109.0" prefWidth="427.0" spacing="60.0">
       <children>
       
           <Button fx:id="playAgainButton" prefHeight="54.0" prefWidth="160.0" text="Play Again" />
@@ -22,16 +22,17 @@
       </children>
    </HBox>
 
-    <Label fx:id="resultLabel" layoutX="372.0" layoutY="244.0" styleClass="end-title" text="!Ganaste!" />
-   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="260.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+    <Label fx:id="resultLabel" layoutX="355.0" layoutY="320.0" styleClass="end-title" text="!You Won!" />
+   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="188.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/videoGame.png" />
       </image>
    </ImageView>
-   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="728.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
+   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="829.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/videoGame.png" />
       </image>
    </ImageView>
+   <Label layoutX="299.0" layoutY="117.0" styleClass="game-over" text="Game Over" />
 
 </AnchorPane>

@@ -15,7 +15,7 @@ public class EndGameController {
 
     /** Llamado desde el GameController antes de mostrar la ventana */
     public void setResult(boolean playerWon) {
-        resultLabel.setText(playerWon ? "¡Ganaste!" : "Perdiste 😢");
+        resultLabel.setText(playerWon ? "¡You Won!" : "You Lost 😢");
     }
 
     @FXML
