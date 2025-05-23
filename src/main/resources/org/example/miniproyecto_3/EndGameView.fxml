@@ -7,13 +7,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1100.0" stylesheets="@css/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="org.example.miniproyecto_3.Controller.EndGameController">
+<AnchorPane prefHeight="750.0" prefWidth="1100.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.EndGameController">
    <ImageView fitHeight="750.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/background1.png" />
       </image>
    </ImageView>
-   <HBox alignment="CENTER" layoutX="337.0" layoutY="430.0" prefHeight="109.0" prefWidth="427.0" spacing="60.0">
+   <HBox alignment="CENTER" layoutX="337.0" layoutY="429.0" prefHeight="109.0" prefWidth="427.0" spacing="60.0">
       <children>
       
           <Button fx:id="playAgainButton" prefHeight="54.0" prefWidth="160.0" text="Play Again" />
@@ -22,7 +22,7 @@
       </children>
    </HBox>
 
-    <Label fx:id="resultLabel" layoutX="475.0" layoutY="191.0" styleClass="title-label" text="Label" />
+    <Label fx:id="resultLabel" layoutX="372.0" layoutY="244.0" styleClass="end-title" text="!Ganaste!" />
    <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="260.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/videoGame.png" />
