@@ -46,8 +46,14 @@
     -fx-font-size: 120px;
     -fx-text-fill: #F5A623/*#0E3D59*/;
     -fx-effect: dropshadow(gaussian, #0E3D59, 6, 0.4, 2, 2);
+
 }
 
+.coordinate {
+    -fx-font-family: "Bernard MT Condensed";
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, #F5A623, 6, 0.4, 2, 2);
+}
 /* Botones */
 .button {
     -fx-font-family: "Bernard MT Condensed";

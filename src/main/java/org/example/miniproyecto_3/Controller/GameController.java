@@ -46,6 +46,8 @@ public class GameController {
     @FXML
     private Button playButton;
     @FXML
+    private Button restartButton;
+    @FXML
     private Button saveButton;
     @FXML
     private Button viewButton;
@@ -112,13 +114,32 @@ public class GameController {
     public void handleButtons(){
         handlePlayButton();
         handleViewButton();
+        handleRestartButton();
     }
 
+    public void handleRestartButton(){
+        restartButton.setOnAction(e -> {
+            try {
+                File savedGame = new File(SAVE_FILE);
+                if (savedGame.exists()) {
+                    savedGame.delete();
+                }
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
+                Scene scene = new Scene(loader.load());
+
+                Stage stage = (Stage) restartButton.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (IOException ex) {
+                showError(errorLabel, "Error al reiniciar el juego: " + ex.getMessage());
+            }
+        });
+    }
     public void handlePlayButton() {
         playButton.setOnAction(e -> {
             try{
                 if(playerBoard.getShips().size() < 10){
-                    //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+                    throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
                 }
 
                 turnLabel.setText("Turno: " + game.getPlayer().getNickname());

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
+
 <AnchorPane prefHeight="750.0" prefWidth="1100.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.EndGameController">
    <ImageView fitHeight="750.0" fitWidth="1100.0" pickOnBounds="true" preserveRatio="true">
       <image>
@@ -16,23 +17,33 @@
    <HBox alignment="CENTER" layoutX="337.0" layoutY="504.0" prefHeight="109.0" prefWidth="427.0" spacing="60.0">
       <children>
       
-          <Button fx:id="playAgainButton" prefHeight="54.0" prefWidth="160.0" text="Play Again" />
+                            <Button fx:id="playAgainButton" prefHeight="54.0" prefWidth="160.0" text="Play Again" />
       
-                      <Button fx:id="exitButton" prefHeight="54.0" prefWidth="155.0" text="Exit" />
+                                        <Button fx:id="exitButton" prefHeight="54.0" prefWidth="155.0" text="Exit" />
       </children>
    </HBox>
 
-    <Label fx:id="resultLabel" layoutX="355.0" layoutY="320.0" styleClass="end-title" text="!You Won!" />
-   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="188.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@images/videoGame.png" />
-      </image>
-   </ImageView>
-   <ImageView fitHeight="101.0" fitWidth="103.0" layoutX="829.0" layoutY="151.0" pickOnBounds="true" preserveRatio="true">
+                      <Label fx:id="resultLabel" layoutX="355.0" layoutY="320.0" styleClass="end-title" text="!You Won!" />
+   <ImageView fitHeight="36.0" fitWidth="33.0" layoutX="563.0" layoutY="187.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@images/videoGame.png" />
       </image>
    </ImageView>
    <Label layoutX="299.0" layoutY="117.0" styleClass="game-over" text="Game Over" />
+   <ImageView fitHeight="117.0" fitWidth="131.0" layoutX="199.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/battle.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="117.0" fitWidth="131.0" layoutX="779.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/battle.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="123.0" fitWidth="135.0" layoutX="489.0" layoutY="588.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@images/discord.png" />
+      </image>
+   </ImageView>
 
-</AnchorPane>
+                  </AnchorPane>
