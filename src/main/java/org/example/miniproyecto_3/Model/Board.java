@@ -19,9 +19,8 @@ public class Board implements Serializable {
         for (int i = 0; i < SIZE; i++) {
             //Agrega el arraylist de cellState
             grid.add(new ArrayList<Cell>(SIZE));
-
             for (int j = 0; j < SIZE; j++) {
-                grid.get(i).add(new Cell(new Coordinate(i, j)));
+                grid.get(i).add(new Cell(new Coordinate(j, i)));
             }
         }
 
@@ -58,38 +57,41 @@ public class Board implements Serializable {
         if (!isValidCoordinate(coor)) {
             return false;
         }
-        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
-        // if(cell == CellState.MISS || cell == CellState.HIT){
-        //   return false;
-        // }
-        // return true;
+        Cell cell = grid.get(coor.getCol()).get(coor.getRow());
 
         return (cell.getState() == Cell.CellState.EMPTY || cell.getState() == Cell.CellState.SHIP);
 
     }
 
     public void placeShip(Ship ship, List<Coordinate> coords) {
-        for(Coordinate cord : coords) {
+        // Primero, se verifica que todas las celdas estén disponibles
+        for (Coordinate cord : coords) {
             int row = cord.getRow();
             int column = cord.getCol();
-            Cell cell = grid.get(row).get(column);
             try{
-                if(cell.getState() == Cell.CellState.SHIP){
+                Cell cell = grid.get(column).get(row);
+                if (cell.getState() == Cell.CellState.SHIP)
                     throw new OverlappingShip("Barco posicionado sobre otro");
-                }
-                cell.setShip(ship);
-                cell.setState(Cell.CellState.SHIP);
-                System.out.println("Barco posicionado en" + cell.getCoordinate().getRow() + ", " + cell.getCoordinate().getCol());
-                ships.add(ship);
-            } catch (OverlappingShip e){
+            }catch(OverlappingShip e){
                 System.out.println(e.getMessage());
             }
 
-
         }
+        // Si todas las celdas están libres, se asigna el barco a cada celda
+        for (Coordinate cord : coords) {
+            int row = cord.getRow();
+            int column = cord.getCol();
+            Cell cell = grid.get(column).get(row);
+            cell.setShip(ship);
+            cell.setState(Cell.CellState.SHIP);
+            System.out.println("Barco posicionado en " + column + ", " + row);
+        }
+        // Se agrega el barco solo una vez a la lista
+        ships.add(ship);
     }
 
     public void removeShip(Ship ship) {
+        ships.remove(ship);
         for(int i = 0; i < SIZE; i++){
             for(int j = 0; j < SIZE; j++){
                 Cell cell = grid.get(i).get(j);
@@ -101,21 +103,40 @@ public class Board implements Serializable {
         }
     }
 
-    public Cell.CellState fireAt(Coordinate coor) {
-        Cell cell = grid.get(coor.getRow()).get(coor.getCol());
-        try{
-            if (!isValidCoordinate(coor)) {
-                throw new IllegalArgumentException("La coordenada no puede salirse del tablero");
-            }
-            if (!canShoot(coor)) {
-                throw new NonShootableCell("Celda (" + coor.getRow() + ", " + coor.getCol() + ") ya fue golpeada");
-            }
-            cell.hit();
+    public Cell.CellState fireAt(Coordinate coor) throws NonShootableCell {
+        if (!isValidCoordinate(coor)) {
+            throw new IllegalArgumentException("La coordenada no puede salirse del tablero");
+        }
+        Cell cell = grid.get(coor.getCol()).get(coor.getRow());
+        if (!canShoot(coor)) {
+            throw new NonShootableCell("Celda (" + coor.getCol() + ", " + coor.getRow() + ") ya fue golpeada");
+        }
+        cell.hit();
+        return cell.getState();
+    }
 
-        } catch (IllegalArgumentException |NonShootableCell e) {
-            System.out.println(e.getMessage());
+    public boolean canPlaceShip(int size, Coordinate headCoord, IShip.Orientation orientation) {
+        int initialX = headCoord.getCol();
+        int initialY = headCoord.getRow();
+
+        if(orientation == IShip.Orientation.HORIZONTAL){
+            for(int i = 0; i < size; i++){
+                if(grid.get(initialX + i).get(initialY).getState() == Cell.CellState.SHIP){
+                    return false;
+                }
+            }
+            return true;
         }
 
-        return cell.getState();
+        if(orientation == IShip.Orientation.VERTICAL){
+            for(int i = 0; i < size; i++){
+                if(grid.get(initialX).get(initialY + i).getState() == Cell.CellState.SHIP){
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        return false;
     }
 }

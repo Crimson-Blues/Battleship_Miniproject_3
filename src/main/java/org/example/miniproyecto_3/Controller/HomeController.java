@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
 
 import java.io.File;
 
@@ -23,9 +24,11 @@ public class HomeController {
     private Button continueButton;
     @FXML
     private Button exitButton;
+    private PlainTextFileHandler plainTextFileHandler;
 
     @FXML
     public void initialize() {
+        plainTextFileHandler = new PlainTextFileHandler();
         continueButton.setDisable(!hasSavedGame());
 
         applyFadeEffect(startButton);
@@ -70,7 +73,7 @@ public class HomeController {
             return;
         }
         System.out.println("Abre juego");
-        // falta guardar nickname en archivo plano
+        plainTextFileHandler.writeToFile("nickname.csv", nick);
         loadGameView();
     }
 
