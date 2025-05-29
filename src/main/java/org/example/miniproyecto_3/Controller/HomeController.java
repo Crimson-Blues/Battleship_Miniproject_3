@@ -25,6 +25,7 @@ public class HomeController {
     @FXML
     private Button exitButton;
     private PlainTextFileHandler plainTextFileHandler;
+    private static final String SAVE_FILE = "savegame.ser";
 
     @FXML
     public void initialize() {
@@ -72,30 +73,30 @@ public class HomeController {
             nicknameField.setStyle("-fx-font-family: 'Segoe UI';");
             return;
         }
-        System.out.println("Abre juego");
+        System.out.println("Iniciando juego");
         plainTextFileHandler.writeToFile("nickname.csv", nick);
-        loadGameView();
+        loadGameView(false);
     }
 
     private boolean hasSavedGame() {
-        // Falta la lógica para verificar si existe un .ser de partida guardada
-        // Por ejemplo, new File("savegame.ser").exists(). Esto para el boton continuar
-        File saved = new File("savegame.ser");
-        return saved.exists();
-        //return false;
+        return new File(SAVE_FILE).exists();
     }
 
     private void handleContinue() {
-        // falta cargar estado de juego serializado
-        loadGameView();
+        loadGameView(true);
     }
 
-    private void loadGameView() {
+    private void loadGameView(Boolean continueGame) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(
                     getClass().getResource("/org/example/miniproyecto_3/GameView.fxml")
             );
             Scene scene = new Scene(fxmlLoader.load());
+
+            GameController gameController = fxmlLoader.getController();
+            gameController.setContinueGame(continueGame);
+            gameController.setUpController();
+
             Stage stage = (Stage) startButton.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {

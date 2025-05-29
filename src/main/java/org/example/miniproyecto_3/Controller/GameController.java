@@ -24,7 +24,6 @@ import org.example.miniproyecto_3.Model.FileHandlers.SerializableFileHandler;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,11 +61,12 @@ public class GameController {
     private Board machineBoard;
     private Boolean machineShipsVisible;
     private PlainTextFileHandler plainTextFileHandler;
+    private Boolean continueGame;
     private SerializableFileHandler serializableFileHandler;
     private ArrayList<ArrayList<StackPane>> playerStackPanes;
     private ArrayList<ArrayList<StackPane>> machineStackPanes;
-    private ArrayList<Pane>  playerShipPanes;
-    private ArrayList<Pane> machineShipPanes;
+    private ArrayList<Pane> playerShipPanes = new ArrayList<Pane>();
+    private ArrayList<Pane> machineShipPanes  = new ArrayList<Pane>();
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -75,26 +75,25 @@ public class GameController {
 
     @FXML
     public void initialize() {
-        // Si existe un archivo guardado, se carga la partida
-        /*
-        if (new File(SAVE_FILE).exists()){
-            loadGameState();
-            if (game == null) {
-                game = new Game();
-            }
-        } else {
-            game = new Game();
-        }
-        */
-        game = new Game();
 
-        playerBoard = game.getPlayerBoard();
-        machineBoard = game.getMachineBoard();
+    }
+
+    public void setUpController() {
+        // Si existe un archivo guardado, se carga la partida
+        if(continueGame) {
+            System.out.println("Loading Game");
+            loadGameState();
+        }else{
+            System.out.println("Starting new game");
+            game = new Game();
+            playerBoard = game.getPlayerBoard();
+            machineBoard = game.getMachineBoard();
+            drawInitialShips();
+            handleLabels();
+        }
+
         plainTextFileHandler = new PlainTextFileHandler();
-        drawShips();
-        placeMachineShips();
         handleButtons();
-        handleLabels();
     }
 
     public void handleLabels(){
@@ -115,8 +114,14 @@ public class GameController {
         handlePlayButton();
         handleViewButton();
         handleRestartButton();
+        handleSaveButton();
     }
 
+    public void handleSaveButton(){
+        saveButton.setOnAction(e ->{
+            saveGame();
+        });
+    }
     public void handleRestartButton(){
         restartButton.setOnAction(e -> {
             try {
@@ -138,57 +143,7 @@ public class GameController {
     public void handlePlayButton() {
         playButton.setOnAction(e -> {
             try{
-                if(playerBoard.getShips().size() < 10){
-                    throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
-                }
-
-                turnLabel.setText("Turno: " + game.getPlayer().getNickname());
-
-                playerStackPanes = new ArrayList<>();
-                machineStackPanes = new ArrayList<>();
-
-                for (int i = 0; i < machineBoard.getSize(); i++){
-                    playerStackPanes.add(new ArrayList<StackPane>());
-                    machineStackPanes.add(new ArrayList<StackPane>());
-
-                    for (int j = 0; j < machineBoard.getSize(); j++){
-                        final int col = i;
-                        final int row = j;
-
-                        StackPane machineCellPane = new StackPane();
-                        StackPane playerCellPane = new StackPane();
-
-                        // Asignar evento de click: al disparar se procesa el tiro del jugador
-                        machineCellPane.setOnMouseClicked(ev -> {
-                            try {
-                                // Intenta disparar en la celda
-                                shootCell(new Coordinate(row, col), machineBoard, machineStackPanes);
-
-                                // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
-                                if (game.getTurn() == Game.Turn.MACHINE) {
-                                    PauseTransition pause = new PauseTransition(Duration.seconds(1));
-                                    pause.setOnFinished(event ->{machineTurn();});
-                                    pause.play();
-
-                                }
-                                // Autosave: Guardar automáticamente el estado del juego tras cada jugada
-                            } catch (Exception ex) {
-                                showError(errorLabel, ex.getMessage());
-                            }
-                        });
-                        machineGridPane.add(machineCellPane, i, j);
-                        machineStackPanes.get(i).add(machineCellPane);
-
-                        playerGridPane.add(playerCellPane, i, j);
-                        playerStackPanes.get(i).add(playerCellPane);
-                    }
-                }
-                // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
-                for (Pane pane : playerShipPanes){
-                    pane.setOnMousePressed(null);
-                    pane.setOnMouseDragged(null);
-                    pane.setOnMouseReleased(null);
-                }
+                setPlayState();
             } catch (Exception ex) {
                 showError(errorLabel, ex.getMessage());
             }
@@ -196,8 +151,69 @@ public class GameController {
         });
     }
 
+    public void setPlayState() throws IncompleteBoard{
+        if(playerBoard.getShips().size() < 10){
+            //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+        }
+
+        if(game.getTurn() == Game.Turn.PLAYER){
+            turnLabel.setText("Turno: " + game.getPlayer().getNickname());
+        }else if(game.getTurn() == Game.Turn.MACHINE){
+            turnLabel.setText("Turno: Máquina");
+        }
+
+        placeShips(machineBoard, machineShipPanes, machineGridPane);
+        hideEnemyShips();
+
+        playerStackPanes = new ArrayList<>();
+        machineStackPanes = new ArrayList<>();
+
+        for (int i = 0; i < machineBoard.getSize(); i++){
+            playerStackPanes.add(new ArrayList<StackPane>());
+            machineStackPanes.add(new ArrayList<StackPane>());
+
+            for (int j = 0; j < machineBoard.getSize(); j++){
+                final int col = i;
+                final int row = j;
+
+                StackPane machineCellPane = new StackPane();
+                StackPane playerCellPane = new StackPane();
+
+                // Asignar evento de click: al disparar se procesa el tiro del jugador
+                machineCellPane.setOnMouseClicked(ev -> {
+                    try {
+                        // Intenta disparar en la celda
+                        shootCell(new Coordinate(row, col), machineBoard, machineStackPanes);
+
+                        // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
+                        if (game.getTurn() == Game.Turn.MACHINE) {
+                            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                            pause.setOnFinished(event ->{machineTurn();});
+                            pause.play();
+
+                        }
+                        // Autosave: Guardar automáticamente el estado del juego tras cada jugada
+                    } catch (Exception ex) {
+                        showError(errorLabel, ex.getMessage());
+                    }
+                });
+                machineGridPane.add(machineCellPane, i, j);
+                machineStackPanes.get(i).add(machineCellPane);
+
+                playerGridPane.add(playerCellPane, i, j);
+                playerStackPanes.get(i).add(playerCellPane);
+            }
+        }
+        // Desactivar eventos de arrastre de los barcos del jugador una vez iniciada la partida
+        for (Pane pane : playerShipPanes){
+            pane.setOnMousePressed(null);
+            pane.setOnMouseDragged(null);
+            pane.setOnMouseReleased(null);
+        }
+    }
+
     //Draws the ships and places them in the stackPanes
-    public void drawShips(){
+    public void drawInitialShips(){
         playerShipPanes = new ArrayList<>();
         ShipDrawer shipDrawer = new ShipDrawer();
 
@@ -460,15 +476,20 @@ public class GameController {
                 game = loadedGame;
                 playerBoard = game.getPlayerBoard();
                 machineBoard = game.getMachineBoard();
+                placeShips(playerBoard, playerShipPanes, playerGridPane);
+                setPlayState();
+                updateBoard(playerBoard, playerStackPanes);
+                updateBoard(machineBoard, machineStackPanes);
+                errorLabel.setVisible(false);
                 System.out.println("Game loaded successfully.");
-                updateMachineBoardView();
-                updatePlayerBoardView();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             // Si ocurre un error en la carga, asignamos un juego nuevo
-            game = new Game();
+            setContinueGame(false);
+            initialize();
             System.out.println("Error loading game. A new game is started.");
+            showError(errorLabel, "Error loading game. A new game is started.");
         }
     }
 
@@ -504,34 +525,31 @@ public class GameController {
     }
 
     //Sets machine ships panes onto machineGridPane
-    private void placeMachineShips(){
-        machineShipPanes = new ArrayList<Pane>();
-        for(Ship ship : machineBoard.getShips()){
+    private void placeShips(Board board, ArrayList<Pane> paneList, GridPane gridPane) {
+        paneList.clear();
+        for(Ship ship : board.getShips()){
 
             int cellX = ship.getHeadCoord().getCol();
             int cellY = ship.getHeadCoord().getRow();
-            Pane pane = drawMachineShips(ship.getLength());
-            machineShipPanes.add(pane);
+            Pane pane = drawShip(ship.getLength());
+            paneList.add(pane);
 
-            machineGridPane.setHalignment(pane, HPos.CENTER);
-            machineGridPane.setValignment(pane, VPos.CENTER);
+            gridPane.setHalignment(pane, HPos.CENTER);
+            gridPane.setValignment(pane, VPos.CENTER);
 
             if(ship.getOrientation() == IShip.Orientation.HORIZONTAL){
                 pane.setRotate(0);
-                machineGridPane.setColumnSpan(pane, ship.getLength());
-                machineGridPane.setRowSpan(pane, 1);
+                gridPane.setColumnSpan(pane, ship.getLength());
+                gridPane.setRowSpan(pane, 1);
 
             }else if (ship.getOrientation() == IShip.Orientation.VERTICAL){
                 pane.setRotate(90);
-                machineGridPane.setColumnSpan(pane, 1);
-                machineGridPane.setRowSpan(pane, ship.getLength());
+                gridPane.setColumnSpan(pane, 1);
+                gridPane.setRowSpan(pane, ship.getLength());
             }
 
-            machineGridPane.add(pane, cellX, cellY);
+            gridPane.add(pane, cellX, cellY);
             System.out.println("Boat at: (" + cellX + ", " + cellY + ")");
-
-            hideEnemyShips();
-            machineShipsVisible = false;
 
         }
     }
@@ -553,6 +571,7 @@ public class GameController {
     }
     //Makes enemy ships visible
     private void viewEnemyShips() {
+        machineShipsVisible = true;
         for(Pane pane: machineShipPanes){
             pane.setVisible(true);
         }
@@ -560,6 +579,7 @@ public class GameController {
 
     //Makes enemy ships visible
     private void hideEnemyShips() {
+        machineShipsVisible = false;
         for(Pane pane: machineShipPanes){
             pane.setVisible(false);
         }
@@ -592,7 +612,7 @@ public class GameController {
         pause.play();
     }
 
-    public Pane drawMachineShips(int length){
+    public Pane drawShip(int length){
         ShipDrawer drawer = new ShipDrawer();
         switch(length){
             case 1:
@@ -627,7 +647,7 @@ public class GameController {
 
     }
 
-    private void showEndScreen(boolean playerWon) {
+    public void showEndScreen(boolean playerWon) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/EndGameView.fxml"));
             Scene scene = new Scene(loader.load());
@@ -640,5 +660,24 @@ public class GameController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateBoard (Board board, ArrayList<ArrayList<StackPane>> stackPanes){
+        for(int i = 0; i < board.getSize(); i++){
+            for(int j = 0; j < board.getSize(); j++){
+                Cell cell = board.getCell(i, j);
+                StackPane cellPane = stackPanes.get(i).get(j);
+                if (cell.getState() == Cell.CellState.HIT) {
+                    cellPane.setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
+                } else if (cell.getState() == Cell.CellState.MISS) {
+                    cellPane.setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
+                }
+
+            }
+        }
+    }
+
+    public void setContinueGame(Boolean continueGame) {
+        this.continueGame = continueGame;
     }
 }

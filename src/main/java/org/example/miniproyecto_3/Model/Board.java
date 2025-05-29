@@ -87,6 +87,7 @@ public class Board implements Serializable {
             System.out.println("Barco posicionado en " + column + ", " + row);
         }
         // Se agrega el barco solo una vez a la lista
+        ship.setHeadCoord(new Coordinate(coords.get(0).getRow(), coords.get(0).getCol()));
         ships.add(ship);
     }
 
