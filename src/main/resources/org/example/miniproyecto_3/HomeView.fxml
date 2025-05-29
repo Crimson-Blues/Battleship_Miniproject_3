@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.HomeController">
+
+<AnchorPane prefHeight="750.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.miniproyecto_3.Controller.HomeController">
    <children>
       <ImageView fitHeight="750.0" fitWidth="1100.0" pickOnBounds="true">
          <image>
@@ -21,7 +22,7 @@
             <Font name="Candara" size="58.0" />
          </font>
       </Label>
-      <TextField fx:id="nicknameField" layoutX="455.0" layoutY="469.0" prefHeight="60.0" prefWidth="259.0" styleClass="nickname-field" stylesheets="@css/style.css" />
+      <TextField fx:id="nicknameField" layoutX="431.0" layoutY="470.0" prefHeight="60.0" prefWidth="259.0" styleClass="nickname-field" stylesheets="@css/style.css" />
       <Label layoutX="494.0" layoutY="421.0" styleClass="nickname-label" stylesheets="@css/style.css" text="Nickname" />
       <Label alignment="CENTER" layoutX="237.0" layoutY="149.0" prefHeight="111.0" prefWidth="632.0" styleClass="title-label" stylesheets="@css/style.css" text="WELCOME TO THE GAME" textAlignment="CENTER" textFill="#0e3d59">
          <font>
@@ -33,12 +34,13 @@
             <Button fx:id="startButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="110.0" stylesheets="@css/style.css" text="New">
                <font>
                   <Font size="8.0" />
-               </font></Button>
+               </font>
+            </Button>
             <Button fx:id="continueButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="129.0" stylesheets="@css/style.css" text="Continue" />
             <Button fx:id="exitButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="110.0" stylesheets="@css/style.css" text="Exit" />
          </children>
       </HBox>
-      <ImageView fitHeight="60.0" fitWidth="57.0" layoutX="384.0" layoutY="470.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="60.0" fitWidth="57.0" layoutX="361.0" layoutY="471.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/user.png" />
          </image>

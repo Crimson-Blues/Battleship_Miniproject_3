@@ -4,12 +4,15 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.miniproyecto_3.Model.*;
 import org.example.miniproyecto_3.Model.Exceptions.IncompleteBoard;
@@ -42,6 +45,8 @@ public class GameController {
     private GridPane machineGridPane;
     @FXML
     private Button playButton;
+    @FXML
+    private Button restartButton;
     @FXML
     private Button saveButton;
     @FXML
@@ -109,13 +114,32 @@ public class GameController {
     public void handleButtons(){
         handlePlayButton();
         handleViewButton();
+        handleRestartButton();
     }
 
+    public void handleRestartButton(){
+        restartButton.setOnAction(e -> {
+            try {
+                File savedGame = new File(SAVE_FILE);
+                if (savedGame.exists()) {
+                    savedGame.delete();
+                }
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
+                Scene scene = new Scene(loader.load());
+
+                Stage stage = (Stage) restartButton.getScene().getWindow();
+                stage.setScene(scene);
+            } catch (IOException ex) {
+                showError(errorLabel, "Error al reiniciar el juego: " + ex.getMessage());
+            }
+        });
+    }
     public void handlePlayButton() {
         playButton.setOnAction(e -> {
             try{
                 if(playerBoard.getShips().size() < 10){
-                    //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+                    throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
                 }
 
                 turnLabel.setText("Turno: " + game.getPlayer().getNickname());
@@ -404,6 +428,8 @@ public class GameController {
                 stackPanes.get(x).get(y).setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
                 if (game.isGameOver()) {
                     System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
+                    showEndScreen(game.playerWon());
+                    return;
                 }
                 if(board.getCell(x, y).getShip().isSunk()){
                     showTempMessage(turnLabel, board.getCell(x, y).getShip().getKind()+ " hundido!",  turnMessage, 1);
@@ -599,5 +625,20 @@ public class GameController {
         pane.applyCss();
         pane.layout();
 
+    }
+
+    private void showEndScreen(boolean playerWon) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/EndGameView.fxml"));
+            Scene scene = new Scene(loader.load());
+
+            EndGameController controller = loader.getController();
+            controller.setResult(playerWon);
+
+            Stage stage = (Stage) baseAnchorPane.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
