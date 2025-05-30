@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.miniproyecto_3.Model.*;
@@ -21,11 +22,13 @@ import org.example.miniproyecto_3.Model.Exceptions.OverlappingShip;
 import org.example.miniproyecto_3.Model.Exceptions.ShipOutOfBounds;
 import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
 import org.example.miniproyecto_3.Model.FileHandlers.SerializableFileHandler;
+import org.example.miniproyecto_3.View.Assets.ShapeDrawer;
 import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class GameController {
     @FXML
@@ -67,6 +70,9 @@ public class GameController {
     private ArrayList<ArrayList<StackPane>> machineStackPanes;
     private ArrayList<Pane> playerShipPanes = new ArrayList<Pane>();
     private ArrayList<Pane> machineShipPanes  = new ArrayList<Pane>();
+    private Pane[][] machineShipPanesPositions = new Pane[10][10];
+    private Pane[][] playerShipPanesPositions = new Pane[10][10];
+
 
     // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
     private static final int CELL_SIZE = 40;
@@ -75,6 +81,8 @@ public class GameController {
 
     @FXML
     public void initialize() {
+        plainTextFileHandler = new PlainTextFileHandler();
+        serializableFileHandler = new SerializableFileHandler();
 
     }
 
@@ -133,6 +141,9 @@ public class GameController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
                 Scene scene = new Scene(loader.load());
 
+                setContinueGame(false);
+                setUpController();
+
                 Stage stage = (Stage) restartButton.getScene().getWindow();
                 stage.setScene(scene);
             } catch (IOException ex) {
@@ -153,7 +164,7 @@ public class GameController {
 
     public void setPlayState() throws IncompleteBoard{
         if(playerBoard.getShips().size() < 10){
-            //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+            throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
         }
 
         if(game.getTurn() == Game.Turn.PLAYER){
@@ -162,7 +173,7 @@ public class GameController {
             turnLabel.setText("Turno: Máquina");
         }
 
-        placeShips(machineBoard, machineShipPanes, machineGridPane);
+        placeShips(machineBoard, machineShipPanes, machineGridPane, machineShipPanesPositions);
         hideEnemyShips();
 
         playerStackPanes = new ArrayList<>();
@@ -183,7 +194,7 @@ public class GameController {
                 machineCellPane.setOnMouseClicked(ev -> {
                     try {
                         // Intenta disparar en la celda
-                        shootCell(new Coordinate(row, col), machineBoard, machineStackPanes);
+                        shootCell(new Coordinate(row, col), machineBoard, machineStackPanes, machineShipPanesPositions);
 
                         // Si el disparo es MISS, cambio de turno e invoco el turno de la máquina
                         if (game.getTurn() == Game.Turn.MACHINE) {
@@ -410,12 +421,11 @@ public class GameController {
 
     // Metodo para ejecutar el turno de la máquina
     private void machineTurn() {
-
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
         pause.setOnFinished(e -> {
             // La máquina selecciona un objetivo en el tablero del jugador
             Coordinate target = game.getMachine().selectTarget(playerBoard);
-            shootCell(target, playerBoard, playerStackPanes);
+            shootCell(target, playerBoard, playerStackPanes, playerShipPanesPositions);
             System.out.println("Machine fired at: (" + target.getCol() + ", " + target.getRow() + ")");
             // Si el disparo impacta (HIT), permite seguir disparando
             if (game.getTurn() == Game.Turn.MACHINE) {
@@ -424,24 +434,24 @@ public class GameController {
                 smallPause.play();
             }
             // Autosave tras la jugada de la máquina
+            saveGame();
         });
         pause.play();
 
     }
 
-    private void shootCell(Coordinate target, Board board, ArrayList<ArrayList<StackPane>> stackPanes) {
+    private void shootCell(Coordinate target, Board board, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions) {
         try{
             Cell.CellState result = game.fire(target, board);
             int x = target.getCol();
             int y = target.getRow();
+            formatShotCell(board.getCell(x, y), stackPanes, panePositions);
             String turnMessage = (game.getTurn() == Game.Turn.PLAYER) ? "Turno: " + game.getPlayer().getNickname() : "Turno: Máquina";
 
             if(result == Cell.CellState.MISS){
-                stackPanes.get(x).get(y).setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
                 showTempMessage(turnLabel, "Tiro al agua en: (" + target.getCol() + ", " + target.getRow() + ")",turnMessage, 1);
 
             } else if (result == Cell.CellState.HIT){
-                stackPanes.get(x).get(y).setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
                 if (game.isGameOver()) {
                     System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
                     showEndScreen(game.playerWon());
@@ -476,10 +486,10 @@ public class GameController {
                 game = loadedGame;
                 playerBoard = game.getPlayerBoard();
                 machineBoard = game.getMachineBoard();
-                placeShips(playerBoard, playerShipPanes, playerGridPane);
+                placeShips(playerBoard, playerShipPanes, playerGridPane, playerShipPanesPositions);
                 setPlayState();
-                updateBoard(playerBoard, playerStackPanes);
-                updateBoard(machineBoard, machineStackPanes);
+                updateBoard(playerBoard, playerStackPanes, playerShipPanesPositions);
+                updateBoard(machineBoard, machineStackPanes, machineShipPanesPositions);
                 errorLabel.setVisible(false);
                 System.out.println("Game loaded successfully.");
             }
@@ -494,38 +504,9 @@ public class GameController {
     }
 
 
-    //UpdateMachineBoard view onto MachineGridPane
-    private void updateMachineBoardView() {
-        // Reinicia la vista del tablero de la máquina
-        machineGridPane.getChildren().clear();
-        for (int i = 0; i < machineBoard.getSize(); i++){
-            for (int j = 0; j < machineBoard.getSize(); j++){
-                final int row = i;
-                final int col = j;
-                StackPane cellPane = new StackPane();
-                cellPane.setOnMouseClicked(ev -> {
-                    try {
-                        Cell.CellState result = game.fire(new Coordinate(row, col), machineBoard);
-                        if (result == Cell.CellState.HIT) {
-                            cellPane.setStyle("-fx-background-color: orange;");
-                        } else if (result == Cell.CellState.MISS) {
-                            cellPane.setStyle("-fx-background-color: lightblue;");
-                        }
-                        if (result == Cell.CellState.MISS) {
-                            machineTurn();
-                        }
-                        saveGame();
-                    } catch (Exception ex) {
-                        System.out.println(ex.getMessage());
-                    }
-                });
-                machineGridPane.add(cellPane, i, j);
-            }
-        }
-    }
 
     //Sets machine ships panes onto machineGridPane
-    private void placeShips(Board board, ArrayList<Pane> paneList, GridPane gridPane) {
+    private void placeShips(Board board, ArrayList<Pane> paneList, GridPane gridPane, Pane[][] panesPositions) {
         paneList.clear();
         for(Ship ship : board.getShips()){
 
@@ -549,23 +530,25 @@ public class GameController {
             }
 
             gridPane.add(pane, cellX, cellY);
+            panesPositions[cellX][cellY] = pane;
             System.out.println("Boat at: (" + cellX + ", " + cellY + ")");
 
         }
     }
 
-    private void updatePlayerBoardView() {
-
-    }
 
     private void handleViewButton(){
         viewButton.setOnAction(e ->{
-            if(machineShipsVisible){
-                hideEnemyShips();
-                machineShipsVisible = false;
-            } else {
-                viewEnemyShips();
-                machineShipsVisible = true;
+            if(machineShipsVisible == null){
+                showError(errorLabel, "Debes posicionar tus barcos primero!");
+            }else{
+                if(machineShipsVisible){
+                    hideEnemyShips();
+                    machineShipsVisible = false;
+                } else {
+                    viewEnemyShips();
+                    machineShipsVisible = true;
+                }
             }
         });
     }
@@ -662,18 +645,59 @@ public class GameController {
         }
     }
 
-    public void updateBoard (Board board, ArrayList<ArrayList<StackPane>> stackPanes){
+    public void updateBoard (Board board, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions){
         for(int i = 0; i < board.getSize(); i++){
             for(int j = 0; j < board.getSize(); j++){
                 Cell cell = board.getCell(i, j);
-                StackPane cellPane = stackPanes.get(i).get(j);
-                if (cell.getState() == Cell.CellState.HIT) {
-                    cellPane.setStyle("-fx-background-color: orange; -fx-opacity: 0.5;");
-                } else if (cell.getState() == Cell.CellState.MISS) {
-                    cellPane.setStyle("-fx-background-color: lightblue; -fx-opacity: 0.5;");
-                }
+                formatShotCell(cell,  stackPanes, panePositions);
 
             }
+        }
+    }
+
+    public void formatShotCell (Cell cell, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions){
+        ShapeDrawer shapeDrawer = new ShapeDrawer();
+        int X = cell.getCoordinate().getCol();
+        int Y = cell.getCoordinate().getRow();
+        StackPane pane = stackPanes.get(X).get(Y);
+        // Semi-transparent background: red with 50% opacity
+        BackgroundFill hitBackgroundFill = new BackgroundFill(Color.rgb(251, 172, 20, 0.3), CornerRadii.EMPTY, Insets.EMPTY);
+        BackgroundFill missBackgroundfFill = new BackgroundFill(Color.rgb(58, 227, 239, 0.3), CornerRadii.EMPTY, Insets.EMPTY);
+
+
+
+        if (cell.getState() == Cell.CellState.HIT) {
+            if(cell.getShip().isSunk()){
+                Ship ship = cell.getShip();
+                int initialX = ship.getHeadCoord().getCol();
+                int initialY = ship.getHeadCoord().getRow();
+                panePositions[initialX][initialY].setVisible(true);
+                for(int i = 0; i < ship.getLength(); i++){
+                    if(ship.getOrientation() == Ship.Orientation.HORIZONTAL){
+                        StackPane sunkPane = stackPanes.get(initialX + i).get(initialY);
+                        sunkPane.getChildren().clear();
+                        sunkPane.getChildren().add(shapeDrawer.drawSkull());
+                        sunkPane.setBackground(new Background(hitBackgroundFill));
+                    }else if(ship.getOrientation() == Ship.Orientation.VERTICAL){
+                        StackPane sunkPane = stackPanes.get(initialX).get(initialY + i);
+                        sunkPane.getChildren().clear();
+                        sunkPane.getChildren().add(shapeDrawer.drawSkull());
+                        sunkPane.setBackground(new Background(hitBackgroundFill));
+                    }
+
+                }
+
+            }else{
+                pane.getChildren().clear();
+                pane.getChildren().add(shapeDrawer.drawExplosion());
+                pane.setBackground(new Background(hitBackgroundFill));
+
+            }
+
+        } else if (cell.getState() == Cell.CellState.MISS) {
+            pane.getChildren().clear();
+            pane.getChildren().add(shapeDrawer.drawX());
+            pane.setBackground(new Background(missBackgroundfFill));
         }
     }
 

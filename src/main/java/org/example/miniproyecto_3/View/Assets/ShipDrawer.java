@@ -926,7 +926,7 @@ public class ShipDrawer {
         vbox.setAlignment(Pos.CENTER);
         vbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        vbox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+        //vbox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
 
         return vbox;
     }

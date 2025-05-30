@@ -2,6 +2,7 @@ package org.example.miniproyecto_3.View;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class GameStage extends Stage {
@@ -11,13 +12,15 @@ public class GameStage extends Stage {
         );
         Scene scene = new Scene(fxmlLoader.load());
 
+
         scene.getStylesheets().add(
                 getClass().getResource("/org/example/miniproyecto_3/css/style.css")
                         .toExternalForm()
         );
 
         setTitle("Batalla Naval");
-        setResizable(true);
+        getIcons().add(new Image(getClass().getResourceAsStream("/org/example/miniproyecto_3/images/favicon.png")));
+        setResizable(false);
         setScene(scene);
         show();
     }

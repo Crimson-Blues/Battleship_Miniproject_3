@@ -29,8 +29,8 @@ public class Board implements Serializable {
         return SIZE;
     }
 
-    public Cell getCell(int row, int col) {
-        return grid.get(row).get(col);
+    public Cell getCell(int col, int row) {
+        return grid.get(col).get(row);
     }
 
     public List<Ship> getShips() {
