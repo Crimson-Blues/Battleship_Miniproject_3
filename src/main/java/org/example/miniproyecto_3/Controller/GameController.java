@@ -89,10 +89,10 @@ public class GameController {
             playerBoard = game.getPlayerBoard();
             machineBoard = game.getMachineBoard();
             drawInitialShips();
+            plainTextFileHandler = new PlainTextFileHandler();
             handleLabels();
         }
 
-        plainTextFileHandler = new PlainTextFileHandler();
         handleButtons();
     }
 
@@ -212,9 +212,9 @@ public class GameController {
         }
     }
 
-    //Draws the ships and places them in the stackPanes
+   //Draws the ships and places them in the stackPanes
     public void drawInitialShips(){
-        playerShipPanes = new ArrayList<>();
+         playerShipPanes = new ArrayList<>();
         ShipDrawer shipDrawer = new ShipDrawer();
 
         //----Small ships (size 1)-------
@@ -472,7 +472,12 @@ public class GameController {
         serializableFileHandler = new SerializableFileHandler();
         try{
             Game loadedGame = (Game) serializableFileHandler.deserialize(SAVE_FILE);
-            if (loadedGame != null) {
+            if(loadedGame== null){
+                System.out.println("Error loading game. Starting a new one.");
+                setContinueGame(false);
+                initialize();
+            }
+            else{
                 game = loadedGame;
                 playerBoard = game.getPlayerBoard();
                 machineBoard = game.getMachineBoard();
