@@ -133,16 +133,13 @@ public class GameController {
     public void handleRestartButton(){
         restartButton.setOnAction(e -> {
             try {
-                File savedGame = new File(SAVE_FILE);
-                if (savedGame.exists()) {
-                    savedGame.delete();
-                }
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
                 Scene scene = new Scene(loader.load());
 
-                setContinueGame(false);
-                setUpController();
+                GameController gameController = loader.getController();
+                gameController.setContinueGame(false);
+                gameController.setUpController();
 
                 Stage stage = (Stage) restartButton.getScene().getWindow();
                 stage.setScene(scene);
@@ -164,7 +161,7 @@ public class GameController {
 
     public void setPlayState() throws IncompleteBoard{
         if(playerBoard.getShips().size() < 10){
-            throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+            //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
         }
 
         if(game.getTurn() == Game.Turn.PLAYER){
@@ -453,6 +450,10 @@ public class GameController {
 
             } else if (result == Cell.CellState.HIT){
                 if (game.isGameOver()) {
+                    File savedGame = new File(SAVE_FILE);
+                    if (savedGame.exists()) {
+                        savedGame.delete();
+                    }
                     System.out.println("Game Over! " + (game.playerWon() ? "Player wins!" : "Machine wins!"));
                     showEndScreen(game.playerWon());
                     return;
