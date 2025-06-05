@@ -74,7 +74,7 @@ public class HomeController {
             return;
         }
         System.out.println("Iniciando juego");
-        plainTextFileHandler.writeToFile("nickname.csv", nick + "," + 0);
+        plainTextFileHandler.writeToFile("nickname.csv", nick + "\n" + 0);
 
         loadGameView(false);
     }
