@@ -14,10 +14,34 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 
+/**
+ * Utility class responsible for drawing ship assets as 2D shapes
+ * using the {@link javafx.scene.shape} methods.
+ * <p>
+ * The generated shapes are added to JavaFX containers like
+ * {@link javafx.scene.layout.Pane} or {@link javafx.scene.layout.GridPane},
+ * and visually represent ships for the Battleship game.
+ */
 public class ShipDrawer {
+    /**
+     * Constructs a new {@code ShipDrawer} instance.
+     * <p>
+     * This constructor does not perform any operations by itself.
+     * It is used to access the drawing methods provided by this class.
+     */
     public ShipDrawer() {
 
     }
+    /**
+     * Draws a small ship as 2D shapes groups them in a {@link javafx.scene.Group}.
+     * Returns a snapShot of the group in a {@link javafx.scene.layout.Pane}.
+     * <p>
+     * This method generates and returns a visual representation of a small ship,
+     * composed of various {@link javafx.scene.shape.Shape} nodes such as {@link javafx.scene.shape.Rectangle},
+     * {@link javafx.scene.shape.Ellipse}, and {@link javafx.scene.shape.Polygon}.
+     *
+     * @return a snapshot in a {@link javafx.scene.layout.Pane} containing the small ship graphics.
+     */
     public Pane drawSmallShip(){
         VBox smallShipPane = new VBox();
         //smallShipPane.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
@@ -138,6 +162,15 @@ public class ShipDrawer {
         return snapShot(group);
     }
 
+    /**
+     * Draws a medium-sized ship as a {@link javafx.scene.layout.Pane} containing JavaFX 2D shapes.
+     * <p>
+     * This method constructs a medium ship using a combination of JavaFX shapes such as
+     * {@link javafx.scene.shape.Rectangle}, {@link javafx.scene.shape.Ellipse}, and {@link javafx.scene.shape.Polygon},
+     * arranged inside a {@link javafx.scene.layout.Pane}.
+     *
+     * @return a snaphot in a {@link javafx.scene.layout.Pane} that visually represents the medium ship.
+     */
     public Pane drawMediumShip(){
 
         Group group = new Group();
@@ -279,6 +312,15 @@ public class ShipDrawer {
         return snapShot(group);
     }
 
+    /**
+     * Draws a submarine as a {@link javafx.scene.layout.Pane} composed of JavaFX 2D shapes.
+     * <p>
+     * This method builds a visual representation of a submarine using various JavaFX shape elements such as
+     * {@link javafx.scene.shape.Rectangle}, {@link javafx.scene.shape.Ellipse}, and {@link javafx.scene.shape.Polygon}.
+     * The returned {@code Pane} can be integrated into the UI to represent a submarine in the game.
+     *
+     * @return a snapShot in a  {@link javafx.scene.layout.Pane} that contains the drawn submarine.
+     */
     public Pane drawSubmarine(){
         Group submarineGroup = new Group();
 
@@ -471,6 +513,15 @@ public class ShipDrawer {
         return snapShot(submarineGroup);
     }
 
+    /**
+     * Draws a carrier ship as a {@link javafx.scene.layout.Pane} made up of JavaFX 2D shapes.
+     * <p>
+     * This method constructs the visual representation of a carrier using JavaFX shape nodes such as
+     * {@link javafx.scene.shape.Rectangle}, {@link javafx.scene.shape.Ellipse}, and {@link javafx.scene.shape.Polygon}.
+     * The resulting {@code Pane} can be used in the UI to display the carrier ship.
+     *
+     * @return a snapShot in a  {@link javafx.scene.layout.Pane} containing the carrier ship graphics.
+     */
     public Pane drawCarrier() {
         // Main container
         VBox carrierPane = new VBox();
@@ -821,6 +872,21 @@ public class ShipDrawer {
         return snapShot(mainGroup);
     }
 
+    /**
+     * Creates a mini plane shape as a {@link javafx.scene.Group} composed of multiple JavaFX shapes.
+     * <p>
+     * The mini plane consists of two {@link javafx.scene.shape.Polygon} objects and one {@link javafx.scene.shape.Rectangle},
+     * styled and positioned according to the parameters.
+     * This group is used as part of larger composite drawings, such as the carrier ship.
+     *
+     * @param layoutX the X coordinate where the mini plane group will be positioned.
+     * @param layoutY the Y coordinate where the mini plane group will be positioned.
+     * @param rotate  the rotation angle (in degrees) applied to the group.
+     * @param color   the fill color for the shapes, expressed as a CSS-compatible color string.
+     * @param scaleX  the scale factor on the X axis.
+     * @param scaleY  the scale factor on the Y axis.
+     * @return a {@link javafx.scene.Group} containing the mini plane shapes.
+     */
     private Group createMiniPlane(double layoutX, double layoutY, double rotate, String color,
                                   double scaleX, double scaleY) {
         Group miniPlane = new Group();
@@ -868,7 +934,17 @@ public class ShipDrawer {
         return miniPlane;
     }
 
-    // Helper method to create lifeboat groups
+    /**
+     * Creates a turret shape as a {@link javafx.scene.Group} consisting of several styled rectangles.
+     * <p>
+     * The turret is composed of three {@link javafx.scene.shape.Rectangle} shapes, each styled with
+     * blue fill, black stroke, and rounded corners. The entire group can be positioned and rotated.
+     *
+     * @param layoutX the X coordinate where the turret group will be positioned.
+     * @param layoutY the Y coordinate where the turret group will be positioned.
+     * @param rotate  the rotation angle (in degrees) applied to the group.
+     * @return a {@link javafx.scene.Group} containing the turret shapes.
+     */
     private Group createTurret(double layoutX, double layoutY, double rotate) {
         Group group = new Group();
         group.setLayoutX(layoutX);
@@ -907,6 +983,19 @@ public class ShipDrawer {
         return group;
     }
 
+    /**
+     * Takes a snapshot of a {@link javafx.scene.Group} and returns it wrapped inside a
+     * {@link javafx.scene.layout.VBox} containing an {@link javafx.scene.image.ImageView}.
+     * <p>
+     * The snapshot image is scaled down by 40% to reduce size and preserve the visual representation.
+     * The returned VBox is centered and sized to fit the snapshot.
+     *
+     * @param group the {@link javafx.scene.Group} to snapshot.
+     * @return a {@link javafx.scene.layout.VBox} containing the snapshot image of the group.
+     * @see javafx.scene.SnapshotParameters
+     * @see javafx.scene.image.WritableImage
+     * @see javafx.scene.image.ImageView
+     */
     private VBox snapShot(Group group) {
         Pane wrapper = new Pane(group);
         wrapper.setScaleX(0.4);
@@ -926,7 +1015,6 @@ public class ShipDrawer {
         vbox.setAlignment(Pos.CENTER);
         vbox.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
 
-        //vbox.setStyle("-fx-border-color: red; -fx-border-width: 2;");
 
         return vbox;
     }

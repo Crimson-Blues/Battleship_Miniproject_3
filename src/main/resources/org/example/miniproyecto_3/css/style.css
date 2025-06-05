@@ -120,6 +120,12 @@
     -fx-text-fill: #363131;
 }
 
+.score-text {
+    -fx-font-family: "Bernard MT Condensed";
+    -fx-font-size: 30px;
+    -fx-text-fill: #fff7e3;
+}
+
 .error-label {
     -fx-font-family: "Bernard MT Condensed";
     -fx-font-size: 20px;
@@ -156,6 +162,13 @@
 
 .inner-ship-box {
     -fx-background-color: #ffdbb3;
+    -fx-border-radius: 3px;
+    -fx-background-radius: 3px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0.3, 1, 1);
+}
+
+.score-box {
+    -fx-background-color: #ffbe5c;
     -fx-border-radius: 3px;
     -fx-background-radius: 3px;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0.3, 1, 1);

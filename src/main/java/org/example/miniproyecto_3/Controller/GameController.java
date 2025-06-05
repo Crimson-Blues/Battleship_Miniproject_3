@@ -57,6 +57,8 @@ public class GameController {
     private Label turnLabel;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Label scoreLabel;
 
     private double dragDeltax, dragDeltay;
     private Game game;
@@ -83,7 +85,6 @@ public class GameController {
     public void initialize() {
         plainTextFileHandler = new PlainTextFileHandler();
         serializableFileHandler = new SerializableFileHandler();
-
     }
 
     public void setUpController() {
@@ -99,7 +100,6 @@ public class GameController {
             drawInitialShips();
             handleLabels();
         }
-
         plainTextFileHandler = new PlainTextFileHandler();
         handleButtons();
     }
@@ -107,9 +107,15 @@ public class GameController {
     public void handleLabels(){
         try{
             String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
+            int score = 0;
+
             game.getPlayer().setNickname(nick);
+            game.getPlayer().setScore(score);
 
             turnLabel.setText("Posiciona tus barcos " + nick);
+            scoreLabel.setText(Integer.toString(score));
+
+            scoreLabel.setVisible(true);
             turnLabel.setVisible(true);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -161,7 +167,7 @@ public class GameController {
 
     public void setPlayState() throws IncompleteBoard{
         if(playerBoard.getShips().size() < 10){
-            //throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
+            throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
         }
 
         if(game.getTurn() == Game.Turn.PLAYER){
@@ -460,6 +466,10 @@ public class GameController {
                 }
                 if(board.getCell(x, y).getShip().isSunk()){
                     showTempMessage(turnLabel, board.getCell(x, y).getShip().getKind()+ " hundido!",  turnMessage, 1);
+                    if(game.isPlayerTurn()){
+                        game.getPlayer().plusOneScore();
+                        scoreLabel.setText(Integer.toString(game.getPlayer().getScore()));
+                    }
                 } else{
                     showTempMessage(turnLabel, "Barco golpeado en: (" + target.getCol() + ", " + target.getRow() + ")", turnMessage ,1);
                 }
@@ -472,25 +482,30 @@ public class GameController {
         saveGame();
     }
 
-    // Metodo para guardar el estado del juego en un archivo serializable
+    //Save current game state into a serializable and plain file
     private void saveGame() {
         serializableFileHandler = new SerializableFileHandler();
         serializableFileHandler.serialize(SAVE_FILE, game);
+        plainTextFileHandler.writeToFile("nickname.csv",  game.getPlayer().getNickname() + "," + game.getPlayer().getScore());
     }
 
-    // Metodo para cargar el estado guardado del juego
+    //Load a saved Game State
     private void loadGameState() {
         serializableFileHandler = new SerializableFileHandler();
         try{
             Game loadedGame = (Game) serializableFileHandler.deserialize(SAVE_FILE);
             if (loadedGame != null) {
                 game = loadedGame;
+                System.out.println("Score: " + game.getPlayer().getScore());
                 playerBoard = game.getPlayerBoard();
                 machineBoard = game.getMachineBoard();
                 placeShips(playerBoard, playerShipPanes, playerGridPane, playerShipPanesPositions);
                 setPlayState();
                 updateBoard(playerBoard, playerStackPanes, playerShipPanesPositions);
                 updateBoard(machineBoard, machineStackPanes, machineShipPanesPositions);
+
+                scoreLabel.setText(Integer.toString(game.getPlayer().getScore()));
+                scoreLabel.setVisible(true);
                 errorLabel.setVisible(false);
                 System.out.println("Game loaded successfully.");
             }
@@ -651,7 +666,6 @@ public class GameController {
             for(int j = 0; j < board.getSize(); j++){
                 Cell cell = board.getCell(i, j);
                 formatShotCell(cell,  stackPanes, panePositions);
-
             }
         }
     }
@@ -663,12 +677,11 @@ public class GameController {
         StackPane pane = stackPanes.get(X).get(Y);
         // Semi-transparent background: red with 50% opacity
         BackgroundFill hitBackgroundFill = new BackgroundFill(Color.rgb(251, 172, 20, 0.3), CornerRadii.EMPTY, Insets.EMPTY);
-        BackgroundFill missBackgroundfFill = new BackgroundFill(Color.rgb(58, 227, 239, 0.3), CornerRadii.EMPTY, Insets.EMPTY);
-
-
+        BackgroundFill missBackgroundFill = new BackgroundFill(Color.rgb(58, 227, 239, 0.3), CornerRadii.EMPTY, Insets.EMPTY);
 
         if (cell.getState() == Cell.CellState.HIT) {
             if(cell.getShip().isSunk()){
+
                 Ship ship = cell.getShip();
                 int initialX = ship.getHeadCoord().getCol();
                 int initialY = ship.getHeadCoord().getRow();
@@ -685,9 +698,7 @@ public class GameController {
                         sunkPane.getChildren().add(shapeDrawer.drawSkull());
                         sunkPane.setBackground(new Background(hitBackgroundFill));
                     }
-
                 }
-
             }else{
                 pane.getChildren().clear();
                 pane.getChildren().add(shapeDrawer.drawExplosion());
@@ -698,7 +709,7 @@ public class GameController {
         } else if (cell.getState() == Cell.CellState.MISS) {
             pane.getChildren().clear();
             pane.getChildren().add(shapeDrawer.drawX());
-            pane.setBackground(new Background(missBackgroundfFill));
+            pane.setBackground(new Background(missBackgroundFill));
         }
     }
 

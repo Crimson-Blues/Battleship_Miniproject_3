@@ -8,12 +8,32 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
+/**
+ * Provides methods to draw 2D shapes used to represent hits and misses
+ * on the board in the Battleship game.
+ * <p>
+ * This class creates graphical shapes such as markers for hit cells on ships
+ * or miss indicators on water cells using JavaFX shapes.
+ * </p>
+ */
 public class ShapeDrawer {
 
+    /**
+     * Constructs a new {@code ShapeDrawer} instance.
+     */
     public ShapeDrawer(){
 
     }
 
+    /**
+     * Draws an "X" shape composed of two red crossed lines.
+     * <p>
+     * This shape is used to mark a missed shot on an empty {@link org.example.miniproyecto_3.Model.Cell}.
+     * </p>
+     *
+     * @return a {@link javafx.scene.Group} containing two {@link javafx.scene.shape.Line} objects
+     *         forming a red "X" with rounded line caps and beveled line joins.
+     */
     public Group drawX(){
         Line line1 = new Line(-95.55644226074219, -4.278011322021484, -68.49995422363281, -31.420866012573242);
         line1.setStroke(Color.web("#d70d0d"));
@@ -33,6 +53,20 @@ public class ShapeDrawer {
         return group;
     }
 
+    /**
+     * Creates a {@link javafx.scene.shape.Polygon} with specified fill and stroke colors, position, and points.
+     *
+     * @param fillColor  the fill color in web format (e.g., "#ff0000")
+     * @param strokeColor the stroke color in web format (e.g., "#000000")
+     * @param layoutX    the x-coordinate position of the polygon layout
+     * @param layoutY    the y-coordinate position of the polygon layout
+     * @param points     the points of the polygon as a varargs of doubles representing x,y coordinates alternately
+     * @return a {@link javafx.scene.shape.Polygon} configured with the specified properties
+     *
+     * @see javafx.scene.shape.Polygon
+     * @see javafx.scene.paint.Color
+     * @see javafx.scene.shape.StrokeType
+     */
     private Polygon createPolygon(String fillColor, String strokeColor, double layoutX, double layoutY, double... points) {
         Polygon polygon = new Polygon(points);
         polygon.setFill(Color.web(fillColor));
@@ -44,10 +78,24 @@ public class ShapeDrawer {
         return polygon;
     }
 
+    /**
+     * Creates a {@link javafx.scene.Group} representing a stylized explosion graphic.
+     * <p>
+     * The explosion consists of multiple layered polygons and an ellipse with orange and yellow colors,
+     * designed to visually simulate an explosion effect, for a hit on a {@link org.example.miniproyecto_3.Model.Cell}.
+     * </p>
+     *
+     * @return a {@link javafx.scene.Group} containing the shapes that form the explosion graphic
+     *
+     * @see javafx.scene.Group
+     * @see javafx.scene.shape.Polygon
+     * @see javafx.scene.shape.Ellipse
+     * @see javafx.scene.paint.Color
+     */
     public Group drawExplosion(){
         Group group = new Group();
 
-        group.setLayoutX(0); // Layout in GridPane should be set outside this method
+        group.setLayoutX(0);
 
         // ORANGE-GLOW POLYGONS
         group.getChildren().addAll(
@@ -102,6 +150,18 @@ public class ShapeDrawer {
         return group;
     }
 
+    /**
+     * Creates a {@link javafx.scene.Group} containing the 2D shapes that visually represent a skull.
+     * <p>
+     * This graphic is used as a marker or symbol within the game UI for a sunken {@link org.example.miniproyecto_3.Model.Ship}
+     * The exact composition of the skull is constructed using JavaFX shapes grouped together.
+     * </p>
+     *
+     * @return a {@link javafx.scene.Group} containing the skull shapes
+     *
+     * @see javafx.scene.Group
+     * @see javafx.scene.shape.Shape
+     */
     public Group drawSkull(){
         Group parentGroup = new Group();
 
@@ -174,6 +234,19 @@ public class ShapeDrawer {
         return parentGroup;
     }
 
+    /**
+     * Creates a {@link javafx.scene.Group} representing a bone shape, rotated by the specified angle.
+     * <p>
+     * The bone graphic is constructed using JavaFX shapes and transformed according to the rotation parameter.
+     * This is used as a part of the skull.
+     * </p>
+     *
+     * @param rotation the angle in degrees to rotate the bone shape
+     * @return a {@link javafx.scene.Group} containing the rotated bone shape
+     *
+     * @see javafx.scene.Group
+     * @see javafx.scene.shape.Shape
+     */
     public Group drawBone(double rotation){
         Group group = new Group();
         group.setLayoutX(-3.0);

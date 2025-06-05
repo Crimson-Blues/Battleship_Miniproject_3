@@ -7,11 +7,28 @@ import org.example.miniproyecto_3.View.Assets.ShipDrawer;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Represents the machine (AI) opponent in the game.
+ * <p>
+ * The Machine is responsible for placing its ships randomly on the board
+ * and selecting target coordinates to attack the player's board.
+ * </p>
+ */
 public class Machine implements Serializable {
+    /**
+     * Random number generator for AI decisions.
+     */
     private final Random random = new Random();
 
-    // Métodos públicos ya existentes: placeShips y selectTarget.
-
+    /**
+     * Places a predefined set of ships on the provided board.
+     * <p>
+     * The ships are placed at random locations and orientations,
+     * ensuring they fit within the board and do not overlap.
+     * </p>
+     *
+     * @param board the board where the ships will be placed
+     */
     public void placeShips(Board board) {
         int[] sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1}; // portaaviones, submarinos, destructores, fragatas
         int boardSize = board.getSize();
@@ -61,9 +78,15 @@ public class Machine implements Serializable {
         }
     }
 
-
-
-
+    /**
+     * Selects a random coordinate on the given board to attack.
+     * <p>
+     * Ensures that the selected coordinate has not been previously attacked.
+     * </p>
+     *
+     * @param playerBoard the player's board to target
+     * @return a valid coordinate to attack
+     */
     public Coordinate selectTarget(Board playerBoard) {
         int boardSize = playerBoard.getSize();
         Coordinate target;
