@@ -12,16 +12,31 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+/**
+ * Controller for the End Game screen.
+ * Manages the display of the game result and the actions for "Play Again" and "Exit" buttons,
+ * including animations and button hover effects.
+ */
 public class EndGameController {
     @FXML
     private Label resultLabel;
     @FXML private Button playAgainButton;
     @FXML private Button exitButton;
 
+    /**
+     * Sets the result message based on whether the player won or lost.
+     *
+     * @param playerWon true if the player won, false otherwise
+     */
     public void setResult(boolean playerWon) {
         resultLabel.setText(playerWon ? "¡You Won!" : "You Lost 😢");
     }
 
+    /**
+     * Initializes the controller.
+     * Configures button actions and applies intro animation and fade effects.
+     * This method is called automatically by JavaFX after the FXML elements are loaded.
+     */
     @FXML
     public void initialize() {
         configurePlayAgainButton();
@@ -31,7 +46,10 @@ public class EndGameController {
         applyFadeEffect(exitButton);
     }
 
-    /** Acciones del botón de volver a jugar */
+    /**
+     * Configures the "Play Again" button to load the Home view when clicked.
+     * Loads the HomeView.fxml and sets it as the current scene.
+     */
     private void configurePlayAgainButton() {
         playAgainButton.setOnAction(e -> {
             try {
@@ -46,7 +64,9 @@ public class EndGameController {
         });
     }
 
-    /** Acciones del botón de salir */
+    /**
+     * Configures the "Exit" button to close the application window when clicked.
+     */
     private void configureExitButton() {
         exitButton.setOnAction(e -> {
             Stage stage = (Stage) resultLabel.getScene().getWindow();
@@ -54,7 +74,11 @@ public class EndGameController {
         });
     }
 
-    /** Animación de entrada para el resultado */
+    /**
+     * Applies an introductory scale and fade-in animation to the result label.
+     * The animation grows the label from zero size to full size with easing,
+     * and fades it from transparent to fully visible.
+     */
     private void applyIntroAnimation() {
         ScaleTransition scale = new ScaleTransition(Duration.seconds(1.1), resultLabel);
         scale.setFromX(0);
@@ -71,6 +95,13 @@ public class EndGameController {
         fade.play();
     }
 
+    /**
+     * Applies a continuous fade animation to the given button,
+     * making it fade between full opacity and half opacity indefinitely.
+     * Also adds mouse enter/exit handlers to scale the button slightly for hover effect.
+     *
+     * @param btn the Button to apply the fade and hover animations to
+     */
     private void applyFadeEffect(Button btn) {
         FadeTransition ft = new FadeTransition(Duration.seconds(1.5), btn);
         ft.setFromValue(1.0);

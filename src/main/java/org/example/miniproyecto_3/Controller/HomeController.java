@@ -15,6 +15,14 @@ import org.example.miniproyecto_3.Model.FileHandlers.PlainTextFileHandler;
 
 import java.io.File;
 
+/**
+ * Controller class for the home screen of the Battleship game.
+ * <p>
+ * Handles user interaction on the home view, such as starting a new game,
+ * continuing a saved one, or exiting the application. Also manages nickname input
+ * and visual UI effects.
+ * </p>
+ */
 public class HomeController {
     @FXML
     private TextField nicknameField;
@@ -27,6 +35,10 @@ public class HomeController {
     private PlainTextFileHandler plainTextFileHandler;
     private static final String SAVE_FILE = "savegame.ser";
 
+    /**
+     * Initializes the controller once the FXML elements are loaded.
+     * Sets up button actions, UI effects, and loads the file handler.
+     */
     @FXML
     public void initialize() {
         plainTextFileHandler = new PlainTextFileHandler();
@@ -50,6 +62,11 @@ public class HomeController {
 
     }
 
+    /**
+     * Applies a fade animation and hover effect to a button.
+     *
+     * @param btn the button to apply the effect to
+     */
     private void applyFadeEffect(Button btn) {
         FadeTransition ft = new FadeTransition(Duration.seconds(1.2), btn);
         ft.setFromValue(1.0);
@@ -66,6 +83,10 @@ public class HomeController {
         );
     }
 
+    /**
+     * Handles the logic when the user presses the "Start" button.
+     * Saves the entered nickname and transitions to the game screen.
+     */
     private void handleStart() {
         String nick = nicknameField.getText().trim();
         if (nick.isEmpty()) {
@@ -79,14 +100,28 @@ public class HomeController {
         loadGameView(false);
     }
 
+    /**
+     * Checks whether there is a saved game file available.
+     *
+     * @return {@code true} if a save file exists, {@code false} otherwise
+     */
     private boolean hasSavedGame() {
         return new File(SAVE_FILE).exists();
     }
 
+    /**
+     * Handles the logic when the user presses the "Continue" button.
+     * Loads the game view with the previous game state.
+     */
     private void handleContinue() {
         loadGameView(true);
     }
 
+    /**
+     * Loads the game scene (GameView.fxml) and passes control to the game controller.
+     *
+     * @param continueGame {@code true} if resuming a saved game, {@code false} if starting new
+     */
     private void loadGameView(Boolean continueGame) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(

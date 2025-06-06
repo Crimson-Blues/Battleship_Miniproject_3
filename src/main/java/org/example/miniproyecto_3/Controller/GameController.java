@@ -30,63 +30,105 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Controller class for the main game screen in the Battleship game.
+ * <p>
+ * Manages user interaction, game logic integration, grid rendering,
+ * drag-and-drop ship placement, and turn-based gameplay.
+ * </p>
+ */
 public class GameController {
+    /** Root layout container for the game screen. */
     @FXML
     private AnchorPane baseAnchorPane;
+    /** StackPane for the small ship in the player's inventory. */
     @FXML
     private StackPane smallShipStack;
+    /** StackPane for the medium ship in the player's inventory. */
     @FXML
     private StackPane mediumShipStack;
+    /** StackPane for the submarine in the player's inventory. */
     @FXML
     private StackPane submarineStack;
+    /** StackPane for the aircraft carrier in the player's inventory. */
     @FXML
     private StackPane carrierStack;
+    /** GridPane representing the player's board. */
     @FXML
     private GridPane playerGridPane;
+    /** GridPane representing the machine's board. */
     @FXML
     private GridPane machineGridPane;
+    /** Button to start the game once ships are placed. */
     @FXML
     private Button playButton;
+    /** Button to restart the current game. */
     @FXML
     private Button restartButton;
+    /** Button to save the current game state. */
     @FXML
     private Button saveButton;
+    /** Button to toggle visibility of machine's ships. */
     @FXML
     private Button viewButton;
+    /** Label showing whose turn it is (player or machine). */
     @FXML
     private Label turnLabel;
+    /** Label for showing error messages related to ship placement or gameplay. */
     @FXML
     private Label errorLabel;
+    /** Label displaying the current player's score. */
     @FXML
     private Label scoreLabel;
 
-    private double dragDeltax, dragDeltay;
+    /** Stores the X-axis offset during drag events. */
+    private double dragDeltax;
+
+    /** Stores the Y-axis offset during drag events. */
+    private double dragDeltay;
+    /** Main game model object holding game state and logic. */
     private Game game;
+    /** The player's board object. */
     private Board playerBoard;
+    /** The machine's board object. */
     private Board machineBoard;
+    /** Whether the machine's ships are visible (for debugging or viewing). */
     private Boolean machineShipsVisible;
+    /** Handler for reading/writing plain text files (nickname/score). */
     private PlainTextFileHandler plainTextFileHandler;
+    /** Flag indicating whether the game is loading a previously saved state. */
     private Boolean continueGame;
+    /** Handler for serializing and deserializing game objects. */
     private SerializableFileHandler serializableFileHandler;
+    /** Matrix-like structure for accessing player cell StackPanes. */
     private ArrayList<ArrayList<StackPane>> playerStackPanes;
+    /** Matrix-like structure for accessing machine cell StackPanes. */
     private ArrayList<ArrayList<StackPane>> machineStackPanes;
+    /** List of Pane objects representing all player ships on the board. */
     private ArrayList<Pane> playerShipPanes = new ArrayList<Pane>();
+    /** List of Pane objects representing all machine ships on the board. */
     private ArrayList<Pane> machineShipPanes  = new ArrayList<Pane>();
+    /** Matrix to track ship PANE positions on the machine's board. */
     private Pane[][] machineShipPanesPositions = new Pane[10][10];
+    /** Matrix to track ship PANE positions on the player's board. */
     private Pane[][] playerShipPanesPositions = new Pane[10][10];
-
-
-    // Definir constante para el tamaño de celda (tablero 10x10; cada celda de 40px)
-    private static final int CELL_SIZE = 40;
-    // Nombre del archivo de guardado
+    /** Name of the file used to save the game state. */
     private static final String SAVE_FILE = "savegame.ser";
 
+    /**
+     * Initializes controller dependencies after FXML injection.
+     * Instantiates file handlers used throughout the controller.
+     */
     @FXML
     public void initialize() {
         plainTextFileHandler = new PlainTextFileHandler();
         serializableFileHandler = new SerializableFileHandler();
     }
 
+    /**
+     * Configures the controller based on whether the game should load
+     * a saved state or start a new one. Initializes game data, boards, and UI.
+     */
     public void setUpController() {
         // Si existe un archivo guardado, se carga la partida
         if(continueGame) {
@@ -104,6 +146,10 @@ public class GameController {
         handleButtons();
     }
 
+    /**
+     * Reads the player's nickname from file, sets initial score,
+     * and updates label elements for display.
+     */
     public void handleLabels(){
         try{
             String nick = plainTextFileHandler.readFromFile("nickname.csv")[0];
@@ -124,6 +170,9 @@ public class GameController {
         errorLabel.setVisible(false);
     }
 
+    /**
+     * Sets up event handlers for all primary buttons.
+     */
     public void handleButtons(){
         handlePlayButton();
         handleViewButton();
@@ -131,11 +180,18 @@ public class GameController {
         handleSaveButton();
     }
 
+    /**
+     * Sets the action for the "Save" button to persist the current game state.
+     */
     public void handleSaveButton(){
         saveButton.setOnAction(e ->{
             saveGame();
         });
     }
+    /**
+     * Sets the action for the "Restart" button to reload the game view
+     * and reset the controller to a new game state.
+     */
     public void handleRestartButton(){
         restartButton.setOnAction(e -> {
             try {
@@ -154,6 +210,10 @@ public class GameController {
             }
         });
     }
+    /**
+     * Sets the action for the "Play" button to validate board setup
+     * and transition to gameplay mode.
+     */
     public void handlePlayButton() {
         playButton.setOnAction(e -> {
             try{
@@ -165,6 +225,13 @@ public class GameController {
         });
     }
 
+    /**
+     * Transitions the game to play mode:
+     * Validates ship placement, initializes boards with clickable cells,
+     * assigns events to handle player shots and machine turn logic.
+     *
+     * @throws IncompleteBoard if the player hasn't placed all ships.
+     */
     public void setPlayState() throws IncompleteBoard{
         if(playerBoard.getShips().size() < 10){
             throw new IncompleteBoard("¡Posiciona todos tus barcos antes de jugar!");
@@ -226,7 +293,10 @@ public class GameController {
         }
     }
 
-    //Draws the ships and places them in the stackPanes
+    /**
+     * Draws the player's ships of different sizes and adds them to the corresponding ship stacks.
+     * Also sets up drag and rotate behavior for each ship.
+     */
     public void drawInitialShips(){
         playerShipPanes = new ArrayList<>();
         ShipDrawer shipDrawer = new ShipDrawer();
@@ -273,6 +343,14 @@ public class GameController {
 
     }
 
+    /**
+     * Assigns the drag-and-drop behavior and placement validation to a ship.
+     * Allows rotation with right-click and removes the ship from the board when picked up.
+     *
+     * @param ship the Ship object being moved
+     * @param stack the original stack the ship was placed in
+     * @param pane the visual representation of the ship as a Pane
+     */
     public void handleShipMovement(Ship ship, StackPane stack, Pane pane){
         ImageView shipImageView = (ImageView) pane.getChildren().get(0);
 
@@ -422,7 +500,12 @@ public class GameController {
         });
     }
 
-    // Metodo para ejecutar el turno de la máquina
+    /**
+     * Simulates the machine's turn in the game.
+     * After a short delay to mimic thinking time, the machine selects a target on the player's board
+     * and fires at it. If the shot is a hit and the game is not over, the machine shoots again.
+     * Automatically saves the game state after each move.
+     */
     private void machineTurn() {
         PauseTransition pause = new PauseTransition(Duration.seconds(1)); // Retardo simula "pensar"
         pause.setOnFinished(e -> {
@@ -443,6 +526,16 @@ public class GameController {
 
     }
 
+    /**
+     * Executes a shot on the specified target coordinate of a given board.
+     * Updates the UI based on the result of the shot (hit, miss, or sunk),
+     * manages score updates, end-game condition, and saves the game state.
+     *
+     * @param target         the coordinate to fire at
+     * @param board          the board (player or machine) being targeted
+     * @param stackPanes     the stack pane matrix representing the visual grid
+     * @param panePositions  the pane matrix containing ship visuals for interaction
+     */
     private void shootCell(Coordinate target, Board board, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions) {
         try{
             Cell.CellState result = game.fire(target, board);
@@ -482,14 +575,21 @@ public class GameController {
         saveGame();
     }
 
-    //Save current game state into a serializable and plain file
+    /**
+     * Saves the current game state using both a serializable binary format and a plain text file.
+     * The plain text file stores the player's nickname and score for quick access.
+     */
     private void saveGame() {
         serializableFileHandler = new SerializableFileHandler();
         serializableFileHandler.serialize(SAVE_FILE, game);
         plainTextFileHandler.writeToFile("nickname.csv",  game.getPlayer().getNickname() + "," + game.getPlayer().getScore());
     }
 
-    //Load a saved Game State
+    /**
+     * Loads a previously saved game from file. If successful, restores the player's and machine's boards,
+     * updates the visual components, and resumes play state. If loading fails, starts a new game
+     * and displays an error message.
+     */
     private void loadGameState() {
         serializableFileHandler = new SerializableFileHandler();
         try{
@@ -521,7 +621,15 @@ public class GameController {
 
 
 
-    //Sets machine ships panes onto machineGridPane
+    /**
+     * Places the ships visually on the grid pane by creating pane representations
+     * and aligning them based on the model Ships orientation and coordinates.
+     *
+     * @param board            the board containing the ships to place
+     * @param paneList         the list that will hold the ship panes
+     * @param gridPane         the grid pane where ships are to be displayed
+     * @param panesPositions   the matrix storing the position of each ship pane
+     */
     private void placeShips(Board board, ArrayList<Pane> paneList, GridPane gridPane, Pane[][] panesPositions) {
         paneList.clear();
         for(Ship ship : board.getShips()){
@@ -553,6 +661,11 @@ public class GameController {
     }
 
 
+    /**
+     * Sets up the event handler for the view button, allowing the player to toggle
+     * the visibility of the enemy ships. If the player hasn't placed their ships,
+     * it shows an error message.
+     */
     private void handleViewButton(){
         viewButton.setOnAction(e ->{
             if(machineShipsVisible == null){
@@ -568,7 +681,11 @@ public class GameController {
             }
         });
     }
-    //Makes enemy ships visible
+
+    /**
+     * Makes all enemy ship panes visible on the machine's grid.
+     * Used for debugging when the player chooses to reveal the enemy ships.
+     */
     private void viewEnemyShips() {
         machineShipsVisible = true;
         for(Pane pane: machineShipPanes){
@@ -576,7 +693,10 @@ public class GameController {
         }
     }
 
-    //Makes enemy ships visible
+    /**
+     * Hides all enemy ship panes from view on the machine's grid.
+     * This is used to conceal the enemy ships again after being shown.
+     */
     private void hideEnemyShips() {
         machineShipsVisible = false;
         for(Pane pane: machineShipPanes){
@@ -584,6 +704,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Displays an error message using a fading label animation.
+     * The message fades in, stays visible for a short time, then fades out.
+     *
+     * @param label   the label to display the message on
+     * @param message the error message to show
+     */
     public void showError(Label label, String message) {
         label.setText(message);
         label.setOpacity(0);
@@ -604,6 +731,15 @@ public class GameController {
         sequence.play();
     }
 
+    /**
+     * Temporarily displays a message in the given label for a specified duration,
+     * then reverts to the default message.
+     *
+     * @param label          the Label to update
+     * @param tempMessage    the temporary message to show
+     * @param defaultMessage the message to revert back to after the delay
+     * @param seconds        how long (in seconds) to display the temporary message
+     */
     public void showTempMessage(Label label, String tempMessage, String defaultMessage, double seconds) {
         label.setText(tempMessage);
         PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
@@ -611,6 +747,12 @@ public class GameController {
         pause.play();
     }
 
+    /**
+     * Creates a Pane representing a ship of the specified length.
+     *
+     * @param length the length of the ship (1 to 4)
+     * @return a Pane visually representing the ship; an empty Pane if length is invalid
+     */
     public Pane drawShip(int length){
         ShipDrawer drawer = new ShipDrawer();
         switch(length){
@@ -632,6 +774,12 @@ public class GameController {
         }
     }
 
+    /**
+     * Flips the orientation of the given ship and rotates its visual pane accordingly.
+     *
+     * @param ship the Ship object to flip orientation
+     * @param pane the Pane representing the ship that will be rotated
+     */
     public void flipShip(Ship ship, Pane pane){
         ship.flip();
 
@@ -646,6 +794,11 @@ public class GameController {
 
     }
 
+    /**
+     * Displays the end game screen, indicating whether the player has won or lost.
+     *
+     * @param playerWon true if the player won the game, false otherwise
+     */
     public void showEndScreen(boolean playerWon) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/EndGameView.fxml"));
@@ -661,6 +814,13 @@ public class GameController {
         }
     }
 
+    /**
+     * Updates the visual representation of the entire board based on cell states.
+     *
+     * @param board       the Board to update
+     * @param stackPanes  the nested list of StackPanes representing the board cells
+     * @param panePositions the matrix of Panes representing ship positions
+     */
     public void updateBoard (Board board, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions){
         for(int i = 0; i < board.getSize(); i++){
             for(int j = 0; j < board.getSize(); j++){
@@ -670,6 +830,14 @@ public class GameController {
         }
     }
 
+    /**
+     * Formats a single cell's visual representation based on its state (HIT or MISS).
+     * If a ship is sunk it makes it visible and marks the whole ship with skull icons.
+     *
+     * @param cell          the Cell to format
+     * @param stackPanes    the nested list of StackPanes representing the board cells
+     * @param panePositions the matrix of Panes representing ship positions
+     */
     public void formatShotCell (Cell cell, ArrayList<ArrayList<StackPane>> stackPanes, Pane[][] panePositions){
         ShapeDrawer shapeDrawer = new ShapeDrawer();
         int X = cell.getCoordinate().getCol();
@@ -713,6 +881,11 @@ public class GameController {
         }
     }
 
+    /**
+     * Sets the flag indicating whether the current game session should continue.
+     *
+     * @param continueGame true to continue the game, false otherwise
+     */
     public void setContinueGame(Boolean continueGame) {
         this.continueGame = continueGame;
     }
