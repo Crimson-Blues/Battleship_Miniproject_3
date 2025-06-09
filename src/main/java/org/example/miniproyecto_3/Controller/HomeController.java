@@ -24,15 +24,35 @@ import java.io.File;
  * </p>
  */
 public class HomeController {
+
+    /**
+     * Text field where the player enters their nickname.
+     */
     @FXML
     private TextField nicknameField;
+
+    /**
+     * Button to start a new game.
+     */
     @FXML
     private Button startButton;
+    /**
+     * Button to continue a previously saved game.
+     */
     @FXML
     private Button continueButton;
+    /**
+     * Button to exit the application.
+     */
     @FXML
     private Button exitButton;
+    /**
+     * Utility class to handle saving and reading plain text files, such as scores or nicknames.
+     */
     private PlainTextFileHandler plainTextFileHandler;
+    /**
+     * File path for the saved game file.
+     */
     private static final String SAVE_FILE = "savegame.ser";
 
     /**

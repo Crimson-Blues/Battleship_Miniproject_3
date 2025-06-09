@@ -1,0 +1,8 @@
+module:org.example.miniproyecto_3
+org.example.miniproyecto_3
+org.example.miniproyecto_3.Controller
+org.example.miniproyecto_3.Model
+org.example.miniproyecto_3.Model.Exceptions
+org.example.miniproyecto_3.Model.FileHandlers
+org.example.miniproyecto_3.View
+org.example.miniproyecto_3.View.Assets

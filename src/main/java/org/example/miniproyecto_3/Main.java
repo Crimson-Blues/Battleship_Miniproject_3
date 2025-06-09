@@ -1,10 +1,18 @@
 package org.example.miniproyecto_3;
 
+/**
+ * @author J.Diego Cárdenas 2416437
+ * @author Liseth Natalia Rivera Córdoba 2223510
+ * @author Manuela Martínez Moncada 2375458
+ * @version 1.0
+ */
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import org.example.miniproyecto_3.View.GameStage;
 
 /**
+ *
  * Entry point for the JavaFX application.
  * <p>
  * This class extends {@link javafx.application.Application Application} and is responsible
