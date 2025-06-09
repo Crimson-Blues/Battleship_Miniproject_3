@@ -9,4 +9,6 @@ module org.example.miniproyecto_3 {
     exports org.example.miniproyecto_3;
     exports org.example.miniproyecto_3.Controller;
     opens org.example.miniproyecto_3.Controller to javafx.fxml;
+    exports org.example.miniproyecto_3.Model;
+    opens org.example.miniproyecto_3.Model to javafx.fxml;
 }
