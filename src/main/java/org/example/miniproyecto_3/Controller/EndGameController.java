@@ -18,9 +18,18 @@ import javafx.util.Duration;
  * including animations and button hover effects.
  */
 public class EndGameController {
+    /**
+     * Label used to display the result of the game (win or loss).
+     */
     @FXML
     private Label resultLabel;
+    /**
+     * Button that allows the user to return to the home screen and start a new game.
+     */
     @FXML private Button playAgainButton;
+    /**
+     * Button that allows the user to exit the application.
+     */
     @FXML private Button exitButton;
 
     /**

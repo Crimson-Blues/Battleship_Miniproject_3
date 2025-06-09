@@ -195,7 +195,6 @@ public class GameController {
     public void handleRestartButton(){
         restartButton.setOnAction(e -> {
             try {
-
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/miniproyecto_3/GameView.fxml"));
                 Scene scene = new Scene(loader.load());
 
@@ -582,7 +581,7 @@ public class GameController {
     private void saveGame() {
         serializableFileHandler = new SerializableFileHandler();
         serializableFileHandler.serialize(SAVE_FILE, game);
-        plainTextFileHandler.writeToFile("nickname.csv",  game.getPlayer().getNickname() + "," + game.getPlayer().getScore());
+        plainTextFileHandler.writeToFile("nickname.csv",  game.getPlayer().getNickname() + "\n" + game.getPlayer().getScore());
     }
 
     /**
